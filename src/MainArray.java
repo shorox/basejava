@@ -36,7 +36,7 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    ARRAY_STORAGE.save(createResume(uuid));
+                    ARRAY_STORAGE.save(new Resume(uuid));
                     printAll();
                     break;
                 case "delete":
@@ -44,7 +44,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "update":
-                    ARRAY_STORAGE.update(uuid, createResume(uuidNew));
+                    ARRAY_STORAGE.update(uuid, new Resume(uuidNew));
                     printAll();
                     break;
                 case "get":
@@ -74,11 +74,5 @@ public class MainArray {
             }
         }
         System.out.println("----------------------------");
-    }
-
-    private static Resume createResume(String uuid) {
-        Resume resume = new Resume();
-        resume.setUuid(uuid);
-        return resume;
     }
 }
