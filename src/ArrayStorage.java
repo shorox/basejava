@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Array based storage for Resumes
@@ -12,16 +13,17 @@ public class ArrayStorage {
         size = 0;
     }
 
-    public void update(String uuidNew, Resume resume) {
-        int i = check(uuidNew);
-        if (i >= 0) {
-            storage[i] = resume;
-        } else {
-            System.out.println("ERROR: Resume was not found for update!");
-        }
+    public void update(String uuid, Resume resume) {
+        Objects.requireNonNull(resume, "ERROR: resume can't be null for update!");
+        if (check(uuid) >= 0) {
+            if (check(resume.getUuid()) < 0) {
+                storage[check(uuid)] = resume;
+            } else System.out.println("ERROR: Such resume is already exist!");
+        } else System.out.println("ERROR: Resume was not found for update!");
     }
 
     public void save(Resume resume) {
+        Objects.requireNonNull(resume, "ERROR: resume can't be null for save!");
         if (check(resume.getUuid()) < 0) {
             if (resume.getUuid() != null) {
                 if (size < storage.length) {
