@@ -27,7 +27,7 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (!isPresent(r)) {
             try {
-                if(r.uuid!=null) {
+                if (r.uuid != null) {
                     storage[size] = r;
                     size++;
                 }
@@ -38,9 +38,11 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return storage[i];
+        if (isPresent(uuid)) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].uuid.equals(uuid)) {
+                    return storage[i];
+                }
             }
         }
         System.out.println("Resume was not found!");
@@ -48,12 +50,14 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                size--;
-                storage[i] = storage[size];
-                storage[size] = null;
-                return;
+        if (isPresent(uuid)) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].uuid.equals(uuid)) {
+                    size--;
+                    storage[i] = storage[size];
+                    storage[size] = null;
+                    return;
+                }
             }
         }
         System.out.println("ERROR: Resume was not found for delete!");
@@ -73,6 +77,15 @@ public class ArrayStorage {
     private boolean isPresent(Resume r) {
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(r.uuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isPresent(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
                 return true;
             }
         }
