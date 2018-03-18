@@ -13,20 +13,24 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        for (int i = 0; i < size; i++) {
+        if (isPresent(r)) {
+            for (int i = 0; i < size; i++) {
                 if (storage[i].uuid.equals(r.uuid)) {
                     storage[i] = r;
                     return;
                 }
             }
+        }
         System.out.println("ERROR: Resume was not found for update!");
     }
 
     public void save(Resume r) {
         if (!isPresent(r)) {
             try {
-                storage[size] = r;
-                size++;
+                if(r.uuid!=null) {
+                    storage[size] = r;
+                    size++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("ERROR: Free space is out for this save!");
             }
@@ -39,6 +43,7 @@ public class ArrayStorage {
                 return storage[i];
             }
         }
+        System.out.println("Resume was not found!");
         return null;
     }
 
