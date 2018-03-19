@@ -4,15 +4,19 @@ import java.util.Objects;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+public class ArrayStorage implements Storage{
+    private static final int STORAGE_LIMIT = 10000;
+
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    @Override
     public void update(Resume resume) {
         Objects.requireNonNull(resume, "ERROR: resume can't be null for update!");
 
@@ -24,6 +28,7 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     public void save(Resume resume) {
         Objects.requireNonNull(resume, "ERROR: resume can't be null for save!");
 
@@ -32,7 +37,7 @@ public class ArrayStorage {
             return;
         }
 
-        if (size >= storage.length) {
+        if (size >= STORAGE_LIMIT) {
             System.out.println("ERROR: Free space is out for this save!");
             return;
         }
@@ -45,6 +50,7 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
@@ -54,6 +60,7 @@ public class ArrayStorage {
         return null;
     }
 
+    @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
@@ -68,10 +75,12 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
+    @Override
     public int size() {
         return size;
     }
