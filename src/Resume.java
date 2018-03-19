@@ -5,7 +5,7 @@ public class Resume {
 
     private String uuid;
 
-    public Resume(String uuid){
+    public Resume(String uuid) {
         this.uuid = uuid;
     }
 

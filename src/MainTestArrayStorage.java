@@ -8,8 +8,7 @@ public class MainTestArrayStorage {
         Resume resume1 = new Resume("uuid1");
         Resume resume2 = new Resume("uuid2");
         Resume resume3 = new Resume("uuid3");
-        Resume resume4 = new Resume("uuid4");
-
+        Resume resume4 = new Resume("uuid3");
 
         ARRAY_STORAGE.save(resume1);
         ARRAY_STORAGE.save(resume2);
@@ -21,7 +20,7 @@ public class MainTestArrayStorage {
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         printAll();
-        ARRAY_STORAGE.update("uuid3", resume4);
+        ARRAY_STORAGE.update(resume4);
         printAll();
         ARRAY_STORAGE.delete(resume1.getUuid());
         printAll();

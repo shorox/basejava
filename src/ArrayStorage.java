@@ -13,19 +13,12 @@ public class ArrayStorage {
         size = 0;
     }
 
-    public void update(String uuid, Resume resume) {
+    public void update(Resume resume) {
         Objects.requireNonNull(resume, "ERROR: resume can't be null for update!");
 
-        String uuidNew = resume.getUuid();
-        int indexNew = getIndex(uuidNew);
-        if (uuidNew == null || indexNew >= 0) {
-            System.out.println("ERROR: Can't update this resume");
-            return;
-        }
-
-        int indexOld = getIndex(uuid);
-        if (indexOld >= 0) {
-            storage[indexOld] = resume;
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
         } else {
             System.out.println("ERROR: Resume was not found for update!");
         }
@@ -84,11 +77,9 @@ public class ArrayStorage {
     }
 
     private int getIndex(String uuid) {
-        if (size <= storage.length) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    return i;
-                }
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
             }
         }
         return -1;
