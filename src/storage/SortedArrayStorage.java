@@ -29,6 +29,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             int indexPosition = index + 1;
             int copyLength = size - index;
             System.arraycopy(storage, indexPosition, storage, index, copyLength);
+            storage[size] = null;
             return;
         }
         System.out.println("Resume with " + uuid + " value was not found for delete!");
