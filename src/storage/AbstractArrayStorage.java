@@ -11,6 +11,12 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
 
+    protected abstract int getIndex(String uuid);
+
+    protected abstract int getSaveIndex(Resume resume);
+
+    protected abstract void deleteByIndex(int index);
+
     public int size() {
         return size;
     }
@@ -31,6 +37,29 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    public void save(Resume resume) {
+        String errorMessage = checkSaveConditions(resume);
+        if (errorMessage != null) {
+            System.out.println(errorMessage);
+            return;
+        }
+        int index = getSaveIndex(resume);
+        storage[index] = resume;
+        size++;
+
+    }
+
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            size--;
+            deleteByIndex(index);
+            storage[size] = null;
+            return;
+        }
+        System.out.println("Resume with : " + uuid + " was not found for delete!");
+    }
+
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
@@ -44,10 +73,8 @@ public abstract class AbstractArrayStorage implements Storage {
         return Arrays.copyOf(storage, size);
     }
 
-    protected abstract int getIndex(String uuid);
-
     //Method works in pair with save method, return null if input data correct
-    final protected String checkSaveConditions(Resume resume) {
+    private String checkSaveConditions(Resume resume) {
         Objects.requireNonNull(resume, "Bad news, we received null for save!");
 
         if (resume.getUuid() == null) {
