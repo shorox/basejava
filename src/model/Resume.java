@@ -1,14 +1,17 @@
-import java.util.Objects;
+package model;
 
 /**
- * com.urise.webapp.model.Resume class
+ * com.urise.webapp.model.model.Resume class
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
 
     private String uuid;
 
     public Resume(String uuid) {
         this.uuid = uuid;
+    }
+
+    public Resume() {
     }
 
     public String getUuid() {
@@ -34,6 +37,11 @@ public class Resume {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return uuid.hashCode();
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return uuid.compareTo(o.uuid);
     }
 }

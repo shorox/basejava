@@ -1,14 +1,19 @@
+import model.Resume;
+import storage.ArrayStorage;
+import storage.SortedArrayStorage;
+import storage.Storage;
+
 /**
- * Test for com.urise.webapp.storage.ArrayStorage
+ * Test for com.urise.webapp.storage.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         final Resume resume1 = new Resume("uuid1");
-        final Resume resume2 = new Resume("uuid2");
-        final Resume resume3 = new Resume("uuid3");
-        final Resume resume4 = new Resume("uuid3");
+        final Resume resume2 = new Resume("uuid3");
+        final Resume resume3 = new Resume("uuid2");
+        final Resume resume4 = new Resume("uuid2");
 
         ARRAY_STORAGE.save(resume1);
         ARRAY_STORAGE.save(resume2);
