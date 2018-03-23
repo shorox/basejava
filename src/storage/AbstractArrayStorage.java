@@ -13,7 +13,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract int saveIndex(String uuid);
+    protected abstract void doSave(Resume resume);
 
     protected abstract void deleteByIndex(int index);
 
@@ -55,9 +55,7 @@ public abstract class AbstractArrayStorage implements Storage {
             return;
         }
 
-        int index = saveIndex(resume.getUuid());
-        storage[index] = resume;
-        size++;
+        doSave(resume);
     }
 
     public void delete(String uuid) {
