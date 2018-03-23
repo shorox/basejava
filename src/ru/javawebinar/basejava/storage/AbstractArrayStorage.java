@@ -42,7 +42,8 @@ public abstract class AbstractArrayStorage implements Storage {
         Objects.requireNonNull(resume, "Bad news, we received null for save!");
         Objects.requireNonNull(resume.getUuid(), "Bad news, we can't save null input!");
 
-        if (getIndex(resume.getUuid()) >= 0) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
             System.out.println("Can't save! This Resume is already exist!");
             return;
         }
@@ -52,7 +53,7 @@ public abstract class AbstractArrayStorage implements Storage {
             return;
         }
 
-        doSave(getIndex(resume.getUuid()), resume);
+        doSave(index, resume);
         size++;
     }
 
