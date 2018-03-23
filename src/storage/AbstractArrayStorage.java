@@ -13,7 +13,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void doSave(Resume resume);
+    protected abstract void doSave(int index, Resume resume);
 
     protected abstract void deleteByIndex(int index);
 
@@ -39,11 +39,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public void save(Resume resume) {
         Objects.requireNonNull(resume, "Bad news, we received null for save!");
-
-        if (resume.getUuid() == null) {
-            System.out.println("Sorry, we can't save you null input.");
-            return;
-        }
+        Objects.requireNonNull(resume.getUuid(), "Bad news, we can't save null input!");
 
         if (getIndex(resume.getUuid()) >= 0) {
             System.out.println("Can't save! This Resume is already exist!");
@@ -54,7 +50,8 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Sorry, free space is out for this save!");
             return;
         }
-        doSave(resume);
+
+        doSave(getIndex(resume.getUuid()), resume);
         size++;
     }
 

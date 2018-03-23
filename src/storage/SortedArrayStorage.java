@@ -11,8 +11,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doSave(Resume resume) {
-        int saveIndex = Math.abs(getIndex(resume.getUuid())) - 1;
+    protected void doSave(int index, Resume resume) {
+        int saveIndex = Math.abs(index) - 1;
         int copyLength = size - saveIndex;
         int destinationIndex = saveIndex + 1;
         System.arraycopy(storage, saveIndex, storage, destinationIndex, copyLength);
