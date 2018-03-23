@@ -54,8 +54,8 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Sorry, free space is out for this save!");
             return;
         }
-
         doSave(resume);
+        size++;
     }
 
     public void delete(String uuid) {
