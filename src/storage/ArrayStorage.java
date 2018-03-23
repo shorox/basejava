@@ -17,7 +17,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected int getSaveIndex(Resume resume) {
+    protected int saveIndex(String uuid) {
         return size;
     }
 

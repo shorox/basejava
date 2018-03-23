@@ -11,8 +11,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected int getSaveIndex(Resume resume) {
-        int saveIndex = Math.abs(getIndex(resume.getUuid())) - 1;
+    protected int saveIndex(String uuid) {
+        int saveIndex = Math.abs(getIndex(uuid)) - 1;
         int copyLength = size - saveIndex;
         int destinationIndex = saveIndex + 1;
         System.arraycopy(storage, saveIndex, storage, destinationIndex, copyLength);
