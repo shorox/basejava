@@ -46,7 +46,6 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getSaveIndex(resume);
         storage[index] = resume;
         size++;
-
     }
 
     public void delete(String uuid) {
