@@ -81,22 +81,4 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
-
-    //Method works in pair with save method, return null if input data correct
-    private String checkSaveConditions(Resume resume) {
-        Objects.requireNonNull(resume, "Bad news, we received null for save!");
-
-        if (resume.getUuid() == null) {
-            return "Sorry, we can't save you null input.";
-        }
-
-        if (getIndex(resume.getUuid()) >= 0) {
-            return "Can't save! This Resume is already exist!";
-        }
-
-        if (size >= STORAGE_LIMIT) {
-            return "Sorry, free space is out for this save!";
-        }
-        return null;
-    }
 }
