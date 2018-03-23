@@ -37,6 +37,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    //use in doSave() first argument for save only in sorted arrays.
     public void save(Resume resume) {
         Objects.requireNonNull(resume, "Bad news, we received null for save!");
         Objects.requireNonNull(resume.getUuid(), "Bad news, we can't save null input!");
