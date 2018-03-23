@@ -1,6 +1,6 @@
-package storage;
+package ru.javawebinar.storage;
 
-import model.Resume;
+import ru.javawebinar.model.Resume;
 
 import java.util.Arrays;
 

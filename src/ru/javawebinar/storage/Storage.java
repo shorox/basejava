@@ -1,6 +1,6 @@
-package storage;
+package ru.javawebinar.storage;
 
-import model.Resume;
+import ru.javawebinar.model.Resume;
 
 public interface Storage {
 
@@ -15,7 +15,7 @@ public interface Storage {
     void delete(String uuid);
 
     /**
-     * @return array, contains only Resumes in storage (without null)
+     * @return array, contains only Resumes in ru.javawebinar.storage (without null)
      */
     Resume[] getAll();
 
