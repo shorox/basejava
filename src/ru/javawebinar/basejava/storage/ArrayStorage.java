@@ -1,9 +1,9 @@
-package ru.javawebinar.storage;
+package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.model.Resume;
+import ru.javawebinar.basejava.model.Resume;
 
 /**
- * Array based ru.javawebinar.storage for Resumes
+ * Array based ru.javawebinar.basejava.storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
     @Override

@@ -1,11 +1,11 @@
-package ru.javawebinar;
+package ru.javawebinar.basejava;
 
-import ru.javawebinar.model.Resume;
-import ru.javawebinar.storage.SortedArrayStorage;
-import ru.javawebinar.storage.Storage;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.SortedArrayStorage;
+import ru.javawebinar.basejava.storage.Storage;
 
 /**
- * Test for com.urise.webapp.ru.javawebinar.storage.ru.javawebinar.storage.ArrayStorage
+ * Test for com.urise.webapp.ru.javawebinar.basejava.storage.ru.javawebinar.basejava.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new SortedArrayStorage();
