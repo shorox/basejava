@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
+
     @Override
     protected int getIndex(String uuid) {
         return Arrays.binarySearch(storage, 0, size, new Resume(uuid));
@@ -20,7 +21,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteByIndex(int index) {
+    protected void doDelete(int index) {
         int indexPosition = index + 1;
         int copyLength = size - index;
         System.arraycopy(storage, indexPosition, storage, index, copyLength);

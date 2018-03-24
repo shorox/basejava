@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
  * Array based ru.javawebinar.basejava.storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
+
     @Override
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
@@ -22,7 +23,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteByIndex(int index) {
+    protected void doDelete(int index) {
         storage[index] = storage[size];
     }
 }

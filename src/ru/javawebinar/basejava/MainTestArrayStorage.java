@@ -8,9 +8,11 @@ import ru.javawebinar.basejava.storage.Storage;
  * Test for com.urise.webapp.ru.javawebinar.basejava.storage.ru.javawebinar.basejava.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
+
     static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
+
         final Resume resume1 = new Resume("uuid1");
         final Resume resume2 = new Resume("uuid3");
         final Resume resume3 = new Resume("uuid2");

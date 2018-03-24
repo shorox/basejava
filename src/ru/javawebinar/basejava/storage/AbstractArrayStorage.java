@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class AbstractArrayStorage implements Storage {
+
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -15,7 +16,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void doSave(int index, Resume resume);
 
-    protected abstract void deleteByIndex(int index);
+    protected abstract void doDelete(int index);
 
     public int size() {
         return size;
@@ -61,7 +62,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(uuid);
         if (index >= 0) {
             size--;
-            deleteByIndex(index);
+            doDelete(index);
             storage[size] = null;
             return;
         }

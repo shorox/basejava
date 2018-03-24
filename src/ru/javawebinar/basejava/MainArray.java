@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
  * Test for com.urise.webapp.ru.javawebinar.basejava.storage.ru.javawebinar.basejava.storage.ArrayStorage
  */
 public class MainArray {
+
     private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
