@@ -93,8 +93,9 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void saveStorageException() throws Exception {
-       for(int i = 4 ; i <= 10000 ; i++){
-           storage.save(new Resume("uuid" + i));
+        storage.clear();
+        for (int i = 0; i < 10000; i++) {
+            storage.save(new Resume("uuid" + i));
         }
         storage.save(new Resume("uuid"));
     }
