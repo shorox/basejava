@@ -14,7 +14,7 @@ public class MainReflection {
         Field field = resume.getClass().getDeclaredFields()[0];
         Method method = Resume.class.getMethod("toString");
 
-        method.invoke(resume);
+        System.out.println(method.invoke(resume));
 
         field.setAccessible(true);
 

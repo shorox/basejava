@@ -17,5 +17,4 @@ public interface Storage {
     void delete(String uuid);
 
     void clear();
-
 }
