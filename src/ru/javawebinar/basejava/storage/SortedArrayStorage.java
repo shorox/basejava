@@ -12,7 +12,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doSave(int index, Resume resume) {
+    protected void subSave(Resume resume, int index) {
         int saveIndex = -(++index);
         int copyLength = size - saveIndex;
         int destinationIndex = saveIndex + 1;
@@ -21,7 +21,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doDelete(int index) {
+    protected void subDelete(int index) {
         int indexPosition = index + 1;
         int copyLength = size - index;
         System.arraycopy(storage, indexPosition, storage, index, copyLength);

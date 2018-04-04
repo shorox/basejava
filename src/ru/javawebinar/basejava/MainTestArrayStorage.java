@@ -1,12 +1,15 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.SortedArrayStorage;
+import ru.javawebinar.basejava.storage.MapStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 public class MainTestArrayStorage {
 
-    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    // static final Storage ARRAY_STORAGE = new ArrayStorage();
+    // static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    // static final Storage ARRAY_STORAGE = new ListStorage();
+    static final Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
 
@@ -22,7 +25,7 @@ public class MainTestArrayStorage {
         System.out.println("Get r1: " + ARRAY_STORAGE.get(resume1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+//        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         printAll();
         ARRAY_STORAGE.update(resume4);
