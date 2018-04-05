@@ -18,28 +18,36 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void subDelete(int index);
 
     @Override
-    protected void doSave(Resume resume, int index) {
+    protected boolean checkIndex(String uuid) {
+        if ((Integer) getIndex(uuid) >= 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void doSave(Resume resume, Object index) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         }
-        subSave(resume, index);
+        subSave(resume, ((int) index));
         size++;
     }
 
     @Override
-    protected Resume doGet(String uuid, int index) {
-        return storage[index];
+    protected Resume doGet(Object index) {
+        return storage[(Integer) index];
     }
 
     @Override
-    protected void doUpdate(Resume resume, int index) {
-        storage[index] = resume;
+    protected void doUpdate(Resume resume, Object index) {
+        storage[(Integer) index] = resume;
     }
 
     @Override
-    protected void doDelete(String uuid, int index) {
+    protected void doDelete(Object index) {
         size--;
-        subDelete(index);
+        subDelete((Integer) index);
         storage[size] = null;
     }
 
