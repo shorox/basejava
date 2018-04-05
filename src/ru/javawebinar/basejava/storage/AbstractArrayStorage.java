@@ -18,11 +18,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void subDelete(int index);
 
     @Override
-    protected boolean checkIndex(String uuid) {
-        if ((Integer) getIndex(uuid) >= 0) {
-            return true;
-        }
-        return false;
+    protected boolean checkIndex(Object index) {
+        return (int) index >= 0;
     }
 
     @Override

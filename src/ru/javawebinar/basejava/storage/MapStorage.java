@@ -18,11 +18,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkIndex(String uuid) {
-        if ((String) getIndex(uuid) != null) {
-            return true;
-        }
-        return false;
+    protected boolean checkIndex(Object index) {
+        return index != null;
     }
 
     @Override
@@ -57,6 +54,6 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        return mapStorage.values().stream().toArray(Resume[]::new);
+        return mapStorage.values().toArray(new Resume[mapStorage.size()]);
     }
 }

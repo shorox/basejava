@@ -1,15 +1,15 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.ListStorage;
+import ru.javawebinar.basejava.storage.ArrayStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 public class MainTestArrayStorage {
 
-    // static final Storage ARRAY_STORAGE = new ArrayStorage();
-     //static final Storage ARRAY_STORAGE = new SortedArrayStorage();
-     static final Storage ARRAY_STORAGE = new ListStorage();
-   //static final Storage ARRAY_STORAGE = new MapStorage();
+    static final Storage ARRAY_STORAGE = new ArrayStorage();
+    //static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    // static final Storage ARRAY_STORAGE = new ListStorage();
+    //static final Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
 

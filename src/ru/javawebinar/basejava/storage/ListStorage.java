@@ -20,11 +20,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkIndex(String uuid) {
-        if ((Integer) getIndex(uuid) >= 0) {
-            return true;
-        }
-        return false;
+    protected boolean checkIndex(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
@@ -59,6 +56,6 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        return listStorage.stream().toArray(Resume[]::new);
+        return listStorage.toArray(new Resume[listStorage.size()]);
     }
 }
