@@ -35,9 +35,9 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public Resume get(String uuid) {
 
-        Object indexGet = getIndex(uuid);
-        if (checkIndex(indexGet)) {
-            return doGet(indexGet);
+        Object index = getIndex(uuid);
+        if (checkIndex(index)) {
+            return doGet(index);
         }
         throw new NotExistStorageException(uuid);
     }
