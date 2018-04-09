@@ -1,114 +1,35 @@
 package ru.javawebinar.basejava.storage;
 
-import org.junit.Before;
 import org.junit.Test;
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
-public class ListStorageTest {
+public class ListStorageTest extends AbstractStorageTest {
 
-    private Storage storage = new ListStorage();
-
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-
-    private static final Resume RESUME_1 = new Resume(UUID_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3);
-
-    @Before
-    public void setUp() {
-        storage.clear();
-        storage.save(RESUME_1);
-        storage.save(RESUME_2);
-        storage.save(RESUME_3);
+    public ListStorageTest() {
+        super(new ListStorage());
     }
 
     @Test
     public void checkIndexTest() {
-        assertEquals(0, getIndex("uuid1"));
+        assertEquals((Integer) 0, getIndex("name_1"));
     }
 
-    @Test
-    public void doSaveTest() {
-        Resume resumeSave = new Resume("uuid4");
-        storage.save(resumeSave);
-        assertEquals(4, storage.size());
-        assertTrue(storage.get("uuid4") == resumeSave);
-    }
-
-    @Test(expected = ExistStorageException.class)
-    public void saveExistTest() {
-        storage.save(RESUME_1);
-    }
-
-    @Test
-    public void doGetTest() {
-        assertEquals(storage.get(UUID_1), RESUME_1);
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void getNotExistTest() {
-        storage.get("dummy");
-    }
-
-    @Test
-    public void doUpdateTest() {
-        Resume resumeUpdate = new Resume(UUID_1);
-        storage.update(resumeUpdate);
-        assertTrue(storage.get(UUID_1) == resumeUpdate);
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void updateNotExistTest() {
-        storage.update(new Resume("dummy"));
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void doDeleteTest() {
-        storage.delete(UUID_3);
-        assertEquals(2, storage.size());
-        storage.get(UUID_3);
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void deleteNotExistTest() {
-        storage.delete("dummy");
-    }
-
-    @Test
-    public void sizeTest() {
-        assertEquals(3, storage.size());
-    }
-
-    @Test
-    public void clearTest() {
-        storage.clear();
-        assertEquals(0, storage.size());
-    }
-
-    @Test
-    public void getAllTest() {
-        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, storage.getAll());
-    }
-
-    private Object getIndex(String uuid) {
-        List<Resume> list = new ArrayList<>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+    public Integer getIndex(String fullName) {
+        List<Resume> list = new ArrayList<>(Arrays.asList(
+                new Resume("name_1"),
+                new Resume("name_2"),
+                new Resume("name_3")));
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getUuid().equals(uuid)) {
+            if (list.get(i).getFullName().equals(fullName)) {
                 return i;
             }
         }
-        return -1;
+        return null;
     }
 }

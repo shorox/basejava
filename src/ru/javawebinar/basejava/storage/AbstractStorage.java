@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract Object getIndex(String uuid);
+    protected abstract Object getIndex(String fullName);
 
     protected abstract boolean checkIndex(Object index);
 
@@ -23,45 +23,45 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void save(Resume resume) {
         Objects.requireNonNull(resume, "Bad news, we received null for save!");
-        Objects.requireNonNull(resume.getUuid(), "Bad news, we can't save null input!");
+        Objects.requireNonNull(resume.getFullName(), "Bad news, we can't save null input!");
 
-        Object index = getIndex(resume.getUuid());
-        if (checkIndex(index)) {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        Object index = getNotExistedIndex(resume.getFullName());
         doSave(resume, index);
     }
 
     @Override
-    public Resume get(String uuid) {
-
-        Object index = getIndex(uuid);
-        if (checkIndex(index)) {
-            return doGet(index);
-        }
-        throw new NotExistStorageException(uuid);
+    public Resume get(String fullName) {
+        Object index = getExistedIndex(fullName);
+        return doGet(index);
     }
 
     @Override
     public void update(Resume resume) {
         Objects.requireNonNull(resume, "Bad news, we received null for update!");
 
-        Object index = getIndex(resume.getUuid());
-        if (checkIndex(index)) {
-            doUpdate(resume, index);
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+        Object index = getExistedIndex(resume.getFullName());
+        doUpdate(resume, index);
     }
 
     @Override
-    public void delete(String uuid) {
+    public void delete(String fullName) {
+        Object index = getExistedIndex(fullName);
+        doDelete(index);
+    }
 
-        Object index = getIndex(uuid);
-        if (checkIndex(index)) {
-            doDelete(index);
-            return;
+    private Object getExistedIndex(String fullName) {
+        Object index = getIndex(fullName);
+        if (!checkIndex(index)) {
+            throw new NotExistStorageException(fullName);
         }
-        throw new NotExistStorageException(uuid);
+        return index;
+    }
+
+    private Object getNotExistedIndex(String fullName) {
+        Object index = getIndex(fullName);
+        if (checkIndex(index)) {
+            throw new ExistStorageException(fullName);
+        }
+        return index;
     }
 }

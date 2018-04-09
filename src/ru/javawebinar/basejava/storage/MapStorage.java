@@ -2,44 +2,44 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MapStorage extends AbstractStorage {
 
-    protected Map<String, Resume> mapStorage = new HashMap<>();
+    private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
-    protected Object getIndex(String uuid) {
-        return uuid;
+    protected String getIndex(String fullName) {
+        return fullName;
     }
 
     @Override
     protected boolean checkIndex(Object index) {
-        if (mapStorage.containsKey(index)) {
-            return true;
-        }
-        return false;
+        return mapStorage.containsKey(index);
     }
 
     @Override
     protected void doSave(Resume resume, Object index) {
-        mapStorage.put(resume.getUuid(), resume);
+        mapStorage.put(resume.getFullName(), resume);
     }
 
     @Override
     protected Resume doGet(Object index) {
-        return mapStorage.get((String) index);
+        return mapStorage.get(index);
     }
 
     @Override
     protected void doUpdate(Resume resume, Object index) {
-        mapStorage.put(resume.getUuid(), resume);
+        mapStorage.put(resume.getFullName(), resume);
     }
 
     @Override
     protected void doDelete(Object index) {
-        mapStorage.remove((String) index);
+        mapStorage.remove(index);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return mapStorage.values().toArray(new Resume[mapStorage.size()]);
+    public List<Resume> getAllSorted() {
+        return mapStorage.values().stream().sorted(Comparator.comparing(Resume::getFullName)).collect(Collectors.toList());
     }
 }

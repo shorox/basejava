@@ -3,25 +3,27 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
 
     protected List<Resume> listStorage = new ArrayList<>();
 
     @Override
-    protected Object getIndex(String uuid) {
+    protected Integer getIndex(String fullName) {
         for (int i = 0; i < listStorage.size(); i++) {
-            if (listStorage.get(i).getUuid().equals(uuid)) {
+            if (listStorage.get(i).getFullName().equals(fullName)) {
                 return i;
             }
         }
-        return -1;
+        return null;
     }
 
     @Override
     protected boolean checkIndex(Object index) {
-        return (int) index >= 0;
+        return index != null;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return listStorage.toArray(new Resume[listStorage.size()]);
+    public List<Resume> getAllSorted() {
+        return listStorage.stream().sorted(Comparator.comparing(Resume::getFullName)).collect(Collectors.toList());
     }
 }

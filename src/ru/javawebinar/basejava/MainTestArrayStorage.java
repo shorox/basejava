@@ -1,15 +1,15 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.ArrayStorage;
+import ru.javawebinar.basejava.storage.MapStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 public class MainTestArrayStorage {
 
-    static final Storage ARRAY_STORAGE = new ArrayStorage();
+   // static final Storage ARRAY_STORAGE = new ArrayStorage();
     //static final Storage ARRAY_STORAGE = new SortedArrayStorage();
     // static final Storage ARRAY_STORAGE = new ListStorage();
-    //static final Storage ARRAY_STORAGE = new MapStorage();
+    static final Storage ARRAY_STORAGE = new MapStorage();
 
     public static void main(String[] args) {
 
@@ -22,7 +22,7 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(resume2);
         ARRAY_STORAGE.save(resume3);
 
-        System.out.println("Get r1: " + ARRAY_STORAGE.get(resume1.getUuid()));
+        System.out.println("Get r1: " + ARRAY_STORAGE.get(resume1.getFullName()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
 //        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
@@ -30,7 +30,7 @@ public class MainTestArrayStorage {
         printAll();
         ARRAY_STORAGE.update(resume4);
         printAll();
-        ARRAY_STORAGE.delete(resume1.getUuid());
+        ARRAY_STORAGE.delete(resume1.getFullName());
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
@@ -40,7 +40,7 @@ public class MainTestArrayStorage {
 
     private static void printAll() {
         System.out.println("\nGet All");
-        for (Resume resume : ARRAY_STORAGE.getAll()) {
+        for (Resume resume : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(resume);
         }
     }
