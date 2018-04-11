@@ -25,9 +25,9 @@ public abstract class AbstractStorageTest {
     private static final String FULL_NAME2 = "name_2";
     private static final String FULL_NAME3 = "name_3";
 
-    private static Resume RESUME_1 = new Resume(UUID_1,FULL_NAME1);
-    private static Resume RESUME_2 = new Resume(UUID_2,FULL_NAME2);
-    private static Resume RESUME_3 = new Resume(UUID_3,FULL_NAME3);
+    private static Resume RESUME_1 = new Resume(UUID_1, FULL_NAME1);
+    private static Resume RESUME_2 = new Resume(UUID_2, FULL_NAME2);
+    private static Resume RESUME_3 = new Resume(UUID_3, FULL_NAME3);
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -43,7 +43,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void doSaveTest() {
-        Resume resumeSave = new Resume("uuid","name");
+        Resume resumeSave = new Resume("uuid", "name");
         storage.save(resumeSave);
         assertEquals(4, storage.size());
         assertTrue(storage.get("uuid") == resumeSave);
@@ -66,7 +66,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void doUpdateTest() {
-        Resume resumeUpdate = new Resume(UUID_1,FULL_NAME2);
+        Resume resumeUpdate = new Resume(UUID_1, FULL_NAME2);
         storage.update(resumeUpdate);
         assertTrue(storage.get(UUID_1).equals(resumeUpdate));
     }

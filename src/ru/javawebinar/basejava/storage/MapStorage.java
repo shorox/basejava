@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 public class MapStorage extends AbstractStorage {
 
-    protected Map<String, Resume> mapStorage = new HashMap<>();
+    private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     protected String getIndex(String uuid) {
