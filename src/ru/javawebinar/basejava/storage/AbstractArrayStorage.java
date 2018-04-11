@@ -4,9 +4,7 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
@@ -26,9 +24,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
+    protected Stream<Resume> getStream() {
+        return Arrays.stream(Arrays.copyOf(storage, size));
+    }
+
+    @Override
     protected void doSave(Resume resume, Object index) {
         if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Storage overflow", resume.getFullName());
+            throw new StorageException("Storage overflow", resume.getUuid());
         }
         subSave(resume, ((int) index));
         size++;
@@ -60,10 +63,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        return Arrays.stream(Arrays.copyOf(storage, size)).sorted(Comparator.comparing(Resume::getFullName)).collect(Collectors.toList());
     }
 }
