@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
 
     private Map<String, Resume> mapStorage = new HashMap<>();
 
@@ -16,7 +16,7 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkIndex(Object index) {
+    protected boolean checkIndex(Resume index) {
         return index != null;
     }
 
@@ -26,23 +26,23 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume resume, Object index) {
+    protected void doSave(Resume resume, Resume index) {
         mapStorage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume doGet(Object index) {
-        return (Resume) index;
+    protected Resume doGet(Resume index) {
+        return index;
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object index) {
+    protected void doUpdate(Resume resume, Resume index) {
         mapStorage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void doDelete(Object index) {
-        mapStorage.remove(((Resume) index).getUuid());
+    protected void doDelete(Resume index) {
+        mapStorage.remove((index).getUuid());
     }
 
     @Override

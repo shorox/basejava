@@ -8,7 +8,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -101,7 +100,6 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSortedTest() {
-        List<Resume> list = new ArrayList<>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
-        assertTrue(list.equals(storage.getAllSorted()));
+        assertTrue(new ArrayList<>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3)).equals(storage.getAllSorted()));
     }
 }

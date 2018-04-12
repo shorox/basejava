@@ -16,16 +16,16 @@ public class MainArray {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
-            System.out.print("Введите одну из команд - (list | save uuid | delete uuid | update uuid | get uuid | clear | exit): ");
+            System.out.print("Введите одну из команд - (list | save fullName | delete uuid | update uuid fullName | get uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (params.length < 1 || params.length > 2) {
+            if (params.length < 1 || params.length > 3) {
                 System.out.println("Неверная команда.");
                 continue;
             }
-            String uuid = null;
+            String param = null;
 
-            if (params.length == 2) {
-                uuid = params[1].intern();
+            if (params.length > 1) {
+                param = params[1].intern();
             }
 
             switch (params[0]) {
@@ -36,19 +36,19 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    ARRAY_STORAGE.save(new Resume(uuid));
+                    ARRAY_STORAGE.save(new Resume(param));
                     printAll();
                     break;
                 case "delete":
-                    ARRAY_STORAGE.delete(uuid);
+                    ARRAY_STORAGE.delete(param);
                     printAll();
                     break;
                 case "update":
-                    ARRAY_STORAGE.update(new Resume(uuid));
+                    ARRAY_STORAGE.update(new Resume(param, params[2]));
                     printAll();
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(uuid));
+                    System.out.println(ARRAY_STORAGE.get(param));
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();

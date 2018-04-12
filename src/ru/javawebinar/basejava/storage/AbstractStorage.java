@@ -10,34 +10,34 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
-    protected abstract Object getIndex(String uuid);
+    protected abstract SK getIndex(String uuid);
 
-    protected abstract boolean checkIndex(Object index);
+    protected abstract boolean checkIndex(SK index);
 
     protected abstract Stream<Resume> getStream();
 
-    protected abstract void doSave(Resume resume, Object index);
+    protected abstract void doSave(Resume resume, SK index);
 
-    protected abstract Resume doGet(Object index);
+    protected abstract Resume doGet(SK index);
 
-    protected abstract void doUpdate(Resume resume, Object index);
+    protected abstract void doUpdate(Resume resume, SK index);
 
-    protected abstract void doDelete(Object index);
+    protected abstract void doDelete(SK index);
 
     @Override
     public void save(Resume resume) {
         Objects.requireNonNull(resume, "Bad news, we received null for save!");
         Objects.requireNonNull(resume.getUuid(), "Bad news, we can't save null input!");
 
-        Object index = getNotExistedIndex(resume.getUuid());
+        SK index = getNotExistedIndex(resume.getUuid());
         doSave(resume, index);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object index = getExistedIndex(uuid);
+        SK index = getExistedIndex(uuid);
         return doGet(index);
     }
 
@@ -45,31 +45,31 @@ public abstract class AbstractStorage implements Storage {
     public void update(Resume resume) {
         Objects.requireNonNull(resume, "Bad news, we received null for update!");
 
-        Object index = getExistedIndex(resume.getUuid());
+        SK index = getExistedIndex(resume.getUuid());
         doUpdate(resume, index);
     }
 
     @Override
     public void delete(String uuid) {
-        Object index = getExistedIndex(uuid);
+        SK index = getExistedIndex(uuid);
         doDelete(index);
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return getStream().sorted(Comparator.comparing(Resume::getFullName)).collect(Collectors.toList());
+        return getStream().sorted(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid)).collect(Collectors.toList());
     }
 
-    private Object getExistedIndex(String uuid) {
-        Object index = getIndex(uuid);
+    private SK getExistedIndex(String uuid) {
+        SK index = getIndex(uuid);
         if (!checkIndex(index)) {
             throw new NotExistStorageException(uuid);
         }
         return index;
     }
 
-    private Object getNotExistedIndex(String uuid) {
-        Object index = getIndex(uuid);
+    private SK getNotExistedIndex(String uuid) {
+        SK index = getIndex(uuid);
         if (checkIndex(index)) {
             throw new ExistStorageException(uuid);
         }
