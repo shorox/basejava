@@ -1,7 +1,7 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.MapNameStorage;
+import ru.javawebinar.basejava.storage.MapResumeStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 import java.io.BufferedReader;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MainArray {
 
-    private final static Storage ARRAY_STORAGE = new MapNameStorage();
+    private final static Storage ARRAY_STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

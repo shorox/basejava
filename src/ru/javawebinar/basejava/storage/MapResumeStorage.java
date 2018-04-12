@@ -6,23 +6,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class MapNameStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
 
     private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     protected Resume getIndex(String uuid) {
-        for (Map.Entry<String, Resume> entry : mapStorage.entrySet()) {
-            if (entry.getKey().equals(uuid)) {
-                return entry.getValue();
-            }
-        }
-        return null;
+        return mapStorage.get(uuid);
     }
 
     @Override
     protected boolean checkIndex(Object index) {
-        return mapStorage.containsValue(index);
+        return index != null;
     }
 
     @Override
@@ -47,7 +42,7 @@ public class MapNameStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object index) {
-        mapStorage.values().remove(index);
+        mapStorage.remove(((Resume) index).getUuid());
     }
 
     @Override
