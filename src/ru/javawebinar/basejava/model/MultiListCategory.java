@@ -2,9 +2,9 @@ package ru.javawebinar.basejava.model;
 
 import java.util.ArrayList;
 
-public class EducationListCategory extends ListCategory<Education> {
+public class MultiListCategory extends ListCategory<MultiList> {
 
-    public EducationListCategory() {
+    public MultiListCategory() {
         super(new ArrayList<>());
     }
 }

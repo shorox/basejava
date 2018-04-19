@@ -10,71 +10,81 @@ public class MainResume {
 
         Resume resume = new Resume("uuid1", "Ирина Грыцюк");
 
-        resume.setContacts(new ContactsMap());
-        resume.setObjective(new StringCategory("Junior Java Developer"));
-        resume.setPersonal(new StringCategory("Аналитический склад ума"));
-        resume.setAchievement(new StringListCategory());
-        resume.setQualifications(new StringListCategory());
-        resume.setExperience(new EducationListCategory());
-        resume.setEducation(new EducationListCategory());
+        resume.getContacts().put(ContactsType.PHONE, "+3801235467");
+        resume.getContacts().put(ContactsType.SKYPE, "gagarina6794");
 
-        resume.getContacts().create("skype", "gagarina6794");
-        resume.getContacts().create("телефон", "+3801235478");
-        resume.getAchievement().save("Пока только бухгалтерские)");
-        resume.getAchievement().save("и спортивные)");
-        resume.getQualifications().save("Java junior");
-        resume.getQualifications().save("Bookkeeper");
-        resume.getExperience().save(new Education("link1", "time period1", "position1", "duties1"));
-        resume.getExperience().save(new Education("link2", "time period2", "position2", "duties2"));
-        resume.getEducation().save(new Education("link2", "time period2", "course2"));
-        resume.getEducation().save(new Education("link3", "time period3", "course3"));
+        resume.getSections().put(SectionType.OBJECTIVE, new StringCategory("Junior Java Developer"));
+        resume.getSections().put(SectionType.PERSONAL, new StringCategory("Аналитический склад ума"));
+        resume.getSections().put(SectionType.ACHIEVEMENT, new StringListCategory());
+        resume.getSections().put(SectionType.QUALIFICATIONS, new StringListCategory());
+        resume.getSections().put(SectionType.EXPERIENCE, new MultiListCategory());
+        resume.getSections().put(SectionType.EDUCATION, new MultiListCategory());
+
+        ((ListCategory) resume.getSections().get(SectionType.ACHIEVEMENT)).save("Пока только бухгалтерские)");
+        ((ListCategory) resume.getSections().get(SectionType.ACHIEVEMENT)).save("и спортивные)");
+        ((ListCategory) resume.getSections().get(SectionType.QUALIFICATIONS)).save("Java junior");
+        ((ListCategory) resume.getSections().get(SectionType.QUALIFICATIONS)).save("Bookkeeper");
+        ((ListCategory) resume.getSections().get(SectionType.EXPERIENCE)).
+                save(new MultiList("link1", "time period1", "time period2", "position1", "duties1"));
+        ((ListCategory) resume.getSections().get(SectionType.EXPERIENCE)).
+                save(new MultiList("link2", "time period1", "time period2", "position2", "duties2"));
+        ((ListCategory) resume.getSections().get(SectionType.EDUCATION)).
+                save(new MultiList("link2", "time period1", "time period2", "course2"));
+        ((ListCategory) resume.getSections().get(SectionType.EDUCATION)).
+                save(new MultiList("link3", "time period1", "time period2", "course3"));
 
         System.out.println(resume.getFullName());
         System.out.println("-------------------------");
-        resume.getContacts().getContacts().forEach((k, v) -> System.out.println("* " + k + " " + v));
-        System.out.println("-------------------------");
-        System.out.println(SectionType.OBJECTIVE.getTitle());
-        System.out.println("- " + resume.getObjective().getCategory());
-        System.out.println("-------------------------");
-        System.out.println(SectionType.PERSONAL.getTitle());
-        System.out.println("- " + resume.getPersonal().getCategory());
-        System.out.println("-------------------------");
+        resume.getContacts().forEach((k, v) -> System.out.println("* " + k.getTitle() + " " + v));
+        resume.getSections().forEach((k, v) -> {
+            if (k.getTitle().equals(SectionType.PERSONAL.getTitle()) || k.getTitle().equals(SectionType.OBJECTIVE.getTitle())) {
+                System.out.println("________________________________");
+                System.out.println("* " + k.getTitle() + "\n" + v.getCategory());
+            }
+        });
+        System.out.println("________________________________");
         System.out.println(SectionType.ACHIEVEMENT.getTitle());
-        resume.getAchievement().getList().forEach(x -> System.out.println("- " + x));
-        System.out.println("-------------------------");
+        ((StringListCategory) resume.getSections().get(SectionType.ACHIEVEMENT))
+                .getCategory().forEach(x -> System.out.println("- " + x));
+        System.out.println("________________________________");
         System.out.println(SectionType.QUALIFICATIONS.getTitle());
-        resume.getQualifications().getList().forEach(x -> System.out.println("- " + x));
-        System.out.println("-------------------------");
+        ((StringListCategory) resume.getSections().get(SectionType.QUALIFICATIONS))
+                .getCategory().forEach(x -> System.out.println("- " + x));
+        System.out.println("________________________________");
         System.out.println(SectionType.EXPERIENCE.getTitle());
-        List<Education> listExp = resume.getExperience().getList();
+        List<MultiList> listExp = (List<MultiList>) resume.getSections().get(SectionType.EXPERIENCE).getCategory();
         listExp.forEach(x ->
-                System.out.println("- " + x.getLink() + " " + x.getPeriod() + " " + x.getPosition() + " " + x.getDuties()));
-        System.out.println("-------------------------");
+                System.out.println("- " + x.getLink() + " " + x.getPeriodBegin() + " " + x.getPeriodEnd() + " " +
+                        x.getPosition() + " " + x.getDuties()));
+        System.out.println("________________________________");
         System.out.println(SectionType.EDUCATION.getTitle());
-        List<Education> listEdu = resume.getEducation().getList();
+        List<MultiList> listEdu = (List<MultiList>) resume.getSections().get(SectionType.EDUCATION).getCategory();
         listEdu.forEach(x ->
-                System.out.println("- " + x.getLink() + " " + x.getPeriod() + " " + x.getPosition()));
+                System.out.println("- " + x.getLink() + " " + x.getPeriodBegin() + " " + x.getPeriodEnd() + " " +
+                        x.getPosition()));
 
         System.out.println();
         System.out.println("Промежуточные результаты_________________________");
-        resume.getContacts().delete("телефон");
-        resume.getContacts().update("skype", "Ірина");
-        resume.getContacts().create("адрес", "Украина, г.Ровно");
-        System.out.println(resume.getContacts().read("skype"));//Ірина
+        resume.getContacts().remove(ContactsType.PHONE);
+        resume.getContacts().put(ContactsType.SKYPE, "Ірина");
+        resume.getContacts().put(ContactsType.ADDRESS, "Украина, г.Ровно");
+        System.out.println(resume.getContacts().get(ContactsType.SKYPE));//Ірина
 
-        System.out.println(resume.getPersonal().getCategory());//Аналитический склад ума
-        resume.setPersonal(new StringCategory("Аналитический склад ума, исполнительность"));
+        resume.getSections().put(SectionType.PERSONAL, new StringCategory("Аналитический склад ума, исполнительность"));
 
-        resume.getAchievement().delete(0);
-        resume.getAchievement().update("DB MySQLite", 0);
-        resume.getAchievement().save("SWING");
-        System.out.println(resume.getAchievement().read(1));//SWING
+        ((StringListCategory) resume.getSections().get(SectionType.ACHIEVEMENT)).delete(0);
+        ((StringListCategory) resume.getSections().get(SectionType.ACHIEVEMENT)).update("DB MySQLite", 0);
+        ((StringListCategory) resume.getSections().get(SectionType.ACHIEVEMENT)).save("SWING");
+        System.out.println(((StringListCategory) resume.getSections().get(SectionType.ACHIEVEMENT)).read(1));//SWING
 
-        resume.getExperience().delete(1);
-        resume.getExperience().update(new Education("newLink", "time period2", "position2", "duties2"), 0);
-        resume.getExperience().save(new Education("новый линк", "промежуток времени", "позиция", "обязаности"));
-        Education educ = (Education) resume.getExperience().read(0);
-        System.out.println(educ.getLink() + " " + educ.getPeriod() + " " + educ.getPosition() + " " + educ.getDuties());//newLink
+        ((ListCategory) resume.getSections().get(SectionType.EXPERIENCE)).delete(1);
+        ((ListCategory) resume.getSections().get(SectionType.EXPERIENCE)).update(new MultiList("newLink",
+                "time periodB", "time periodE", "position2", "duties2"), 0);
+        ((ListCategory) resume.getSections().get(SectionType.EXPERIENCE)).save(new MultiList("новый линк",
+                "промежуток времени1", "промежуток времени2", "позиция", "обязаности"));
+        MultiList educ = (MultiList) ((ListCategory) resume.getSections().get(SectionType.EXPERIENCE)).read(0);
+        System.out.println(educ.getLink() + " " + educ.getPeriodBegin() + " " +
+                educ.getPeriodEnd() + " " + educ.getPosition() + " " + educ.getDuties());//newLink
 
         System.out.println("_____________________________________________________________________");
         System.out.println("После редактирования");
@@ -82,28 +92,32 @@ public class MainResume {
 
         System.out.println(resume.getFullName());
         System.out.println("-------------------------");
-        resume.getContacts().getContacts().forEach((k, v) -> System.out.println("* " + k + " " + v));
-        System.out.println("-------------------------");
-        System.out.println(SectionType.OBJECTIVE.getTitle());
-        System.out.println("- " + resume.getObjective().getCategory());
-        System.out.println("-------------------------");
-        System.out.println(SectionType.PERSONAL.getTitle());
-        System.out.println("- " + resume.getPersonal().getCategory());
-        System.out.println("-------------------------");
+        resume.getContacts().forEach((k, v) -> System.out.println("* " + k.getTitle() + " " + v));
+        resume.getSections().forEach((k, v) -> {
+            if (k.getTitle().equals(SectionType.PERSONAL.getTitle()) || k.getTitle().equals(SectionType.OBJECTIVE.getTitle())) {
+                System.out.println("________________________________");
+                System.out.println("* " + k.getTitle() + "\n" + v.getCategory());
+            }
+        });
+        System.out.println("________________________________");
         System.out.println(SectionType.ACHIEVEMENT.getTitle());
-        resume.getAchievement().getList().forEach(x -> System.out.println("- " + x));
-        System.out.println("-------------------------");
+        ((StringListCategory) resume.getSections().get(SectionType.ACHIEVEMENT))
+                .getCategory().forEach(x -> System.out.println("- " + x));
+        System.out.println("________________________________");
         System.out.println(SectionType.QUALIFICATIONS.getTitle());
-        resume.getQualifications().getList().forEach(x -> System.out.println("- " + x));
-        System.out.println("-------------------------");
+        ((StringListCategory) resume.getSections().get(SectionType.QUALIFICATIONS))
+                .getCategory().forEach(x -> System.out.println("- " + x));
+        System.out.println("________________________________");
         System.out.println(SectionType.EXPERIENCE.getTitle());
-        List<Education> listExp1 = resume.getExperience().getList();
-        listExp1.forEach(x ->
-                System.out.println("- " + x.getLink() + " " + x.getPeriod() + " " + x.getPosition() + " " + x.getDuties()));
-        System.out.println("-------------------------");
+        List<MultiList> listExp2 = (List<MultiList>) resume.getSections().get(SectionType.EXPERIENCE).getCategory();
+        listExp2.forEach(x ->
+                System.out.println("- " + x.getLink() + " " + x.getPeriodBegin() + " " + x.getPeriodEnd() + " " +
+                        x.getPosition() + " " + x.getDuties()));
+        System.out.println("________________________________");
         System.out.println(SectionType.EDUCATION.getTitle());
-        List<Education> listEdu1 = resume.getEducation().getList();
-        listEdu1.forEach(x ->
-                System.out.println("- " + x.getLink() + " " + x.getPeriod() + " " + x.getPosition()));
+        List<MultiList> listEdu2 = (List<MultiList>) resume.getSections().get(SectionType.EDUCATION).getCategory();
+        listEdu2.forEach(x ->
+                System.out.println("- " + x.getLink() + " " + x.getPeriodBegin() + " " + x.getPeriodEnd() + " " +
+                        x.getPosition()));
     }
 }

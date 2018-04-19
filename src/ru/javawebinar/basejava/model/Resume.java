@@ -1,19 +1,14 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Resume implements Comparable<Resume> {
 
     private final String uuid;
     private String fullName;
-    private ContactsMap contacts;
-    private StringCategory personal;
-    private StringCategory objective;
-    private ListCategory achievement;
-    private ListCategory qualifications;
-    private ListCategory experience;
-    private ListCategory education;
+
+    private EnumMap<ContactsType, String> contacts = new EnumMap<>(ContactsType.class);
+    private EnumMap<SectionType, Category> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
@@ -34,60 +29,12 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    public ContactsMap getContacts() {
+    public EnumMap<SectionType, Category> getSections() {
+        return sections;
+    }
+
+    public EnumMap<ContactsType, String> getContacts() {
         return contacts;
-    }
-
-    public void setContacts(ContactsMap contacts) {
-        this.contacts = contacts;
-    }
-
-    public StringCategory getPersonal() {
-        return personal;
-    }
-
-    public void setPersonal(StringCategory personal) {
-        this.personal = personal;
-    }
-
-    public StringCategory getObjective() {
-        return objective;
-    }
-
-    public void setObjective(StringCategory objective) {
-        this.objective = objective;
-    }
-
-    public ListCategory getAchievement() {
-        return achievement;
-    }
-
-    public void setAchievement(StringListCategory achievement) {
-        this.achievement = achievement;
-    }
-
-    public ListCategory getQualifications() {
-        return qualifications;
-    }
-
-    public void setQualifications(StringListCategory qualifications) {
-        this.qualifications = qualifications;
-    }
-
-    public ListCategory getExperience() {
-        return experience;
-    }
-
-    public void setExperience(EducationListCategory experience) {
-        this.experience = experience;
-    }
-
-    public ListCategory getEducation() {
-        return education;
-    }
-
-    public void setEducation(EducationListCategory education) {
-        this.education = education;
     }
 
     @Override

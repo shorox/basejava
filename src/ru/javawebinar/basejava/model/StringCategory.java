@@ -1,14 +1,8 @@
 package ru.javawebinar.basejava.model;
 
-public class StringCategory {
-
-    private String category;
+public class StringCategory extends Category<String>{
 
     public StringCategory(String category) {
-        this.category = category;
-    }
-
-    public String getCategory() {
-        return category;
+        super(category);
     }
 }
