@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.model;
 
 import java.util.List;
 
-public abstract class ListCategory<T> extends Category<List> {
+public abstract class ListCategory<T> extends Category<List<T>> {
 
     public ListCategory(List<T> category) {
         super(category);
