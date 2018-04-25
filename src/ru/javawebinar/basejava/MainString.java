@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava;
 
+
 public class MainString {
 
     public static void main(String[] args) {
@@ -18,3 +19,4 @@ public class MainString {
         System.out.println(str1 == str2);
     }
 }
+
