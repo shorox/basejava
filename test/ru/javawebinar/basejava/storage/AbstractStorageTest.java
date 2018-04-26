@@ -8,8 +8,10 @@ import ru.javawebinar.basejava.model.*;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -31,92 +33,54 @@ public abstract class AbstractStorageTest {
     private static Resume RESUME_3 = new Resume(UUID_3, FULL_NAME3);
 
     {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LL/yyyy");
+        Organizations expOrg1 = new Organizations(
+                new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),
+                new ArrayList<>(Arrays.asList((new Positions(LocalDate.of(2006, Month.APRIL, 10),
+                                LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1")),
+                        (new Positions(LocalDate.of(2007, Month.APRIL, 10),
+                                LocalDate.of(2008, Month.SEPTEMBER, 05), "position1", "duties1")))));
+        Organizations expOrg2 = new Organizations(
+                new Link("Работа 2", "http://12345"),
+                new ArrayList<>(Arrays.asList(new Positions(LocalDate.of(2006, Month.APRIL, 10),
+                        LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1"))));
+        List<Organizations> listExp = new ArrayList<>(Arrays.asList(expOrg1, expOrg2));
+        Organizations eduOrg1 = new Organizations(
+                new Link("Учеба 1", "http://javaops.ru/1"),
+                new ArrayList<>(Arrays.asList(new Positions(LocalDate.of(2003, Month.APRIL, 10),
+                        LocalDate.of(2008, Month.SEPTEMBER, 05), "студент"))));
+        Organizations eduOrg2 = new Organizations(
+                new Link("Учеба 2", "http://javaops.ru/2"),
+                new ArrayList<>(Arrays.asList(new Positions(LocalDate.of(2016, Month.APRIL, 10),
+                        LocalDate.of(2018, Month.SEPTEMBER, 05), "студент заочно"))));
+        List<Organizations> listEdu = new ArrayList<>(Arrays.asList(eduOrg1, eduOrg2));
+
         RESUME_1.getContacts().put(ContactsType.PHONE, "+3801235467");
         RESUME_1.getContacts().put(ContactsType.SKYPE, "gagarina6794");
         RESUME_1.getSections().put(SectionType.OBJECTIVE, new StringCategory("Junior Java Developer"));
         RESUME_1.getSections().put(SectionType.PERSONAL, new StringCategory("Аналитический склад ума"));
-        RESUME_1.getSections().put(SectionType.ACHIEVEMENT, new StringListCategory());
-        RESUME_1.getSections().put(SectionType.QUALIFICATIONS, new StringListCategory());
-        RESUME_1.getSections().put(SectionType.EXPERIENCE, new OrganizationsMapCategory());
-        RESUME_1.getSections().put(SectionType.EDUCATION, new OrganizationsMapCategory());
-        ((ListCategory) RESUME_1.getSections().get(SectionType.ACHIEVEMENT)).save("Пока только бухгалтерские)");
-        ((ListCategory) RESUME_1.getSections().get(SectionType.ACHIEVEMENT)).save("и спортивные)");
-        ((ListCategory) RESUME_1.getSections().get(SectionType.QUALIFICATIONS)).save("Java junior");
-        ((ListCategory) RESUME_1.getSections().get(SectionType.QUALIFICATIONS)).save("Bookkeeper");
-        ((OrganizationsMapCategory) RESUME_1.getSections().get(SectionType.EXPERIENCE)).
-                save(new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2006, Month.APRIL, 10),
-                                LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1"))));
-        ((OrganizationsMapCategory) RESUME_1.getSections().get(SectionType.EXPERIENCE)).
-                save(new Link("Работа 2", "http://javaops.ru/reg/basejava/2"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2007, Month.APRIL, 10),
-                                LocalDate.of(2008, Month.SEPTEMBER, 05), "position1", "duties1"))));
-        ((OrganizationsMapCategory) RESUME_1.getSections().get(SectionType.EDUCATION)).
-                save(new Link("Учеба 1", "http://javaops.ru/1"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2003, Month.APRIL, 10),
-                                LocalDate.of(2008, Month.SEPTEMBER, 05), "студент"))));
-        ((OrganizationsMapCategory) RESUME_1.getSections().get(SectionType.EDUCATION)).
-                save(new Link("Учеба 2", "http://javaops.ru/2"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2016, Month.APRIL, 10),
-                                LocalDate.of(2018, Month.SEPTEMBER, 05), "студент заочно"))));
+        RESUME_1.getSections().put(SectionType.ACHIEVEMENT, new ListCategory(new ArrayList<>(Arrays.asList("Пока только бухгалтерские", "и спортивные)"))));
+        RESUME_1.getSections().put(SectionType.QUALIFICATIONS, new ListCategory(new ArrayList<>(Arrays.asList("Java junior", "Bookkeeper"))));
+        RESUME_1.getSections().put(SectionType.EXPERIENCE, new OrganizationsCategory(listExp));
+        RESUME_1.getSections().put(SectionType.EDUCATION, new OrganizationsCategory(listEdu));
 
         RESUME_2.getContacts().put(ContactsType.PHONE, "+3801235467");
         RESUME_2.getContacts().put(ContactsType.SKYPE, "gagarina6794");
         RESUME_2.getSections().put(SectionType.OBJECTIVE, new StringCategory("Junior Java Developer"));
         RESUME_2.getSections().put(SectionType.PERSONAL, new StringCategory("Аналитический склад ума"));
-        RESUME_2.getSections().put(SectionType.ACHIEVEMENT, new StringListCategory());
-        RESUME_2.getSections().put(SectionType.QUALIFICATIONS, new StringListCategory());
-        RESUME_2.getSections().put(SectionType.EXPERIENCE, new OrganizationsMapCategory());
-        RESUME_2.getSections().put(SectionType.EDUCATION, new OrganizationsMapCategory());
-        ((ListCategory) RESUME_2.getSections().get(SectionType.ACHIEVEMENT)).save("Пока только бухгалтерские)");
-        ((ListCategory) RESUME_2.getSections().get(SectionType.ACHIEVEMENT)).save("и спортивные)");
-        ((ListCategory) RESUME_2.getSections().get(SectionType.QUALIFICATIONS)).save("Java junior");
-        ((ListCategory) RESUME_2.getSections().get(SectionType.QUALIFICATIONS)).save("Bookkeeper");
-        ((OrganizationsMapCategory) RESUME_2.getSections().get(SectionType.EXPERIENCE)).
-                save(new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2006, Month.APRIL, 10),
-                                LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1"))));
-        ((OrganizationsMapCategory) RESUME_2.getSections().get(SectionType.EXPERIENCE)).
-                save(new Link("Работа 2", "http://javaops.ru/reg/basejava/2"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2007, Month.APRIL, 10),
-                                LocalDate.of(2008, Month.SEPTEMBER, 05), "position1", "duties1"))));
-        ((OrganizationsMapCategory) RESUME_2.getSections().get(SectionType.EDUCATION)).
-                save(new Link("Учеба 1", "http://javaops.ru/1"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2003, Month.APRIL, 10),
-                                LocalDate.of(2008, Month.SEPTEMBER, 05), "студент"))));
-        ((OrganizationsMapCategory) RESUME_2.getSections().get(SectionType.EDUCATION)).
-                save(new Link("Учеба 2", "http://javaops.ru/2"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2016, Month.APRIL, 10),
-                                LocalDate.of(2018, Month.SEPTEMBER, 05), "студент заочно"))));
+        RESUME_2.getSections().put(SectionType.ACHIEVEMENT, new ListCategory(new ArrayList<>(Arrays.asList("Пока только бухгалтерские", "и спортивные)"))));
+        RESUME_2.getSections().put(SectionType.QUALIFICATIONS, new ListCategory(new ArrayList<>(Arrays.asList("Java junior", "Bookkeeper"))));
+        RESUME_2.getSections().put(SectionType.EXPERIENCE, new OrganizationsCategory(listExp));
+        RESUME_2.getSections().put(SectionType.EDUCATION, new OrganizationsCategory(listEdu));
 
         RESUME_3.getContacts().put(ContactsType.PHONE, "+3801235467");
         RESUME_3.getContacts().put(ContactsType.SKYPE, "gagarina6794");
         RESUME_3.getSections().put(SectionType.OBJECTIVE, new StringCategory("Junior Java Developer"));
         RESUME_3.getSections().put(SectionType.PERSONAL, new StringCategory("Аналитический склад ума"));
-        RESUME_3.getSections().put(SectionType.ACHIEVEMENT, new StringListCategory());
-        RESUME_3.getSections().put(SectionType.QUALIFICATIONS, new StringListCategory());
-        RESUME_3.getSections().put(SectionType.EXPERIENCE, new OrganizationsMapCategory());
-        RESUME_3.getSections().put(SectionType.EDUCATION, new OrganizationsMapCategory());
-        ((ListCategory) RESUME_3.getSections().get(SectionType.ACHIEVEMENT)).save("Пока только бухгалтерские)");
-        ((ListCategory) RESUME_3.getSections().get(SectionType.ACHIEVEMENT)).save("и спортивные)");
-        ((ListCategory) RESUME_3.getSections().get(SectionType.QUALIFICATIONS)).save("Java junior");
-        ((ListCategory) RESUME_3.getSections().get(SectionType.QUALIFICATIONS)).save("Bookkeeper");
-        ((OrganizationsMapCategory) RESUME_3.getSections().get(SectionType.EXPERIENCE)).
-                save(new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2006, Month.APRIL, 10),
-                                LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1"))));
-        ((OrganizationsMapCategory) RESUME_3.getSections().get(SectionType.EXPERIENCE)).
-                save(new Link("Работа 2", "http://javaops.ru/reg/basejava/2"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2007, Month.APRIL, 10),
-                                LocalDate.of(2008, Month.SEPTEMBER, 05), "position1", "duties1"))));
-        ((OrganizationsMapCategory) RESUME_3.getSections().get(SectionType.EDUCATION)).
-                save(new Link("Учеба 1", "http://javaops.ru/1"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2003, Month.APRIL, 10),
-                                LocalDate.of(2008, Month.SEPTEMBER, 05), "студент"))));
-        ((OrganizationsMapCategory) RESUME_3.getSections().get(SectionType.EDUCATION)).
-                save(new Link("Учеба 2", "http://javaops.ru/2"),
-                        new ArrayList<>(Arrays.asList(new Organizations(LocalDate.of(2016, Month.APRIL, 10),
-                                LocalDate.of(2018, Month.SEPTEMBER, 05), "студент заочно"))));
+        RESUME_3.getSections().put(SectionType.ACHIEVEMENT, new ListCategory(new ArrayList<>(Arrays.asList("Пока только бухгалтерские", "и спортивные)"))));
+        RESUME_3.getSections().put(SectionType.QUALIFICATIONS, new ListCategory(new ArrayList<>(Arrays.asList("Java junior", "Bookkeeper"))));
+        RESUME_3.getSections().put(SectionType.EXPERIENCE, new OrganizationsCategory(listExp));
+        RESUME_3.getSections().put(SectionType.EDUCATION, new OrganizationsCategory(listEdu));
     }
 
     public AbstractStorageTest(Storage storage) {

@@ -27,7 +27,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws IOException;
 
     @Override
     protected File getIndex(String uuid) {
@@ -42,8 +42,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Stream<Resume> getStream() {
         List<Resume> list = new ArrayList<>();
-        for (File f : directory.listFiles()) {
-            list.add(doRead(f));
+        if (directory.listFiles() != null) {
+            for (File f : directory.listFiles()) {
+                try {
+                    list.add(doRead(f));
+                } catch (IOException e) {
+                    throw new StorageException("IO error", f.getName(), e);
+                }
+            }
         }
         return list.stream();
     }
@@ -60,7 +66,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        return doRead(file);
+        try {
+            return doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
     @Override
@@ -74,18 +84,28 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doDelete(File file) {
-        file.delete();
+       try {
+           file.delete();
+       }catch (Exception e){
+           throw new StorageException("Delete error", file.getName(), e);
+       }
+
     }
 
     @Override
     public int size() {
-        return directory.listFiles().length;
+        if (directory.listFiles() != null) {
+            return directory.listFiles().length;
+        }
+        return 0;
     }
 
     @Override
     public void clear() {
-        for (File f : directory.listFiles()) {
-            f.delete();
+        if (directory.listFiles() != null) {
+            for (File f : directory.listFiles()) {
+                doDelete(f);
+            }
         }
     }
 }

@@ -47,12 +47,9 @@ public class MainFile {
                     searchFile(file);
             }
             for (File file : files) {
-                if (file.isFile()) {
-                    System.out.print("Файл ");
-                    System.out.print("\u001B[34m" + file.getName() + "\u001B[0m");
-                    System.out.println(" найден в " + "\u001B[35m" + file.getCanonicalPath() + "\u001B[0m");
+                    System.out.println("\u001B[34m" + file.getName() + "\u001B[0m");
                 }
             }
         }
     }
-}
+
