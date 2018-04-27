@@ -15,26 +15,26 @@ public class MainResume {
 
         Resume resume = new Resume("uuid1", "Ирина Грыцюк");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LL/yyyy");
-        Organizations expOrg1 = new Organizations(
+        Organization expOrg1 = new Organization(
                 new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),
-                new ArrayList<>(Arrays.asList((new Positions(LocalDate.of(2006, Month.APRIL, 10),
+                new ArrayList<>(Arrays.asList((new Position(LocalDate.of(2006, Month.APRIL, 10),
                                 LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1")),
-                        (new Positions(LocalDate.of(2007, Month.APRIL, 10),
+                        (new Position(LocalDate.of(2007, Month.APRIL, 10),
                                 LocalDate.of(2008, Month.SEPTEMBER, 05), "position1", "duties1")))));
-        Organizations expOrg2 = new Organizations(
+        Organization expOrg2 = new Organization(
                 new Link("Работа 2", "http://12345"),
-                new ArrayList<>(Arrays.asList(new Positions(LocalDate.of(2006, Month.APRIL, 10),
+                new ArrayList<>(Arrays.asList(new Position(LocalDate.of(2006, Month.APRIL, 10),
                         LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1"))));
-        List<Organizations> listExp = new ArrayList<>(Arrays.asList(expOrg1, expOrg2));
-        Organizations eduOrg1 = new Organizations(
+        List<Organization> listExp = new ArrayList<>(Arrays.asList(expOrg1, expOrg2));
+        Organization eduOrg1 = new Organization(
                 new Link("Учеба 1", "http://javaops.ru/1"),
-                new ArrayList<>(Arrays.asList(new Positions(LocalDate.of(2003, Month.APRIL, 10),
+                new ArrayList<>(Arrays.asList(new Position(LocalDate.of(2003, Month.APRIL, 10),
                         LocalDate.of(2008, Month.SEPTEMBER, 05), "студент"))));
-        Organizations eduOrg2 = new Organizations(
+        Organization eduOrg2 = new Organization(
                 new Link("Учеба 2", "http://javaops.ru/2"),
-                new ArrayList<>(Arrays.asList(new Positions(LocalDate.of(2016, Month.APRIL, 10),
+                new ArrayList<>(Arrays.asList(new Position(LocalDate.of(2016, Month.APRIL, 10),
                         LocalDate.of(2018, Month.SEPTEMBER, 05), "студент заочно"))));
-        List<Organizations> listEdu = new ArrayList<>(Arrays.asList(eduOrg1, eduOrg2));
+        List<Organization> listEdu = new ArrayList<>(Arrays.asList(eduOrg1, eduOrg2));
 
         resume.getContacts().put(ContactsType.PHONE, "+3801235467");
         resume.getContacts().put(ContactsType.SKYPE, "gagarina6794");

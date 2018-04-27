@@ -3,14 +3,14 @@ package ru.javawebinar.basejava.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Positions {
+public class Position {
 
     private final LocalDate periodBegin;
     private final LocalDate periodEnd;
     private final String position;
     private final String duties;
 
-    public Positions(LocalDate periodBegin, LocalDate periodEnd, String position, String duties) {
+    public Position(LocalDate periodBegin, LocalDate periodEnd, String position, String duties) {
         Objects.requireNonNull(periodBegin, "periodBegin must not be null");
         Objects.requireNonNull(periodEnd, "periodEnd must not be null");
         Objects.requireNonNull(position, "position must not be null");
@@ -21,13 +21,13 @@ public class Positions {
         this.duties = duties;
     }
 
-    public Positions(LocalDate periodBegin, LocalDate periodEnd, String position) {
+    public Position(LocalDate periodBegin, LocalDate periodEnd, String position) {
         this(periodBegin, periodEnd, position, null);
     }
 
     @Override
     public String toString() {
-        return "Positions{" +
+        return "Position{" +
                 ", periodBegin=" + periodBegin +
                 ", periodEnd=" + periodEnd +
                 ", position='" + position + '\'' +
@@ -39,11 +39,11 @@ public class Positions {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Positions positions = (Positions) o;
-        return Objects.equals(periodBegin, positions.periodBegin) &&
-                Objects.equals(periodEnd, positions.periodEnd) &&
-                Objects.equals(position, positions.position) &&
-                duties != null ? duties.equals(positions.duties) : positions.duties == null;
+        Position position = (Position) o;
+        return Objects.equals(periodBegin, position.periodBegin) &&
+                Objects.equals(periodEnd, position.periodEnd) &&
+                Objects.equals(this.position, position.position) &&
+                duties != null ? duties.equals(position.duties) : position.duties == null;
     }
 
     @Override

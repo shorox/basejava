@@ -3,21 +3,21 @@ package ru.javawebinar.basejava.model;
 import java.util.List;
 import java.util.Objects;
 
-public class Organizations {
+public class Organization {
 
     Link link;
-    List<Positions> list;
+    List<Position> listPositions;
 
-    public Organizations(Link link, List<Positions> list) {
+    public Organization(Link link, List<Position> listPositions) {
         this.link = link;
-        this.list = list;
+        this.listPositions = listPositions;
     }
 
     @Override
     public String toString() {
-        return "Organizations{" +
+        return "Organization{" +
                 "link=" + link +
-                ", list=" + list +
+                ", listPositions=" + listPositions +
                 '}';
     }
 
@@ -25,21 +25,21 @@ public class Organizations {
         return link;
     }
 
-    public List<Positions> getList() {
-        return list;
+    public List<Position> getList() {
+        return listPositions;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Organizations that = (Organizations) o;
+        Organization that = (Organization) o;
         return Objects.equals(link, that.link) &&
-                Objects.equals(list, that.list);
+                Objects.equals(listPositions, that.listPositions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(link, list);
+        return Objects.hash(link, listPositions);
     }
 }

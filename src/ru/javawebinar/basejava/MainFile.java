@@ -47,9 +47,11 @@ public class MainFile {
                     searchFile(file);
             }
             for (File file : files) {
+                if (file.isFile()) {
                     System.out.println("\u001B[34m" + file.getName() + "\u001B[0m");
                 }
             }
         }
     }
+}
 
