@@ -36,23 +36,23 @@ public abstract class AbstractStorageTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LL/yyyy");
         Organization expOrg1 = new Organization(
                 new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),
-                new ArrayList<>(Arrays.asList((new Position(LocalDate.of(2006, Month.APRIL, 10),
+                new ArrayList<>(Arrays.asList((new Organization.Position(LocalDate.of(2006, Month.APRIL, 10),
                                 LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1")),
-                        (new Position(LocalDate.of(2007, Month.APRIL, 10),
+                        (new Organization.Position(LocalDate.of(2007, Month.APRIL, 10),
                                 LocalDate.of(2008, Month.SEPTEMBER, 05), "position1", "duties1")))));
         Organization expOrg2 = new Organization(
                 new Link("Работа 2", "http://12345"),
-                new ArrayList<>(Arrays.asList(new Position(LocalDate.of(2006, Month.APRIL, 10),
+                new ArrayList<>(Arrays.asList(new Organization.Position(LocalDate.of(2006, Month.APRIL, 10),
                         LocalDate.of(2009, Month.SEPTEMBER, 05), "position1", "duties1"))));
         List<Organization> listExp = new ArrayList<>(Arrays.asList(expOrg1, expOrg2));
         Organization eduOrg1 = new Organization(
                 new Link("Учеба 1", "http://javaops.ru/1"),
-                new ArrayList<>(Arrays.asList(new Position(LocalDate.of(2003, Month.APRIL, 10),
-                        LocalDate.of(2008, Month.SEPTEMBER, 05), "студент"))));
+                new ArrayList<>(Arrays.asList(new Organization.Position(LocalDate.of(2003, Month.APRIL, 10),
+                        LocalDate.of(2008, Month.SEPTEMBER, 05), "студент",null))));
         Organization eduOrg2 = new Organization(
                 new Link("Учеба 2", "http://javaops.ru/2"),
-                new ArrayList<>(Arrays.asList(new Position(LocalDate.of(2016, Month.APRIL, 10),
-                        LocalDate.of(2018, Month.SEPTEMBER, 05), "студент заочно"))));
+                new ArrayList<>(Arrays.asList(new Organization.Position(LocalDate.of(2016, Month.APRIL, 10),
+                        LocalDate.of(2018, Month.SEPTEMBER, 05), "студент заочно",null))));
         List<Organization> listEdu = new ArrayList<>(Arrays.asList(eduOrg1, eduOrg2));
 
         RESUME_1.getContacts().put(ContactsType.PHONE, "+3801235467");

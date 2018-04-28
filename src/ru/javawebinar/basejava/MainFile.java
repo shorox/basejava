@@ -43,12 +43,11 @@ public class MainFile {
         if (dir.isDirectory()) {
             File[] files = dir.listFiles();
             for (File file : files) {
-                if (file.isDirectory())
+                if (file.isDirectory()) {
+                    System.out.println("Directory: " + "\u001B[35m" + file.getName() + "\u001B[0m");
                     searchFile(file);
-            }
-            for (File file : files) {
-                if (file.isFile()) {
-                    System.out.println("\u001B[34m" + file.getName() + "\u001B[0m");
+                } else {
+                    System.out.println("        - File: " + "\u001B[34m" + file.getName() + "\u001B[0m");
                 }
             }
         }

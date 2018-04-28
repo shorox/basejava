@@ -29,12 +29,18 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    public EnumMap<SectionType, Category> getSections() {
-        return sections;
-    }
+    public EnumMap<SectionType, Category> getSections() { return sections; }
 
     public EnumMap<ContactsType, String> getContacts() {
         return contacts;
+    }
+
+    public void addContact(ContactsType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public void addCategory(SectionType type, Category section) {
+        sections.put(type, section);
     }
 
     @Override

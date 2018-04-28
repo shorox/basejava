@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -41,23 +41,20 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Stream<Resume> getStream() {
-        List<Resume> list = new ArrayList<>();
         if (directory.listFiles() != null) {
-            for (File f : directory.listFiles()) {
-                list.add(doGet(f));
-            }
+            return Arrays.stream(directory.listFiles()).map(c -> doGet(c));
         }
-        return list.stream();
+        return (new ArrayList<Resume>()).stream();
     }
 
     @Override
     protected void doSave(Resume resume, File file) {
         try {
             file.createNewFile();
-            doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Couldn't create file " + file.getAbsolutePath(),file.getName(), e);
         }
+        doUpdate(resume,file);
     }
 
     @Override
@@ -65,7 +62,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             return doRead(file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("File read error", file.getName(), e);
         }
     }
 
@@ -74,29 +71,31 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Write file error", resume.getUuid(), e);
         }
     }
 
     @Override
     protected void doDelete(File file) {
         if (!file.delete()) {
-            throw new StorageException("Delete error", file.getName());
+            throw new StorageException("File delete error", file.getName());
         }
     }
 
     @Override
     public int size() {
-        if (directory.listFiles() != null) {
-            return directory.listFiles().length;
+        String[] files = directory.list();
+        if (files != null) {
+            return files.length;
         }
         return 0;
     }
 
     @Override
     public void clear() {
-        if (directory.listFiles() != null) {
-            for (File f : directory.listFiles()) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File f : files) {
                 doDelete(f);
             }
         }
