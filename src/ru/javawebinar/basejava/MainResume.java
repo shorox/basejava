@@ -48,23 +48,22 @@ public class MainResume {
         System.out.println(resume.getFullName());
         System.out.println("-------------------------");
         resume.getContacts().forEach((k, v) -> System.out.println("* " + k.getTitle() + " " + v));
-        resume.getSections().forEach((k, v) -> {
-            if (k.getTitle().equals(SectionType.PERSONAL.getTitle()) || k.getTitle().equals(SectionType.OBJECTIVE.getTitle())) {
-                System.out.println("________________________________");
-                System.out.println("* " + k.getTitle() + "\n" + v.getCategory());
-            }
-        });
         System.out.println("________________________________");
+        System.out.println("* " + SectionType.OBJECTIVE.getTitle() + "\n" + ((StringCategory)resume.getSections().get(SectionType.OBJECTIVE)).getContent());
+        System.out.println("________________________________");
+        System.out.println("* " + SectionType.PERSONAL.getTitle() + "\n" + ((StringCategory)resume.getSections().get(SectionType.PERSONAL)).getContent());
+        System.out.println("________________________________");
+
         System.out.println(SectionType.ACHIEVEMENT.getTitle());
         ((ListCategory) resume.getSections().get(SectionType.ACHIEVEMENT))
-                .getCategory().forEach(x -> System.out.println("- " + x));
+                .getItems().forEach(x -> System.out.println("- " + x));
         System.out.println("________________________________");
         System.out.println(SectionType.QUALIFICATIONS.getTitle());
         ((ListCategory) resume.getSections().get(SectionType.QUALIFICATIONS))
-                .getCategory().forEach(x -> System.out.println("- " + x));
+                .getItems().forEach(x -> System.out.println("- " + x));
         System.out.println("________________________________");
         System.out.println(SectionType.EXPERIENCE.getTitle());
-        ((OrganizationsCategory) resume.getSections().get(SectionType.EXPERIENCE)).getCategory().forEach(
+        ((OrganizationsCategory) resume.getSections().get(SectionType.EXPERIENCE)).getOrganizations().forEach(
                 x -> {
                     System.out.println(x.getHomePage().getName() + " " + x.getHomePage().getUrl());
                     x.getPositions().forEach(y ->
@@ -74,7 +73,7 @@ public class MainResume {
         );
         System.out.println("________________________________");
         System.out.println(SectionType.EDUCATION.getTitle());
-        ((OrganizationsCategory) resume.getSections().get(SectionType.EDUCATION)).getCategory().forEach(
+        ((OrganizationsCategory) resume.getSections().get(SectionType.EDUCATION)).getOrganizations().forEach(
                 x -> {
                     System.out.println(x.getHomePage().getName() + " " + x.getHomePage().getUrl());
                     x.getPositions().forEach(y ->

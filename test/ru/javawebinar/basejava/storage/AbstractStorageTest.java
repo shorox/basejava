@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +18,8 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 public abstract class AbstractStorageTest {
+
+    protected static final File STORAGE_DIR = new File("C:\\projects\\basejava\\storage");
 
     protected Storage storage;
 
@@ -100,7 +103,7 @@ public abstract class AbstractStorageTest {
         Resume resumeSave = new Resume("uuid", "name");
         storage.save(resumeSave);
         assertEquals(4, storage.size());
-        assertTrue(storage.get("uuid") == resumeSave);
+        assertTrue(storage.get("uuid").equals(resumeSave));
     }
 
     @Test(expected = ExistStorageException.class)
