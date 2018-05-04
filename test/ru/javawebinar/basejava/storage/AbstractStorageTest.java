@@ -36,7 +36,6 @@ public abstract class AbstractStorageTest {
     private static Resume RESUME_3 = new Resume(UUID_3, FULL_NAME3);
 
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LL/yyyy");
         Organization expOrg1 = new Organization(
                 new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),
                 new ArrayList<>(Arrays.asList((new Organization.Position(LocalDate.of(2006, Month.APRIL, 10),

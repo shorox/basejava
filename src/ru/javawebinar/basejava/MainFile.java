@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class MainFile {
                     System.out.println("Directory: " + "\u001B[35m" + file.getName() + "\u001B[0m");
                     searchFile(file);
                 } else {
-                    System.out.println("        - File: " + "\u001B[34m" + file.getName() + "\u001B[0m");
+                    System.out.println(" - File: " + "\u001B[34m" + file.getName() + "\u001B[0m");
                 }
             }
         }

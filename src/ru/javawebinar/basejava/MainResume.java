@@ -1,6 +1,9 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.storage.strategy.FileStrategy;
+import ru.javawebinar.basejava.storage.strategy.SerializationContext;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -78,8 +81,6 @@ public class MainResume {
                     System.out.println(x.getHomePage().getName() + " " + x.getHomePage().getUrl());
                     x.getPositions().forEach(y ->
                             System.out.println(y.getStartDate().format(formatter) + " " + y.getEndDate().format(formatter) + " " +
-                                    y.getTitle()));
-                }
-        );
+                                    y.getTitle())); });
     }
 }

@@ -3,6 +3,8 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.strategy.SerializationContext;
+import ru.javawebinar.basejava.storage.strategy.SerializationStrategy;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +15,8 @@ import java.util.stream.Stream;
 public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
+
+    protected SerializationContext context = new SerializationContext();
 
     protected abstract SK getIndex(String uuid);
 
