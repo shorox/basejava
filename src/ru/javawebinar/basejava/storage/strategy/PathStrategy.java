@@ -8,15 +8,15 @@ import java.io.*;
 public class PathStrategy implements SerializationStrategy {
 
     @Override
-    public void doWrite(Resume resume, Object fos) throws IOException {
-        try (ObjectOutputStream os = new ObjectOutputStream((FileOutputStream) fos)) {
-            os.writeObject(resume);
+    public void doWrite(Resume resume, OutputStream os) throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
+            oos.writeObject(resume);
         }
     }
 
     @Override
-    public Resume doRead(Object fis) throws IOException {
-        try (ObjectInputStream oi = new ObjectInputStream((FileInputStream) fis)) {
+    public Resume doRead(InputStream is) throws IOException {
+        try (ObjectInputStream oi = new ObjectInputStream(is)) {
             return (Resume) oi.readObject();
         } catch (ClassNotFoundException e) {
             throw new StorageException("Error read resume", null, e);

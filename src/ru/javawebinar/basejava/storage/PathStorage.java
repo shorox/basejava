@@ -2,13 +2,9 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.strategy.FileStrategy;
 import ru.javawebinar.basejava.storage.strategy.PathStrategy;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -17,27 +13,30 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
 
     private Path directory;
 
-    protected AbstractPathStorage(String dir) {
+    PathStorage(String dir) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
-        context.setStrategy(new PathStrategy());
+        setStrategy(new PathStrategy());
     }
 
     @Override
     protected Path getIndex(String uuid) {
-        return (new File(directory.toFile(), uuid)).toPath();
+        return new File(directory.toFile(), uuid).toPath();
     }
 
     @Override
     protected boolean checkIndex(Path path) {
-        return Files.exists(path, LinkOption.NOFOLLOW_LINKS);
+        if (path.toFile().isFile()) {
+            return Files.exists(path, LinkOption.NOFOLLOW_LINKS);
+        }
+        return false;
     }
 
     @Override
@@ -52,18 +51,13 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected void doSave(Resume resume, Path path) {
-        try {
-            Files.createDirectory(path);
-        } catch (IOException e) {
-            throw new StorageException("Couldn't create file ", path.getFileName().toString(), e);
-        }
         doUpdate(resume, path);
     }
 
     @Override
     protected Resume doGet(Path path) {
         try {
-            return context.getStrategy().doRead(new FileInputStream(path.toFile()));
+            return getStrategy().doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("FileStrategy read error", path.getFileName().toString(), e);
         }
@@ -72,7 +66,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            context.getStrategy().doWrite(resume, new FileOutputStream(path.toFile()));
+            getStrategy().doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("Write file error", resume.getUuid(), e);
         }

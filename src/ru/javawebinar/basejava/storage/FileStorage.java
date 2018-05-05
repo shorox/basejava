@@ -2,8 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.strategy.FileStrategy;
-import ru.javawebinar.basejava.storage.strategy.SerializationStrategy;
+import ru.javawebinar.basejava.storage.strategy.PathStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,11 +10,11 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
 
-    protected AbstractFileStorage(File directory) {
+    FileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -24,7 +23,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
-        context.setStrategy(new FileStrategy());
+        setStrategy(new PathStrategy());
     }
 
     @Override
@@ -40,7 +39,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Stream<Resume> getStream() {
         if (directory.listFiles() != null) {
-            return Arrays.stream(directory.listFiles()).map(c -> doGet(c));
+            return Arrays.stream(Objects.requireNonNull(directory.listFiles(), "directory is empty" + directory.getName()))
+                    .map(this::doGet);
         }
         return (new ArrayList<Resume>()).stream();
     }
@@ -50,15 +50,15 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new StorageException("Couldn't create file " + file.getAbsolutePath(),file.getName(), e);
+            throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
-        doUpdate(resume,file);
+        doUpdate(resume, file);
     }
 
     @Override
     protected Resume doGet(File file) {
         try {
-            return context.getStrategy().doRead(new BufferedInputStream(new FileInputStream(file)));
+            return getStrategy().doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("FileStrategy read error", file.getName(), e);
         }
@@ -67,7 +67,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            context.getStrategy().doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            getStrategy().doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Write file error", resume.getUuid(), e);
         }
@@ -91,7 +91,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
+        File[] files = Objects.requireNonNull(directory.listFiles(), "directory is empty" + directory.getName());
         if (files != null) {
             for (File file : files) {
                 doDelete(file);

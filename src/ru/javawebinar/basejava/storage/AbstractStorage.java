@@ -3,7 +3,6 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.strategy.SerializationContext;
 import ru.javawebinar.basejava.storage.strategy.SerializationStrategy;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    protected SerializationContext context = new SerializationContext();
+    SerializationStrategy strategy;
 
     protected abstract SK getIndex(String uuid);
 
@@ -31,6 +30,14 @@ public abstract class AbstractStorage<SK> implements Storage {
     protected abstract void doUpdate(Resume resume, SK index);
 
     protected abstract void doDelete(SK index);
+
+    public SerializationStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(SerializationStrategy strategy) {
+        this.strategy = strategy;
+    }
 
     @Override
     public void save(Resume resume) {

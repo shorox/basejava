@@ -4,12 +4,18 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashSet;
+
+import static java.lang.Integer.MAX_VALUE;
 
 public class MainFile {
 
     public static void main(String[] args) {
 
         String filePath = ".\\.gitignore";
+        Path pathSource = Paths.get("C:/projects/basejava/");
 
         File file = new File(filePath);
         try {
@@ -34,23 +40,9 @@ public class MainFile {
         }
 
         try {
-            searchFile(new File("C:/projects/basejava/"));
+            Files.walkFileTree(pathSource,new HashSet<>(), MAX_VALUE, new MyFileVisitor());
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void searchFile(File dir) throws IOException {
-        if (dir.isDirectory()) {
-            File[] files = dir.listFiles();
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    System.out.println("Directory: " + "\u001B[35m" + file.getName() + "\u001B[0m");
-                    searchFile(file);
-                } else {
-                    System.out.println(" - File: " + "\u001B[34m" + file.getName() + "\u001B[0m");
-                }
-            }
         }
     }
 }
