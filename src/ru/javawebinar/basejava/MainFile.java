@@ -54,11 +54,7 @@ public class MainFile {
 //        int level = 0;
 //        System.out.println(renderFolder(folder, level, new StringBuilder(), false));
 
-        try {
             searchFile(new File("C:/projects/basejava/"), "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private static StringBuilder renderFolder(File folder, int level, StringBuilder sb, boolean isLast) {
@@ -89,7 +85,7 @@ public class MainFile {
     }
 
     //Second solution
-    private static void searchFile(File dir, String add) throws IOException {
+    private static void searchFile(File dir, String add){
         if (dir.isDirectory()) {
             File[] files = dir.listFiles();
             for (File file : files) {
