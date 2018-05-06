@@ -44,13 +44,21 @@ public class MainFile {
 ////            e.printStackTrace();
 ////        }
 
-        File folder = new File((args.length >= 1 && args[0].length() > 0) ? args[0] : ".");
+        //First solution
 
-        if (!folder.isDirectory()) {
-            throw new IllegalArgumentException("Invalid directory: " + folder.getName());
+//        File folder = new File((args.length >= 1 && args[0].length() > 0) ? args[0] : ".");
+//
+//        if (!folder.isDirectory()) {
+//            throw new IllegalArgumentException("Invalid directory: " + folder.getName());
+//        }
+//        int level = 0;
+//        System.out.println(renderFolder(folder, level, new StringBuilder(), false));
+
+        try {
+            searchFile(new File("C:/projects/basejava/"), "");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        int level = 0;
-        System.out.println(renderFolder(folder, level, new StringBuilder(), false));
     }
 
     private static StringBuilder renderFolder(File folder, int level, StringBuilder sb, boolean isLast) {
@@ -79,4 +87,20 @@ public class MainFile {
         }
         return sb;
     }
+
+    //Second solution
+    private static void searchFile(File dir, String add) throws IOException {
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    System.out.println(add + " " + "* " + "\u001B[35m" + file.getName() + "\u001B[0m");
+                    searchFile(file, add + "  ");
+                } else {
+                    System.out.println(add + "- " + "\u001B[34m" + file.getName() + "\u001B[0m");
+                }
+            }
+        }
+    }
+
 }
