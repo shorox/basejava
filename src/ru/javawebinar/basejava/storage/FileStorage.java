@@ -38,11 +38,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected Stream<Resume> getStream() {
-        if (directory.listFiles() != null) {
-            return Arrays.stream(Objects.requireNonNull(directory.listFiles(), "directory is empty" + directory.getName()))
-                    .map(this::doGet);
-        }
-        return (new ArrayList<Resume>()).stream();
+        return Arrays.stream(noNullListFiles(directory.listFiles())).map(this::doGet);
     }
 
     @Override
@@ -91,11 +87,16 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = Objects.requireNonNull(directory.listFiles(), "directory is empty" + directory.getName());
-        if (files != null) {
-            for (File file : files) {
-                doDelete(file);
-            }
+        File[] files = noNullListFiles(directory.listFiles());
+        for (File file : files) {
+            doDelete(file);
         }
+    }
+
+    private File[] noNullListFiles(File[] files) {
+        if (files != null) {
+            return directory.listFiles();
+        }
+        throw new StorageException("Directory empty error", null);
     }
 }
