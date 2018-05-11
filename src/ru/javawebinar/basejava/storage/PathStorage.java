@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.strategy.PathStrategy;
+import ru.javawebinar.basejava.storage.strategy.SerializationStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -16,37 +17,32 @@ import java.util.stream.Stream;
 public class PathStorage extends AbstractStorage<Path> {
 
     private Path directory;
+    private SerializationStrategy serializationStrategy;
 
-    PathStorage(String dir) {
+    PathStorage(String dir, SerializationStrategy serializationStrategy) {
         directory = Paths.get(dir);
+
+        this.serializationStrategy = serializationStrategy;
+
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
-        setStrategy(new PathStrategy());
     }
 
     @Override
     protected Path getIndex(String uuid) {
-        return new File(directory.toFile(), uuid).toPath();
+        return directory.resolve(uuid);
     }
 
     @Override
     protected boolean checkIndex(Path path) {
-        if (path.toFile().isFile()) {
-            return Files.exists(path, LinkOption.NOFOLLOW_LINKS);
-        }
-        return false;
+        return Files.isRegularFile(path);
     }
 
     @Override
     protected Stream<Resume> getStream() {
-        try {
-            return Files.list(directory).map(this::doGet);
-        } catch (IOException e) {
-            System.out.println("Not such directory to get Stream" + e.getMessage());
-        }
-        return (new ArrayList<Resume>()).stream();
+        return getFilesList().map(this::doGet);
     }
 
     @Override
@@ -57,16 +53,16 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return getStrategy().doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
+            return serializationStrategy.doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
         } catch (IOException e) {
-            throw new StorageException("FileStrategy read error", path.getFileName().toString(), e);
+            throw new StorageException("FileStrategy read error", getFileName(path), e);
         }
     }
 
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            getStrategy().doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            serializationStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("Write file error", resume.getUuid(), e);
         }
@@ -77,26 +73,29 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("FileStrategy delete error", path.getFileName().toString());
+            throw new StorageException("FileStrategy delete error", getFileName(path),e);
         }
     }
 
     @Override
     public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return (int) getFilesList().count();
     }
 
     @Override
     public void clear() {
+        getFilesList().forEach(this::doDelete);
+    }
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
+    }
+
+    private Stream<Path> getFilesList() {
         try {
-            Files.list(directory).forEach(this::doDelete);
+            return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("PathStrategy delete error", null);
+            throw new StorageException("Directory read error", e);
         }
     }
 }

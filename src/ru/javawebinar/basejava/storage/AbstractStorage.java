@@ -15,8 +15,6 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    SerializationStrategy strategy;
-
     protected abstract SK getIndex(String uuid);
 
     protected abstract boolean checkIndex(SK index);
@@ -30,14 +28,6 @@ public abstract class AbstractStorage<SK> implements Storage {
     protected abstract void doUpdate(Resume resume, SK index);
 
     protected abstract void doDelete(SK index);
-
-    public SerializationStrategy getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(SerializationStrategy strategy) {
-        this.strategy = strategy;
-    }
 
     @Override
     public void save(Resume resume) {

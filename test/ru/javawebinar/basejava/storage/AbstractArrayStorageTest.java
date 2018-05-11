@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.strategy.JsonStrategy;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
@@ -22,5 +23,12 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
             Assert.fail();
         }
         storage.save(new Resume("name"));
+    }
+
+    public static class JsonStorageTest extends AbstractStorageTest {
+
+        public JsonStorageTest() {
+            super(new PathStorage(STORAGE_DIR.getAbsolutePath(), new JsonStrategy()));
+        }
     }
 }

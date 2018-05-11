@@ -92,11 +92,8 @@ public class MainFile {
                 if (file.isDirectory()) {
                     System.out.println(add + "* " + "\u001B[35m" + file.getName() + "\u001B[0m");
                     searchFile(file, add + "  ");
-                } else {
-                    System.out.println(add + "- " + "\u001B[34m" + file.getName() + "\u001B[0m");
                 }
             }
         }
     }
-
 }

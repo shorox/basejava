@@ -10,7 +10,7 @@ public enum ContactsType {
     GITHUB("GitHub"),
     STACKOVERFLOW("Stackoverflow");
 
-    private String title;
+    private final String title;
 
     ContactsType(String title) {
         this.title = title;
