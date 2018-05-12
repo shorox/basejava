@@ -45,51 +45,48 @@ public abstract class AbstractStorageTest {
         R1.addCategory(SectionType.PERSONAL, new StringCategory("Personal data"));
         R1.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment11", "Achivment12", "Achivment13"));
         R1.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
-//        R1.addCategory(SectionType.EXPERIENCE,
-//                new OrganizationsCategory(
-//                        new Organization("Organization11", null,
-//                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
-//        R1.addCategory(SectionType.EDUCATION,
-//                new OrganizationsCategory(
-//                        new Organization("Institute", "http://Organization11.ru",
-//                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-//                        new Organization("Organization12", "http://Organization212.ru")));
+        R1.addCategory(SectionType.EXPERIENCE,
+                new OrganizationsCategory(
+                        new Organization("Organization11", null,
+                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
+        R1.addCategory(SectionType.EDUCATION,
+                new OrganizationsCategory(
+                        new Organization("Institute", "http://Organization11.ru",
+                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
         R2.addContact(ContactsType.MAIL, "mail@ya.ru");
         R2.addContact(ContactsType.PHONE, "111");
         R2.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective2"));
         R2.addCategory(SectionType.PERSONAL, new StringCategory("Personal data2"));
         R2.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment112", "Achivment122", "Achivment132"));
         R2.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
-//        R2.addCategory(SectionType.EXPERIENCE,
-//                new OrganizationsCategory(
-//                        new Organization("Organization11", "http://Organization11.ru",
-//                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
-//        R2.addCategory(SectionType.EDUCATION,
-//                new OrganizationsCategory(
-//                        new Organization("Institute", "http://Organization121.ru",
-//                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-//                        new Organization("Organization12", "http://Organization12.ru")));
+        R2.addCategory(SectionType.EXPERIENCE,
+                new OrganizationsCategory(
+                        new Organization("Organization11", "http://Organization11.ru",
+                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
+        R2.addCategory(SectionType.EDUCATION,
+                new OrganizationsCategory(
+                        new Organization("Institute", "http://Organization121.ru",
+                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
         R3.addContact(ContactsType.MAIL, "mail13@ya.ru");
         R3.addContact(ContactsType.PHONE, "111113");
         R3.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective13"));
         R3.addCategory(SectionType.PERSONAL, new StringCategory("Personal data3"));
         R3.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment113", "Achivment123", "Achivment133"));
         R3.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
-//        R3.addCategory(SectionType.EXPERIENCE,
-//                new OrganizationsCategory(
-//                        new Organization("Organization11", "http://Organization11.ru",
-//                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
+        R3.addCategory(SectionType.EXPERIENCE,
+                new OrganizationsCategory(
+                        new Organization("Organization11", "http://Organization11.ru",
+                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
         R3.addCategory(SectionType.EDUCATION,
                 new OrganizationsCategory(
                         new Organization("Institute", "http://Organization11.ru",
                                 new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
-                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-                        new Organization("Organization12", "http://Organization12.ru")));
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
    }
 
     protected AbstractStorageTest(Storage storage) {
