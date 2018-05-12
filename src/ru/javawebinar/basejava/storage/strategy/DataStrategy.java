@@ -24,24 +24,25 @@ public class DataStrategy implements SerializationStrategy {
             Map<SectionType, Category> categories = resume.getSections();
             dos.writeInt(categories.size());
             for (Map.Entry<SectionType, Category> entry : categories.entrySet()) {
+                dos.writeUTF(entry.getKey().name());
                 switch (entry.getKey()) {
-                    case PERSONAL: case OBJECTIVE:
-                        dos.writeUTF(entry.getKey().name());
+                    case PERSONAL:
+                    case OBJECTIVE:
                         dos.writeUTF(((StringCategory) entry.getValue()).getContent());
                         break;
-                    case ACHIEVEMENT: case QUALIFICATIONS:
-                        dos.writeUTF(entry.getKey().name());
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         List<String> listA = ((ListCategory) entry.getValue()).getItems();
                         dos.writeInt(listA.size());
                         for (String listEch : listA) {
                             dos.writeUTF(listEch);
                         }
                         break;
-                    case EDUCATION: case EXPERIENCE:
-                        dos.writeUTF(entry.getKey().name());
+                    case EDUCATION:
+                    case EXPERIENCE:
                         List<Organization> listO = ((OrganizationsCategory) entry.getValue()).getOrganizations();
                         dos.writeInt(listO.size());
-                        writeOrganisations(dos, listO);
+                        writeOrganizations(dos, listO);
                         break;
                     default:
                         break;
@@ -64,21 +65,22 @@ public class DataStrategy implements SerializationStrategy {
             for (int i = 0; i < sizeCategories; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
-                    case PERSONAL: case OBJECTIVE:
+                    case PERSONAL:
+                    case OBJECTIVE:
                         resume.addCategory(sectionType, new StringCategory(dis.readUTF()));
                         break;
-                    case ACHIEVEMENT: case QUALIFICATIONS:
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         List<String> listA = new ArrayList<>();
                         int sizeA = dis.readInt();
                         for (int a = 0; a < sizeA; a++) {
-                            listA.add(dis.readUTF()); }
+                            listA.add(dis.readUTF());
+                        }
                         resume.addCategory(sectionType, new ListCategory(listA));
                         break;
-                    case EDUCATION: case EXPERIENCE:
-                        List<Organization> listO = new ArrayList<>();
-                        int sizeO = dis.readInt();
-                        readOrganizations(dis, listO, sizeO);
-                        resume.addCategory(sectionType, new OrganizationsCategory(listO));
+                    case EDUCATION:
+                    case EXPERIENCE:
+                        readOrganizations(dis, sectionType, resume);
                         break;
                     default:
                         break;
@@ -88,13 +90,13 @@ public class DataStrategy implements SerializationStrategy {
         }
     }
 
-    private void writeOrganisations(DataOutputStream dos, List<Organization> listO) throws IOException {
+    private void writeOrganizations(DataOutputStream dos, List<Organization> listO) throws IOException {
         for (Organization o : listO) {
             dos.writeUTF(o.getHomePage().getName());
             if (o.getHomePage().getUrl() != null) {
                 dos.writeUTF(o.getHomePage().getUrl());
             } else {
-                dos.writeUTF("0");
+                dos.writeUTF("");
             }
             List<Organization.Position> listOP = o.getPositions();
             dos.writeInt(listOP.size());
@@ -107,17 +109,19 @@ public class DataStrategy implements SerializationStrategy {
                 if (p.getDescription() != null) {
                     dos.writeUTF(p.getDescription());
                 } else {
-                    dos.writeUTF("0");
+                    dos.writeUTF("");
                 }
             }
         }
     }
 
-    private void readOrganizations(DataInputStream dis, List<Organization> listO, int sizeO) throws IOException {
+    private void readOrganizations(DataInputStream dis, SectionType sectionType, Resume resume) throws IOException {
+        List<Organization> listO = new ArrayList<>();
+        int sizeO = dis.readInt();
         for (int o = 0; o < sizeO; o++) {
             String name = dis.readUTF();
             String url = dis.readUTF();
-            if (url.equals("0")) {
+            if (url.equals("")) {
                 url = null;
             }
             List<Organization.Position> listOP = new ArrayList<>();
@@ -130,12 +134,13 @@ public class DataStrategy implements SerializationStrategy {
                 Month monthE = Month.valueOf(dis.readUTF());
                 String title = dis.readUTF();
                 String description = dis.readUTF();
-                if (description.equals("0")) {
+                if (description.equals("")) {
                     description = null;
                 }
                 listOP.add(new Organization.Position(startDate, monthB, endDate, monthE,
                         title, description));
             }
         }
+        resume.addCategory(sectionType, new OrganizationsCategory(listO));
     }
 }
