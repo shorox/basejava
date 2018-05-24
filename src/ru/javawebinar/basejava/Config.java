@@ -30,7 +30,15 @@ public class Config {
         return storageDir;
     }
 
-    public String getUrl(){return props.getProperty("db.url");}
-    public String getUser(){return props.getProperty("db.user");}
-    public String getPassword(){return props.getProperty("db.password");}
+    public String getUrl() {
+        return props.getProperty("db.url");
+    }
+
+    public String getUser() {
+        return props.getProperty("db.user");
+    }
+
+    public String getPassword() {
+        return props.getProperty("db.password");
+    }
 }
