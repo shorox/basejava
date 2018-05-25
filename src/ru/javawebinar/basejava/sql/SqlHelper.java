@@ -1,31 +1,31 @@
 package ru.javawebinar.basejava.sql;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
-import ru.javawebinar.basejava.model.Resume;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlHelper {
 
-    private StorageException stExc;
-    private ConnectionFactory connection;
-    private String sqlQuery;
+    private final ConnectionFactory connectionFactory;
 
-    public SqlHelper(StorageException stExc, ConnectionFactory connection, String sqlQuery) {
-        this.stExc = stExc;
-        this.connection = connection;
-        this.sqlQuery = sqlQuery;
+    public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
+        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
-    public Object execute(Helper helper) {
+    public Object execute(String uuid, String sqlQuery, Helper helper) {
         Object o;
-        try (Connection conn = connection.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
             o = helper.executePrepareStatement(ps);
         } catch (SQLException e) {
-            throw stExc;
+            if (e.getSQLState().equals("null")) {
+                throw new StorageException(e);
+            }
+            throw new ExistStorageException(uuid);
         }
         return o;
     }

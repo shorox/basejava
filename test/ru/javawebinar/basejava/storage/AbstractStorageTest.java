@@ -122,7 +122,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.get("dummy");
+        storage.update(new Resume("dummy"));
     }
 
     @Test
