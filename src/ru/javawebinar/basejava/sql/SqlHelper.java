@@ -3,17 +3,14 @@ package ru.javawebinar.basejava.sql;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SqlHelper {
 
     private final ConnectionFactory connectionFactory;
 
-    public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    public SqlHelper(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     public Object execute(String uuid, String sqlQuery, Helper helper) {
@@ -22,7 +19,7 @@ public class SqlHelper {
              PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
             o = helper.executePrepareStatement(ps);
         } catch (SQLException e) {
-            if (e.getSQLState().equals("null")) {
+            if (e.getSQLState().equals(uuid)) {
                 throw new StorageException(e);
             }
             throw new ExistStorageException(uuid);
