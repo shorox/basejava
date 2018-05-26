@@ -20,6 +20,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 public abstract class AbstractStorageTest {
+
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected Storage storage;

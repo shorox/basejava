@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
@@ -31,7 +30,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return (Resume) sqlHelper.execute(null, "SELECT * FROM resume r WHERE r.uuid =?", ps -> {
+        return sqlHelper.execute(null, "SELECT * FROM resume r WHERE r.uuid =?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -68,7 +67,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        return (int) sqlHelper.execute(null, "SELECT COUNT (*) FROM resume", ps -> {
+        return sqlHelper.execute(null, "SELECT COUNT (*) FROM resume", ps -> {
             ResultSet rs = ps.executeQuery();
             rs.next();
             return rs.getInt(1);
@@ -86,7 +85,7 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = new ArrayList<>();
-        return (List<Resume>) sqlHelper.execute(null, "SELECT * FROM resume ORDER BY uuid", ps -> {
+        return sqlHelper.execute(null, "SELECT * FROM resume ORDER BY uuid", ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Resume(rs.getString("uuid").trim(), rs.getString("full_name")));

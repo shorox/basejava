@@ -13,17 +13,15 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public Object execute(String uuid, String sqlQuery, Helper helper) {
-        Object o;
+    public <T> T execute(String uuid, String sqlQuery, Helper<T> helper) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
-            o = helper.executePrepareStatement(ps);
+            return helper.executePrepareStatement(ps);
         } catch (SQLException e) {
-            if (e.getSQLState().equals(uuid)) {
-                throw new StorageException(e);
+            if (e.getSQLState().equals("23505")) {
+                throw new ExistStorageException(uuid);
             }
-            throw new ExistStorageException(uuid);
+            throw new StorageException(e);
         }
-        return o;
     }
 }
