@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava;
 
-import java.util.Random;
-
 public class MainString {
 
     public static void main(String[] args) {

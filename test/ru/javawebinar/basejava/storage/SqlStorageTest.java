@@ -9,7 +9,7 @@ import ru.javawebinar.basejava.exception.StorageException;
 public class SqlStorageTest extends AbstractStorageTest {
 
     public SqlStorageTest() {
-        super(new SqlStorage(Config.get().getUrl(), Config.get().getUser(), Config.get().getPassword()));
+        super(Config.get().getStorage());
     }
 
     @Test(expected = StorageException.class)

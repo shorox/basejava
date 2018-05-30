@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -25,10 +26,10 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
 
     private static final Resume R1;
     private static final Resume R2;
@@ -41,8 +42,8 @@ public abstract class AbstractStorageTest {
         R3 = new Resume(UUID_3, "Name3");
         R4 = new Resume(UUID_4, "Name4");
 
-//        R1.addContact(ContactsType.MAIL, "mail1@ya.ru");
-//        R1.addContact(ContactsType.PHONE, "11111");
+        R1.addContact(ContactsType.MAIL, "mail1@ya.ru");
+        R1.addContact(ContactsType.PHONE, "11111");
 //        R1.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective1"));
 //        R1.addCategory(SectionType.PERSONAL, new StringCategory("Personal data"));
 //        R1.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment11", "Achivment12", "Achivment13"));
@@ -57,8 +58,8 @@ public abstract class AbstractStorageTest {
 //                        new Organization("Institute", "http://Organization11.ru",
 //                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
 //                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
-//        R2.addContact(ContactsType.MAIL, "mail@ya.ru");
-//        R2.addContact(ContactsType.PHONE, "111");
+        R2.addContact(ContactsType.MAIL, "mail@ya.ru");
+        R2.addContact(ContactsType.PHONE, "111");
 //        R2.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective2"));
 //        R2.addCategory(SectionType.PERSONAL, new StringCategory("Personal data2"));
 //        R2.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment112", "Achivment122", "Achivment132"));
@@ -73,8 +74,8 @@ public abstract class AbstractStorageTest {
 //                        new Organization("Institute", "http://Organization121.ru",
 //                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
 //                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
-//        R3.addContact(ContactsType.MAIL, "mail13@ya.ru");
-//        R3.addContact(ContactsType.PHONE, "111113");
+        R3.addContact(ContactsType.MAIL, "mail13@ya.ru");
+        R3.addContact(ContactsType.PHONE, "111113");
 //        R3.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective13"));
 //        R3.addCategory(SectionType.PERSONAL, new StringCategory("Personal data3"));
 //        R3.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment113", "Achivment123", "Achivment133"));
