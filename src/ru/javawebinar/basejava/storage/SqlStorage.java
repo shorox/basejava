@@ -7,8 +7,10 @@ import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.sql.DriverManager.*;
 
@@ -50,8 +52,10 @@ public class SqlStorage implements Storage {
                 Resume resume = new Resume(uuid, rs.getString("full_name"));
                 do {
                     String value = rs.getString("value");
-                    ContactsType type = ContactsType.valueOf(rs.getString("type"));
-                    resume.addContact(type, value);
+                    if (value != null) {
+                        ContactsType type = ContactsType.valueOf(rs.getString("type"));
+                        resume.addContact(type, value);
+                    }
                 } while (rs.next());
                 return resume;
             }
@@ -63,11 +67,13 @@ public class SqlStorage implements Storage {
         sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
                 ps.setString(1, resume.getFullName());
-                doDelete(ps, 2, resume.getUuid());
+                ps.setString(2, resume.getUuid());
+                int delete = ps.executeUpdate();
+                if (delete == 0) {
+                    throw new NotExistStorageException(resume.getUuid());
+                }
             }
-            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
-                doDelete(ps, 1, resume.getUuid());
-            }
+            doDelete(resume.getUuid(), "DELETE FROM contact WHERE resume_uuid = ?", conn);
             doInsert(resume, conn);
             return null;
         });
@@ -76,10 +82,8 @@ public class SqlStorage implements Storage {
     @Override
     public void delete(String uuid) {
         sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM resume WHERE uuid = ?")) {
-                doDelete(ps, 1, uuid);
-                return null;
-            }
+            doDelete(uuid, "DELETE FROM resume WHERE uuid = ?", conn);
+            return null;
         });
     }
 
@@ -106,28 +110,28 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>();
+        Map<String,Resume> map = new HashMap<>();
         return sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name,uuid")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+                   String uuid = rs.getString("uuid");
+                    map.put(uuid,new Resume(uuid, rs.getString("full_name")));
                 }
             }
             try (PreparedStatement psContact = conn.prepareStatement("SELECT * FROM contact")) {
                 ResultSet rsContact = psContact.executeQuery();
                 while (rsContact.next()) {
-                    for (Resume r : list) {
-                        if (r.getUuid().equals(rsContact.getString("resume_uuid"))) {
-                            r.addContact(ContactsType.valueOf(rsContact.getString("type")),
+                    for (Map.Entry<String,Resume> e : map.entrySet())
+                        if (e.getKey().equals(rsContact.getString("resume_uuid"))) {
+                            e.getValue().addContact(ContactsType.valueOf(rsContact.getString("type")),
                                     rsContact.getString("value"));
                         }
                     }
                 }
-                return list;
-            }
+                return  map.values().stream().sorted().collect(Collectors.toList());
         });
-    }
+}
 
     private void doInsert(Resume resume, Connection conn) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
@@ -141,11 +145,13 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void doDelete(PreparedStatement ps, int i, String uuid) throws SQLException {
-        ps.setString(i, uuid);
-        int delete = ps.executeUpdate();
-        if (delete == 0) {
-            throw new NotExistStorageException(uuid);
+    private void doDelete(String uuid, String query, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, uuid);
+            int delete = ps.executeUpdate();
+            if (delete == 0) {
+                throw new NotExistStorageException(uuid);
+            }
         }
     }
 }

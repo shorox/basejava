@@ -90,8 +90,6 @@ public abstract class AbstractStorageTest {
 //                        new Organization("Institute", "http://Organization11.ru",
 //                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
 //                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
-        R4.addContact(ContactsType.MAIL, "mail444@ya.ru");
-        R4.addContact(ContactsType.PHONE, "444444");
     }
 
     protected AbstractStorageTest(Storage storage) {
