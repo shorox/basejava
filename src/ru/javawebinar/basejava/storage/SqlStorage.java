@@ -6,7 +6,6 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,28 +109,26 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Map<String,Resume> map = new HashMap<>();
+        Map<String, Resume> map = new HashMap<>();
         return sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name,uuid")) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                   String uuid = rs.getString("uuid");
-                    map.put(uuid,new Resume(uuid, rs.getString("full_name")));
+                    String uuid = rs.getString("uuid");
+                    map.put(uuid, new Resume(uuid, rs.getString("full_name")));
                 }
             }
             try (PreparedStatement psContact = conn.prepareStatement("SELECT * FROM contact")) {
                 ResultSet rsContact = psContact.executeQuery();
                 while (rsContact.next()) {
-                    for (Map.Entry<String,Resume> e : map.entrySet())
-                        if (e.getKey().equals(rsContact.getString("resume_uuid"))) {
-                            e.getValue().addContact(ContactsType.valueOf(rsContact.getString("type")),
-                                    rsContact.getString("value"));
-                        }
-                    }
+                    String uuid = rsContact.getString("resume_uuid");
+                    map.get(uuid).addContact(ContactsType.valueOf(rsContact.getString("type")),
+                            rsContact.getString("value"));
                 }
-                return  map.values().stream().sorted().collect(Collectors.toList());
+            }
+            return map.values().stream().sorted().collect(Collectors.toList());
         });
-}
+    }
 
     private void doInsert(Resume resume, Connection conn) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
