@@ -44,8 +44,8 @@ public abstract class AbstractStorageTest {
 
         R1.addContact(ContactsType.MAIL, "mail111@ya.ru");
         R1.addContact(ContactsType.PHONE, "11111");
-//        R1.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective1"));
-//        R1.addCategory(SectionType.PERSONAL, new StringCategory("Personal data"));
+        R1.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective1"));
+        R1.addCategory(SectionType.PERSONAL, new StringCategory("Personal data"));
 //        R1.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment11", "Achivment12", "Achivment13"));
 //        R1.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
 //        R1.addCategory(SectionType.EXPERIENCE,
@@ -60,8 +60,8 @@ public abstract class AbstractStorageTest {
 //                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
         R2.addContact(ContactsType.MAIL, "mail2222@ya.ru");
         R2.addContact(ContactsType.PHONE, "22222");
-//        R2.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective2"));
-//        R2.addCategory(SectionType.PERSONAL, new StringCategory("Personal data2"));
+        R2.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective2"));
+        R2.addCategory(SectionType.PERSONAL, new StringCategory("Personal data2"));
 //        R2.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment112", "Achivment122", "Achivment132"));
 //        R2.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
 //        R2.addCategory(SectionType.EXPERIENCE,
@@ -76,8 +76,8 @@ public abstract class AbstractStorageTest {
 //                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
         R3.addContact(ContactsType.MAIL, "mail333@ya.ru");
         R3.addContact(ContactsType.PHONE, "33333333");
-//        R3.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective13"));
-//        R3.addCategory(SectionType.PERSONAL, new StringCategory("Personal data3"));
+        R3.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective13"));
+        R3.addCategory(SectionType.PERSONAL, new StringCategory("Personal data3"));
 //        R3.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment113", "Achivment123", "Achivment133"));
 //        R3.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
 //        R3.addCategory(SectionType.EXPERIENCE,

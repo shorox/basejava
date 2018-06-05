@@ -3,6 +3,8 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.ContactsType;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionType;
+import ru.javawebinar.basejava.model.StringCategory;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
@@ -37,9 +39,10 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return sqlHelper.execute("SELECT * FROM resume r " +
-                "LEFT JOIN contact c      " +
-                " ON r.uuid = c.resume_uuid     " +
+        return sqlHelper.execute("" +
+                "SELECT * FROM resume r " +
+               "LEFT JOIN contact c  ON r.uuid = c.resume_uuid " +
+            //    "LEFT JOIN category ct  ON r.uuid = ct.cresume_uuid " +
                 "WHERE r.uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
@@ -49,15 +52,18 @@ public class SqlStorage implements Storage {
             Resume resume = new Resume(uuid, rs.getString("full_name"));
             do {
                 String value = rs.getString("value");
+                //String categoryValue = rs.getString("cvalue");
                 if (value != null) {
-                    ContactsType type = ContactsType.valueOf(rs.getString("type"));
-                    resume.addContact(type, value);
+                    resume.addContact(ContactsType.valueOf(rs.getString("type")), value);
                 }
+//                if (categoryValue != null) {
+//                    resume.addCategory(SectionType.valueOf(rs.getString("ctype")),
+//                            new StringCategory(categoryValue));
+//                }
             } while (rs.next());
             return resume;
         });
     }
-
 
     @Override
     public void update(Resume resume) {
@@ -71,6 +77,7 @@ public class SqlStorage implements Storage {
                 }
             }
             doDelete(resume.getUuid(), conn.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?"));
+            doDelete(resume.getUuid(), conn.prepareStatement("DELETE FROM category WHERE cresume_uuid = ?"));
             doInsert(resume, conn);
             return null;
         });
