@@ -42,7 +42,7 @@ public class SqlStorage implements Storage {
         return sqlHelper.execute("" +
                 "SELECT * FROM resume r " +
                "LEFT JOIN contact c  ON r.uuid = c.resume_uuid " +
-            //    "LEFT JOIN category ct  ON r.uuid = ct.cresume_uuid " +
+               "LEFT JOIN category ct  ON r.uuid = ct.cresume_uuid " +
                 "WHERE r.uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
@@ -52,14 +52,14 @@ public class SqlStorage implements Storage {
             Resume resume = new Resume(uuid, rs.getString("full_name"));
             do {
                 String value = rs.getString("value");
-                //String categoryValue = rs.getString("cvalue");
+                String categoryValue = rs.getString("cvalue");
                 if (value != null) {
                     resume.addContact(ContactsType.valueOf(rs.getString("type")), value);
                 }
-//                if (categoryValue != null) {
-//                    resume.addCategory(SectionType.valueOf(rs.getString("ctype")),
-//                            new StringCategory(categoryValue));
-//                }
+                if (categoryValue != null) {
+                    resume.addCategory(SectionType.valueOf(rs.getString("ctype")),
+                            new StringCategory(categoryValue));
+                }
             } while (rs.next());
             return resume;
         });
