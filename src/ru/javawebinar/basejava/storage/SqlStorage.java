@@ -1,13 +1,11 @@
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.ContactsType;
-import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.SectionType;
-import ru.javawebinar.basejava.model.StringCategory;
+import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +39,7 @@ public class SqlStorage implements Storage {
     public Resume get(String uuid) {
         return sqlHelper.execute("" +
                 "SELECT * FROM resume r " +
-               "LEFT JOIN contact c  ON r.uuid = c.resume_uuid " +
-               "LEFT JOIN category ct  ON r.uuid = ct.cresume_uuid " +
+                "LEFT JOIN contact c  ON r.uuid = c.resume_uuid " +
                 "WHERE r.uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
@@ -52,13 +49,9 @@ public class SqlStorage implements Storage {
             Resume resume = new Resume(uuid, rs.getString("full_name"));
             do {
                 String value = rs.getString("value");
-                String categoryValue = rs.getString("cvalue");
+                String category = rs.getString("type");
                 if (value != null) {
-                    resume.addContact(ContactsType.valueOf(rs.getString("type")), value);
-                }
-                if (categoryValue != null) {
-                    resume.addCategory(SectionType.valueOf(rs.getString("ctype")),
-                            new StringCategory(categoryValue));
+                    switchCategoryType(value, category, resume);
                 }
             } while (rs.next());
             return resume;
@@ -77,7 +70,6 @@ public class SqlStorage implements Storage {
                 }
             }
             doDelete(resume.getUuid(), conn.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?"));
-            doDelete(resume.getUuid(), conn.prepareStatement("DELETE FROM category WHERE cresume_uuid = ?"));
             doInsert(resume, conn);
             return null;
         });
@@ -123,12 +115,39 @@ public class SqlStorage implements Storage {
                 ResultSet rsContact = psContact.executeQuery();
                 while (rsContact.next()) {
                     String uuid = rsContact.getString("resume_uuid");
-                    map.get(uuid).addContact(ContactsType.valueOf(rsContact.getString("type")),
-                            rsContact.getString("value"));
+                    String value = rsContact.getString("value");
+                    String category = rsContact.getString("type");
+                    switchCategoryType(value, category, map.get(uuid));
                 }
             }
             return map.values().stream().sorted().collect(Collectors.toList());
         });
+    }
+
+    private void switchCategoryType(String value, String category, Resume resume) {
+        switch (category) {
+            case "OBJECTIVE":
+            case "PERSONAL":
+                resume.addCategory(SectionType.valueOf(category),
+                        new StringCategory(value));
+                break;
+            case "ACHIEVEMENT":
+            case "QUALIFICATIONS":
+                resume.addCategory(SectionType.valueOf(category),
+                        new ListCategory(Arrays.asList(value.split("/n"))));
+                break;
+            case "ADDRESS":
+            case "PHONE":
+            case "SKYPE":
+            case "MAIL":
+            case "LINKEDIN":
+            case "GITHUB":
+            case "STACKOVERFLOW":
+                resume.addContact(ContactsType.valueOf(category), value);
+                break;
+            default:
+                break;
+        }
     }
 
     private void doInsert(Resume resume, Connection conn) throws SQLException {
@@ -137,6 +156,16 @@ public class SqlStorage implements Storage {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
                 ps.setString(3, e.getValue());
+                ps.addBatch();
+            }
+            for (Map.Entry<SectionType, Category> e : resume.getSections().entrySet()) {
+                ps.setString(1, resume.getUuid());
+                ps.setString(2, e.getKey().name());
+                if (e.getValue() instanceof StringCategory) {
+                    ps.setString(3, ((StringCategory) e.getValue()).getContent());
+                } else if (e.getValue() instanceof ListCategory) {
+                    ps.setString(3, ((ListCategory) e.getValue()).getItems().stream().collect(Collectors.joining("/n")));
+                }
                 ps.addBatch();
             }
             ps.executeBatch();

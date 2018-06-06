@@ -46,8 +46,8 @@ public abstract class AbstractStorageTest {
         R1.addContact(ContactsType.PHONE, "11111");
         R1.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective1"));
         R1.addCategory(SectionType.PERSONAL, new StringCategory("Personal data"));
-//        R1.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment11", "Achivment12", "Achivment13"));
-//        R1.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
+        R1.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment11", "Achivment12", "Achivment13"));
+        R1.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
 //        R1.addCategory(SectionType.EXPERIENCE,
 //                new OrganizationsCategory(
 //                        new Organization("Organization11", null,
@@ -62,8 +62,8 @@ public abstract class AbstractStorageTest {
         R2.addContact(ContactsType.PHONE, "22222");
         R2.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective2"));
         R2.addCategory(SectionType.PERSONAL, new StringCategory("Personal data2"));
-//        R2.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment112", "Achivment122", "Achivment132"));
-//        R2.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
+        R2.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment112", "Achivment122", "Achivment132"));
+        R2.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
 //        R2.addCategory(SectionType.EXPERIENCE,
 //                new OrganizationsCategory(
 //                        new Organization("Organization11", "http://Organization11.ru",
@@ -78,8 +78,8 @@ public abstract class AbstractStorageTest {
         R3.addContact(ContactsType.PHONE, "33333333");
         R3.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective13"));
         R3.addCategory(SectionType.PERSONAL, new StringCategory("Personal data3"));
-//        R3.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment113", "Achivment123", "Achivment133"));
-//        R3.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
+        R3.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment113", "Achivment123", "Achivment133"));
+        R3.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
 //        R3.addCategory(SectionType.EXPERIENCE,
 //                new OrganizationsCategory(
 //                        new Organization("Organization11", "http://Organization11.ru",
@@ -90,6 +90,10 @@ public abstract class AbstractStorageTest {
 //                        new Organization("Institute", "http://Organization11.ru",
 //                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
 //                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet"))));
+        R4.addCategory(SectionType.OBJECTIVE, new StringCategory("Objective14"));
+        R4.addCategory(SectionType.PERSONAL, new StringCategory("Personal data4"));
+        R4.addCategory(SectionType.ACHIEVEMENT, new ListCategory("Achivment114", "Achivment124", "Achivment134"));
+        R4.addCategory(SectionType.QUALIFICATIONS, new ListCategory("Java", "SQL", "JavaScript"));
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -119,6 +123,8 @@ public abstract class AbstractStorageTest {
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
         newResume.addContact(ContactsType.STACKOVERFLOW, "STACKOVERFLOW");
+        newResume.addCategory(SectionType.PERSONAL, new StringCategory("Personal dataNEW"));
+        newResume.addCategory(SectionType.ACHIEVEMENT, new ListCategory("AchivmentNEW", "AchivmentNEW", "AchivmentNEW"));
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
