@@ -21,9 +21,4 @@ public class SqlStorageTest extends AbstractStorageTest {
             Assert.fail();
         }
     }
-
-    @Test
-    public void getCat() {
-        ((SqlStorage)storage).getCategory();
-    }
 }

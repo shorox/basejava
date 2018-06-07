@@ -40,6 +40,7 @@ public class SqlStorage implements Storage {
         return sqlHelper.execute("" +
                 "SELECT * FROM resume r " +
                 "LEFT JOIN contact c  ON r.uuid = c.resume_uuid " +
+                "LEFT JOIN category ct  ON r.uuid = ct.resume_uuid " +
                 "WHERE r.uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
@@ -49,9 +50,13 @@ public class SqlStorage implements Storage {
             Resume resume = new Resume(uuid, rs.getString("full_name"));
             do {
                 String value = rs.getString("value");
-                String category = rs.getString("type");
+                String ivalue = rs.getString("ivalue");
+                String icategory = rs.getString("itype");
                 if (value != null) {
-                    switchCategoryType(value, category, resume);
+                    resume.addContact(ContactsType.valueOf(rs.getString("type")), value);
+                }
+                if (ivalue != null) {
+                    switchCategoryType(ivalue, icategory, resume);
                 }
             } while (rs.next());
             return resume;
@@ -70,6 +75,7 @@ public class SqlStorage implements Storage {
                 }
             }
             doDelete(resume.getUuid(), conn.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?"));
+            doDelete(resume.getUuid(), conn.prepareStatement("DELETE FROM category WHERE resume_uuid = ?"));
             doInsert(resume, conn);
             return null;
         });
@@ -111,13 +117,21 @@ public class SqlStorage implements Storage {
                     map.put(uuid, new Resume(uuid, rs.getString("full_name")));
                 }
             }
+            try (PreparedStatement psContact = conn.prepareStatement("SELECT * FROM category")) {
+                ResultSet rsContact = psContact.executeQuery();
+                while (rsContact.next()) {
+                    String uuid = rsContact.getString("resume_uuid");
+                    String value = rsContact.getString("ivalue");
+                    String category = rsContact.getString("itype");
+                    switchCategoryType(value, category, map.get(uuid));
+                }
+            }
             try (PreparedStatement psContact = conn.prepareStatement("SELECT * FROM contact")) {
                 ResultSet rsContact = psContact.executeQuery();
                 while (rsContact.next()) {
                     String uuid = rsContact.getString("resume_uuid");
-                    String value = rsContact.getString("value");
-                    String category = rsContact.getString("type");
-                    switchCategoryType(value, category, map.get(uuid));
+                    map.get(uuid).addContact(ContactsType.valueOf(rsContact.getString("type")),
+                            rsContact.getString("value"));
                 }
             }
             return map.values().stream().sorted().collect(Collectors.toList());
@@ -136,15 +150,6 @@ public class SqlStorage implements Storage {
                 resume.addCategory(SectionType.valueOf(category),
                         new ListCategory(Arrays.asList(value.split("\n"))));
                 break;
-            case "ADDRESS":
-            case "PHONE":
-            case "SKYPE":
-            case "MAIL":
-            case "LINKEDIN":
-            case "GITHUB":
-            case "STACKOVERFLOW":
-                resume.addContact(ContactsType.valueOf(category), value);
-                break;
             default:
                 break;
         }
@@ -158,6 +163,9 @@ public class SqlStorage implements Storage {
                 ps.setString(3, e.getValue());
                 ps.addBatch();
             }
+            ps.executeBatch();
+        }
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO category (resume_uuid, itype, ivalue) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, Category> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
@@ -178,12 +186,5 @@ public class SqlStorage implements Storage {
         if (delete == 0) {
             throw new NotExistStorageException(uuid);
         }
-    }
-
-    public void getCategory() {
-        sqlHelper.execute("SELECT * FROM category", ps -> {
-            ps.execute();
-            return null;
-        });
     }
 }
