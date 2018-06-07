@@ -11,8 +11,8 @@ create table if not exists category
   id          serial   not null
     constraint category_pkey
     primary key,
-  iresume_uuid char(36) not null
-    constraint category_resume_uuid_fk
+  resume_uuid char(36) not null
+    constraint contact_resume_uuid_fk
     references resume
     on delete cascade,
   itype        varchar  not null,
@@ -20,7 +20,7 @@ create table if not exists category
 );
 
 create unique index if not exists category_uuid_type_index
-  on category (iresume_uuid, itype);
+  on category (resume_uuid, itype);
 
 create table if not exists contact
 (

@@ -134,7 +134,7 @@ public class SqlStorage implements Storage {
             case "ACHIEVEMENT":
             case "QUALIFICATIONS":
                 resume.addCategory(SectionType.valueOf(category),
-                        new ListCategory(Arrays.asList(value.split("/n"))));
+                        new ListCategory(Arrays.asList(value.split("\n"))));
                 break;
             case "ADDRESS":
             case "PHONE":
@@ -164,7 +164,7 @@ public class SqlStorage implements Storage {
                 if (e.getValue() instanceof StringCategory) {
                     ps.setString(3, ((StringCategory) e.getValue()).getContent());
                 } else if (e.getValue() instanceof ListCategory) {
-                    ps.setString(3, ((ListCategory) e.getValue()).getItems().stream().collect(Collectors.joining("/n")));
+                    ps.setString(3, ((ListCategory) e.getValue()).getItems().stream().collect(Collectors.joining("\n")));
                 }
                 ps.addBatch();
             }
@@ -178,5 +178,12 @@ public class SqlStorage implements Storage {
         if (delete == 0) {
             throw new NotExistStorageException(uuid);
         }
+    }
+
+    public void getCategory() {
+        sqlHelper.execute("SELECT * FROM category", ps -> {
+            ps.execute();
+            return null;
+        });
     }
 }
