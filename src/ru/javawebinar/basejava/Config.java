@@ -25,7 +25,7 @@ public class Config {
         try (InputStream is = new FileInputStream(PROPS)) {
             PROPERTIES.load(is);
             storageDir = new File(PROPERTIES.getProperty("storage.dir"));
-            storage = new SqlStorage(PROPERTIES.getProperty("db.url"),PROPERTIES.getProperty("db.user"),PROPERTIES.getProperty("db.password"));
+            storage = new SqlStorage(PROPERTIES.getProperty("db.url"), PROPERTIES.getProperty("db.user"), PROPERTIES.getProperty("db.password"));
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
         }
@@ -39,8 +39,12 @@ public class Config {
         return storage;
     }
 
-        public String getUrl() {
+    public String getUrl() {
         return PROPERTIES.getProperty("db.url");
+    }
+
+    public String getUser() {
+        return PROPERTIES.getProperty("db.user");
     }
 
     public String getPassword() {

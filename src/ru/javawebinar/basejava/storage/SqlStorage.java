@@ -5,10 +5,7 @@ import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.sql.DriverManager.*;
@@ -108,6 +105,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
+
         Map<String, Resume> map = new HashMap<>();
         return sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume")) {
@@ -134,7 +132,9 @@ public class SqlStorage implements Storage {
                             rsContact.getString("value"));
                 }
             }
-            return map.values().stream().sorted().collect(Collectors.toList());
+            List<Resume> list = new ArrayList<>(map.values());
+            list.sort(Resume::compareTo);
+            return list;
         });
     }
 
@@ -167,12 +167,20 @@ public class SqlStorage implements Storage {
         }
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO category (resume_uuid, itype, ivalue) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, Category> e : resume.getSections().entrySet()) {
+                String category = e.getKey().name();
                 ps.setString(1, resume.getUuid());
-                ps.setString(2, e.getKey().name());
-                if (e.getValue() instanceof StringCategory) {
-                    ps.setString(3, ((StringCategory) e.getValue()).getContent());
-                } else if (e.getValue() instanceof ListCategory) {
-                    ps.setString(3, ((ListCategory) e.getValue()).getItems().stream().collect(Collectors.joining("\n")));
+                ps.setString(2, category);
+                switch (category) {
+                    case "OBJECTIVE":
+                    case "PERSONAL":
+                        ps.setString(3, ((StringCategory) e.getValue()).getContent());
+                        break;
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
+                        ps.setString(3, ((ListCategory) e.getValue()).getItems().stream().collect(Collectors.joining("\n")));
+                        break;
+                    default:
+                        break;
                 }
                 ps.addBatch();
             }
