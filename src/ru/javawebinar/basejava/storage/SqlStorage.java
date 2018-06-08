@@ -177,7 +177,7 @@ public class SqlStorage implements Storage {
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
-                        ps.setString(3, ((ListCategory) e.getValue()).getItems().stream().collect(Collectors.joining("\n")));
+                        ps.setString(3,String.join("\n",((ListCategory)e.getValue()).getItems()));
                         break;
                     default:
                         break;
