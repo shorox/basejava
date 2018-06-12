@@ -12,13 +12,13 @@ public class SqlStorageTest extends AbstractStorageTest {
         super(Config.get().getStorage());
     }
 
-    @Test(expected = StorageException.class)
-    public void wrongCredential() {
-        storage = new SqlStorage(Config.get().getUrl(), "wrong", Config.get().getPassword());
-        try {
-            storage.clear();
-        } catch (ExistStorageException e) {
-            Assert.fail();
-        }
-    }
+//    @Test(expected = StorageException.class)
+//    public void wrongCredential() {
+//        storage = new SqlStorage(Config.get().getUrl(), "wrong", Config.get().getPassword());
+//        try {
+//            storage.clear();
+//        } catch (ExistStorageException e) {
+//            Assert.fail();
+//        }
+//    }
 }
