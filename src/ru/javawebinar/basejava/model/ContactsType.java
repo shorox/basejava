@@ -8,44 +8,44 @@ public enum ContactsType {
     SKYPE("Skype") {
         @Override
         public String toHtml0(String value) {
-            return getTitle() + ": " + toLink("skype:" + value, value);
+            return toLink("skype:" + value, value);
         }
     },
     MAIL("Почта") {
         @Override
         public String toHtml0(String value) {
-            return getTitle() + ": " + toLink("mailto:" + value, value);
+            return toLink("mailto:" + value, value);
         }
     },
     LINKEDIN("Профиль LinkedIn") {
         @Override
         public String toHtml0(String value) {
-            return toLink(value);
+            return toLink("mailto:" + value, value);
         }
     },
     GITHUB("Профиль GitHub") {
         @Override
         public String toHtml0(String value) {
-            return toLink(value);
+            return toLink("mailto:" + value, value);
         }
     },
     STACKOVERFLOW("Профиль Stackoverflow") {
         @Override
         public String toHtml0(String value) {
-            return toLink(value);
+            return toLink("mailto:" + value, value);
         }
     },
     HOME_PAGE("Домашняя страница") {
         @Override
         public String toHtml0(String value) {
-            return toLink(value);
+            return toLink("mailto:" + value, value);
         }
     };
 
     private final String title;
 
     ContactsType(String title) {
-        this.title = title;
+        this.title = title + ": ";
     }
 
     public String getTitle() {
@@ -53,7 +53,7 @@ public enum ContactsType {
     }
 
     protected String toHtml0(String value) {
-        return title + ": " + value;
+        return value;
     }
 
     public String toHtml(String value) {

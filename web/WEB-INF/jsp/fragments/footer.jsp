@@ -1,4 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<footer>
-    Проект <a href="http://javaops.ru/reg/basejava">Разработка Web приложения База данных резюме</a>
+<footer class="footer">
+    <p>Web-приложение "База данных резюме" курса <a href="http://javaops.ru/reg/basejava">BaseJava</a></p>
 </footer>
