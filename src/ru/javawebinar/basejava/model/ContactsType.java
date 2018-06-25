@@ -8,37 +8,35 @@ public enum ContactsType {
     SKYPE("Skype") {
         @Override
         public String toHtml0(String value) {
-            return toLink("skype:" + value, value);
+            return toLink(value,value);
         }
     },
     MAIL("Почта") {
         @Override
         public String toHtml0(String value) {
-            return toLink("mailto:" + value, value);
+            return value;
         }
     },
     LINKEDIN("Профиль LinkedIn") {
         @Override
         public String toHtml0(String value) {
-            return toLink("mailto:" + value, value);
-        }
+            return toLink(value);}
     },
     GITHUB("Профиль GitHub") {
         @Override
         public String toHtml0(String value) {
-            return toLink("mailto:" + value, value);
-        }
+            return toLink(value);}
     },
     STACKOVERFLOW("Профиль Stackoverflow") {
         @Override
         public String toHtml0(String value) {
-            return toLink("mailto:" + value, value);
+            return toLink(value);
         }
     },
     HOME_PAGE("Домашняя страница") {
         @Override
         public String toHtml0(String value) {
-            return toLink("mailto:" + value, value);
+            return toLink(value);
         }
     };
 
@@ -65,6 +63,6 @@ public enum ContactsType {
     }
 
     public static String toLink(String href, String title) {
-        return "<a href='" + href + "'>" + title + "</a>";
+        return "<a href='" + href + "'>" + href + "</a>";
     }
 }

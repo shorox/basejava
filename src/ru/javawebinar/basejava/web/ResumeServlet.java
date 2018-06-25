@@ -43,62 +43,69 @@ public class ResumeServlet extends HttpServlet {
             }
         }
         for (SectionType typeSection : SectionType.values()) {
-            if (typeSection.name().equals("OBJECTIVE") || typeSection.name().equals("PERSONAL")) {
-                String value = request.getParameter(typeSection.name());
-                if (value != null && value.trim().length() != 0) {
-                    resume.addCategory(typeSection, new StringCategory(value));
-                } else {
-                    resume.getSections().remove(typeSection);
-                }
-            }
-            if (typeSection.name().equals("QUALIFICATIONS") || typeSection.name().equals("ACHIEVEMENT")) {
-                String[] value = request.getParameterValues(typeSection.name());
-                List<String> list = new ArrayList<>();
-                if (value != null) {
-                    for (String v : value) {
-                        if (v != null && v.trim().length() != 0) {
-                            list.add(v);
-                        }
+            switch (typeSection) {
+                case PERSONAL:
+                case OBJECTIVE:
+                    String value1 = request.getParameter(typeSection.name());
+                    if (value1 != null && value1.trim().length() != 0) {
+                        resume.addCategory(typeSection, new StringCategory(value1));
+                    } else {
+                        resume.getSections().remove(typeSection);
                     }
-                }
-                if (!list.isEmpty()) {
-                    resume.addCategory(typeSection, new ListCategory(list));
-                } else {
-                    resume.getSections().remove(typeSection);
-                }
-            }
-            if (typeSection.name().equals("EXPERIENCE") || typeSection.name().equals("EDUCATION")) {
-                List<Organization> listOrganizations = new ArrayList<>();
-                int organizationCounter = Integer.valueOf(request.getParameter("organizationCounter"));
-                int positionCounter = Integer.valueOf(request.getParameter("positionCounter"));
-
-                for (int i = 0; i <= organizationCounter; i++) {
-                    String organizationName = request.getParameter(typeSection.name() + "_organization" + i + "_1name");
-                    if (organizationName != null) {
-                        List<Organization.Position> listPositions = new ArrayList<>();
-                        String organizationUrl = request.getParameter(typeSection.name() + "_organization" + i + "_2url");
-                        for (int k = 0; k <= positionCounter; k++) {
-                            String title = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_1title");
-                            if (title != null) {
-                                String startDate = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_2startDate");
-                                String endDate = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_3endDate");
-                                String description = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_4description");
-
-                                if (endDate != null && endDate.trim().length() != 0) {
-                                    listPositions.add(new Organization.Position(LocalDate.parse(startDate), LocalDate.parse(endDate), title, description));
-                                } else {
-                                    listPositions.add(new Organization.Position(LocalDate.parse(startDate), NOW, title, description));
-                                }
+                    break;
+                case QUALIFICATIONS:
+                case ACHIEVEMENT:
+                    String[] value2 = request.getParameterValues(typeSection.name());
+                    List<String> list = new ArrayList<>();
+                    if (value2 != null) {
+                        for (String v : value2) {
+                            if (v != null && v.trim().length() != 0) {
+                                list.add(v);
                             }
                         }
-                        listOrganizations.add(new Organization(new Link(organizationName, organizationUrl), listPositions));
                     }
-                }
-                if (!listOrganizations.isEmpty()) {
-                    resume.addCategory(typeSection, new OrganizationsCategory(listOrganizations));
-                } else {
-                    resume.getSections().remove(typeSection);
-                }
+                    if (!list.isEmpty()) {
+                        resume.addCategory(typeSection, new ListCategory(list));
+                    } else {
+                        resume.getSections().remove(typeSection);
+                    }
+                    break;
+                case EDUCATION:
+                case EXPERIENCE:
+                    List<Organization> listOrganizations = new ArrayList<>();
+                    int organizationCounter = Integer.valueOf(request.getParameter("organizationCounter"));
+                    int positionCounter = Integer.valueOf(request.getParameter("positionCounter"));
+
+                    for (int i = 0; i <= organizationCounter; i++) {
+                        String organizationName = request.getParameter(typeSection.name() + "_organization" + i + "_1name");
+                        if (organizationName != null) {
+                            List<Organization.Position> listPositions = new ArrayList<>();
+                            String organizationUrl = request.getParameter(typeSection.name() + "_organization" + i + "_2url");
+                            for (int k = 0; k <= positionCounter; k++) {
+                                String title = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_1title");
+                                if (title != null) {
+                                    String startDate = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_2startDate");
+                                    String endDate = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_3endDate");
+                                    String description = request.getParameter(typeSection.name() + "_organization" + i + "_position" + k + "_4description");
+
+                                    if (endDate != null && endDate.trim().length() != 0) {
+                                        listPositions.add(new Organization.Position(LocalDate.parse(startDate), LocalDate.parse(endDate), title, description));
+                                    } else {
+                                        listPositions.add(new Organization.Position(LocalDate.parse(startDate), NOW, title, description));
+                                    }
+                                }
+                            }
+                            listOrganizations.add(new Organization(new Link(organizationName, organizationUrl), listPositions));
+                        }
+                    }
+                    if (!listOrganizations.isEmpty()) {
+                        resume.addCategory(typeSection, new OrganizationsCategory(listOrganizations));
+                    } else {
+                        resume.getSections().remove(typeSection);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         storage.update(resume);
@@ -127,12 +134,16 @@ public class ResumeServlet extends HttpServlet {
                 resume = new Resume(UUID.randomUUID().toString(), "");
                 storage.save(resume);
                 break;
+            case "viewnoedit":
+                resume = (Resume) storage.get(uuid);
+                break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
         }
         request.setAttribute("resume", resume);
         request.getRequestDispatcher(
-                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "edit".equals(action) ? "/WEB-INF/jsp/edit.jsp" : "/WEB-INF/jsp/new.jsp")
+                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "edit".equals(action) ? "/WEB-INF/jsp/edit.jsp" :
+                        "viewnoedit".equals(action) ? "/WEB-INF/jsp/viewnoedit.jsp":"/WEB-INF/jsp/new.jsp")
         ).forward(request, response);
     }
 }

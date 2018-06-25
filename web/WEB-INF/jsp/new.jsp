@@ -89,7 +89,7 @@
                         </c:forEach>
                         <br>
                         <button type="submit" class="btn btn-send" name="save" value="1">Сохранить</button>
-                        <button onclick="window.history.back()" class="btn btn-send" name="CancelEdit" value="1">
+                        <button type="button" onclick="window.history.back()" class="btn btn-send" name="CancelEdit" value="1">
                             Отменить
                         </button>
                     </form>

@@ -34,7 +34,7 @@
                                     <jsp:useBean id="contactEntry"
                                                  type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactsType, java.lang.String>"/>
                                     <span><%=contactEntry.getKey().getTitle()%></span>
-                                   <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br>
+                                    <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br>
                                 </c:forEach>
                             </p>
                         </div>
@@ -117,7 +117,9 @@
                         </c:choose>
                         <br/>
                     </c:forEach>
-                    <a href="resume?uuid=${resume.uuid}&action=edit" class="btn btn-send">Редактировать</a>
+                    <button type="button" onclick="window.history.back()" class="btn btn-send" name="CancelEdit" value="1">
+                        Обратно в меню
+                    </button>
                 </form>
             </div>
         </div>

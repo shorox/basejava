@@ -34,8 +34,29 @@
                     </thead>
                     <tbody class="t-body">
                     <c:forEach items="${resumes}" var="resume">
+                        <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
+                        <c:choose>
+                            <c:when test="${resume.fullName=='Григорий Кислин'}">
+                                <tr>
+
+                                    <th><a href="resume?uuid=${resume.uuid}&action=viewnoedit">${resume.fullName}</a></th>
+                                    <th><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                    </th>
+                                    <th>
+                                        <a>
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a>
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
                         <tr>
-                            <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
+                            <%--<jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>--%>
                             <th><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></th>
                             <th><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
                             </th>
@@ -50,6 +71,8 @@
                                 </a>
                             </th>
                         </tr>
+                            </c:otherwise>
+                        </c:choose>
                     </c:forEach>
                     </tbody>
                 </table>
