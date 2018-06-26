@@ -22,13 +22,11 @@
                 <div class="resume-form">
                     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
                         <input type="hidden" name="uuid" value="${resume.uuid}">
-                        <div class="resume-section section-name">
                             <div class="resume-group group-wide">
-                                <dt>Имя:</dt>
-                                <input type="text" class="resume-input input-name" name="fullName"
+                                <span>Имя:</span>
+                                <input type="text" class="resume-input" name="fullName"
                                        value="${resume.fullName}" placeholder="Имя" required>
                             </div>
-                        </div>
                         <div class="resume-section section-contacts">
                             <h3 class="resume-heading">Контакты</h3>
                         </div>
@@ -53,12 +51,12 @@
                                 <div class="resume-section section-postion">
                                     <h3 class="resume-heading-extend">${typeSection.title}</h3>
                                     <div id="${typeSection.name()}" class="resume-heading-extend"
-                                         style="margin-top:16px;">
+                                         style="margin-top:3px;">
 
-                                        <a href="javascript:add_feed2('<div style=margin-top:16px;><input type=text size=55 style=height:40px; name=${typeSection.name()}></div>','${typeSection.name()}')">
+                                        <a href="javascript:add_feed2('<div style=margin-top:3px;><input type=text class=resume-input name=${typeSection.name()}></div>','${typeSection.name()}')">
                                             <img src="img/add.png"> Добавить позицию</a>
                                     </div>
-                                    <div style="margin-top:16px;"></div>
+                                    <div style="margin-top:3px;"></div>
                                     <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
                                         <div class="resume-group group-center">
                                             <input type="text" class="resume-input"
@@ -147,7 +145,6 @@
                                         </c:forEach>
                                         </fieldset>
                                         <c:set var="count" value="${count+1}" scope="page"/>
-                                        <br>
                                     </c:forEach>
                                 </div>
                                 <c:if test="${not empty count}">

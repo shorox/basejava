@@ -2530,7 +2530,7 @@ body {
 body {
   position: relative;
   min-width: 320px;
-  background: #e7e7e7;
+  background: mintcream;
   font-family: "Open Sans", sans-serif;
   line-height: 1.65;
   opacity: 1;
@@ -2566,12 +2566,12 @@ span {
 p {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  line-height: 250%;
   font-style: normal;
-  color: #706c6c; }
+  color: #706c6c;
+  margin-top: 0; }
 
 .container {
-  max-width: 1144px;
+  max-width: 992px;
   margin: 0 auto;
   padding: 0 15px; }
 
@@ -2592,7 +2592,7 @@ ul {
   list-style: none; }
 
 .header {
-  background: #5f676c;
+  background: darkslategrey;
   padding: 10px 0;
   height: 40px; }
 
@@ -2658,10 +2658,10 @@ ul {
   margin-top: 20px; }
 
 .t-head {
-  background: #dbe1ce; }
+  background:  lightcyan; }
 
 .t-body {
-  background: #eee; }
+  background: white; }
 
 .t-body tr {
   border-bottom: 1px solid #ccc; }
@@ -2676,7 +2676,7 @@ ul {
   text-align: center; }
 
 .resume-heading {
-  margin-top: 50px;
+  margin-top: 20px;
   text-align: center;
   color: black;
   font-size: 21px; }
@@ -2691,18 +2691,19 @@ ul {
   text-align: center; }
 
 .resume-section {
-  text-align: left; }
+  width: 85%;
+  text-align: left;
+  margin: 0 auto; }
 
 .resume-group {
-  width: 70%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin: 0 auto;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin-bottom: 15px; }
+  margin-bottom: 2px; }
+  .resume-group span {
+    font-size: 17px;
+    line-height: 30px;
+    font-weight: bold; }
 
 .group-wide {
   -webkit-box-pack: justify;
@@ -2713,16 +2714,17 @@ ul {
   -ms-flex-pack: distribute;
       justify-content: space-around; }
 
-.resume-group span {
-  font-size: 17px;
-  font-weight: bold; }
-
 .resume-input {
   padding: 10px;
   width: 60%; }
 
 .resume-area {
   min-height: 120px; }
+
+.resume-fullName,
+.resume-position {
+  font-size: 28px;
+  line-height: 30px; }
 
 .experience-block + .experience-block,
 .education-block + .education-block {
@@ -2740,17 +2742,14 @@ ul {
   width: 100px; }
 
 .resume-field {
-  margin: 0 0 0 20px; }
+  margin: 0 0 0 5px;
+  line-height: 30px; }
 
 .resume-time {
   margin: 0 20px; }
 
-.resume-fullName,
-.resume-position {
-  font-size: 28px; }
-
 .footer {
-  background: #c6c6c6;
+  background: darkslategrey;
   text-align: center;
   height: 50px;
   padding: 10px 0; }

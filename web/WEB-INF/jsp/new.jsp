@@ -22,14 +22,12 @@
             <div class="container">
                 <div class="resume-form">
                     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
-                        <input type="hidden" name="uuid" value="${resume.uuid}">
-                        <div class="resume-section section-name">
+                        <input type="hidden" name="uuid" value="${1}">
                             <div class="resume-group group-wide">
                                 <dt>Имя:</dt>
-                                <input type="text" class="resume-input input-name" name="fullName" placeholder="Имя"
+                                <input type="text" class="resume-input" name="fullName" placeholder="Имя"
                                        required>
                             </div>
-                        </div>
                         <div class="resume-section section-contacts">
                             <h3 class="resume-heading">Контакты</h3>
                         </div>
@@ -57,9 +55,9 @@
                                         </div>
                                     </c:forEach>
                                 </div>
-                                <div id="${typeSection.name()}" style="margin-top:16px;">
+                                <div id="${typeSection.name()}" style="margin-top:3px;">
 
-                                    <a href="javascript:add_feed2('<div style=margin-top:16px;><input type=text size=55 style=height:40px; name=${typeSection.name()}></div>','${typeSection.name()}')">
+                                    <a href="javascript:add_feed2('<div style=margin-top:3px;><input type=text size=57 style=height:40px; name=${typeSection.name()}></div>','${typeSection.name()}')">
                                         <img src="img/add.png"> Добавить позицию</a>
 
                                 </div>

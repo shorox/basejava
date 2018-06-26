@@ -31,8 +31,14 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume resume = (Resume) storage.get(uuid);
-        resume.setFullName(fullName);
+        Resume resume;
+
+        if (uuid.equals("1")) {
+            resume = new Resume(UUID.randomUUID().toString(),fullName);
+        } else {
+            resume = (Resume) storage.get(uuid);
+            resume.setFullName(fullName);
+        }
 
         for (ContactsType type : ContactsType.values()) {
             String value = request.getParameter(type.name());
@@ -108,7 +114,12 @@ public class ResumeServlet extends HttpServlet {
                     break;
             }
         }
-        storage.update(resume);
+
+        if (uuid.equals("1")) {
+            storage.save(resume);
+        } else {
+            storage.update(resume);
+        }
         response.sendRedirect("resume");
     }
 
@@ -131,8 +142,7 @@ public class ResumeServlet extends HttpServlet {
                 resume = (Resume) storage.get(uuid);
                 break;
             case "new":
-                resume = new Resume(UUID.randomUUID().toString(), "");
-                storage.save(resume);
+                resume = new Resume();
                 break;
             case "viewnoedit":
                 resume = (Resume) storage.get(uuid);
