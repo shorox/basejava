@@ -7,14 +7,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
     <title>Список всех резюме</title>
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-<main class="content-wrapper">
-    <section class="resume-content">
+<main>
+    <section class="resume-content" style="margin-bottom: 120px;">
         <div class="container">
             <div class="top-line">
                 <h2>Список резюме</h2>

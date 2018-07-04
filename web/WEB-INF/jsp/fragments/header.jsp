@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<header class="header">
-    <div class="container">
-       <a href="resume" class="a-add-header">Управление резюме</a>
+<div class="header-cyan">
+    <a href="http://javaops.ru/reg/basejava" class="logo">Web-приложение "База данных резюме" курса BaseJava</a>
+    <div class="header-cyan-right">
+        <a class="active" href="resume">Управление резюме</a>
     </div>
-</header>
+</div>

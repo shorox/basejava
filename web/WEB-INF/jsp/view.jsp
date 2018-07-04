@@ -6,15 +6,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-<main class="content-wrapper">
-    <section class="resume-content">
+<main>
+    <section class="resume-content"  style="margin-bottom: 120px;">
         <div class="container">
             <div class="resume-form">
                 <form action="resume" method="POST">
@@ -78,7 +78,7 @@
                                 <div class="resume-section section-experience">
                                     <div class="experience-block">
                                         <c:forEach var="listExp" items="${value.getOrganizations()}">
-                                            <div style="background-color:#F7F2E0;">
+                                            <div style="background-color:#87CEEB;">
                                                 <c:if test="${not empty listExp.getHomePage().getUrl()}">
                                                     <div class="resume-group" style="padding: 5px 5px 5px 15px;">
                                                         <span style="padding: 0px 14px 0px 0px;">Компания:</span>
@@ -94,7 +94,7 @@
                                                 </c:if>
                                             </div>
                                             <c:forEach var="listPos" items="${listExp.getPositions()}">
-                                                <div style="background-color: #FBF8EF; ">
+                                                <div style="background-color: #F8F8FF; ">
                                                     <div class="resume-group" style="padding: 5px 15px 5px 15px;">
                                                         <span style="padding: 0px 20px 0px 0px;"> Период:</span>
                                                         <p class="resume-time" style="margin-top: 2px;"> ${listPos.getStartDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>

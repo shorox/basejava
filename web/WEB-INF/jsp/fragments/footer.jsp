@@ -1,6 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<footer class="footer">
+<footer style="position:fixed;
+   left:0px;
+   bottom:0px;
+   height:120px;
+   width:100%;">
 
-    <p style="color: whitesmoke;">Web-приложение "База данных резюме" курса <a class="a-add-header" href="http://javaops.ru/reg/basejava">BaseJava</a></p>
+    <img src="img/footer.png" style="height: 100%;width: 100%;">
 
 </footer>
