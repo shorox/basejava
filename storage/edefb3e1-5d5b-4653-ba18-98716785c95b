@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<resume>
+    <uuid>edefb3e1-5d5b-4653-ba18-98716785c95b</uuid>
+    <fullName>Name3</fullName>
+    <contacts>
+        <entry>
+            <key>PHONE</key>
+            <value>33333333</value>
+        </entry>
+        <entry>
+            <key>MAIL</key>
+            <value>mail333@ya.ru</value>
+        </entry>
+    </contacts>
+    <sections/>
+</resume>
