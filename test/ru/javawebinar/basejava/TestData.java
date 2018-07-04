@@ -25,7 +25,7 @@ public class TestData {
 
         R1.addContact(ContactsType.MAIL, "gkislin@yandex.ru");
         R1.addContact(ContactsType.PHONE, "+7(921) 855-0482");
-        R1.addContact(ContactsType.SKYPE,"skype:grigory.kislin");
+        R1.addContact(ContactsType.SKYPE,"grigory.kislin");
         R1.addContact(ContactsType.LINKEDIN,"https://www.linkedin.com/in/gkislin");
         R1.addContact(ContactsType.GITHUB,"https://github.com/gkislin");
         R1.addContact(ContactsType.STACKOVERFLOW,"https://stackoverflow.com/users/548473");

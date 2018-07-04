@@ -26,7 +26,7 @@
                 <table class="table">
                     <thead class="t-head">
                     <tr>
-                        <th>Имя</th>
+                        <th>Полное имя</th>
                         <th>Email</th>
                         <th>Изменить</th>
                         <th>Удалить</th>
@@ -39,16 +39,16 @@
                             <c:when test="${resume.fullName=='Григорий Кислин'}">
                                 <tr>
 
-                                    <th><a href="resume?uuid=${resume.uuid}&action=viewnoedit">${resume.fullName}</a></th>
-                                    <th><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                    <th><a href="resume?uuid=${resume.uuid}&action=viewnoedit"class="a-table">${resume.fullName}</a></th>
+                                    <th><a class="a-table"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%></a>
                                     </th>
                                     <th>
-                                        <a>
+                                        <a class="a-table">
                                             <i class="fa fa-pencil"></i>
                                         </a>
                                     </th>
                                     <th>
-                                        <a>
+                                        <a class="a-table">
                                             <i class="fa fa-close"></i>
                                         </a>
                                     </th>
@@ -56,17 +56,16 @@
                             </c:when>
                             <c:otherwise>
                         <tr>
-                            <%--<jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>--%>
-                            <th><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></th>
-                            <th><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                            <th><a href="resume?uuid=${resume.uuid}&action=view" class="a-table">${resume.fullName}</a></th>
+                            <th><a class="a-table"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%></a>
                             </th>
                             <th>
-                                <a href="resume?uuid=${resume.uuid}&action=edit">
+                                <a href="resume?uuid=${resume.uuid}&action=edit" class="a-table">
                                     <i class="fa fa-pencil"></i>
                                 </a>
                             </th>
                             <th>
-                                <a href="resume?uuid=${resume.uuid}&action=delete">
+                                <a href="resume?uuid=${resume.uuid}&action=delete" class="a-table">
                                     <i class="fa fa-close"></i>
                                 </a>
                             </th>

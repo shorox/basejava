@@ -4,6 +4,7 @@ function addOrganization(parentId, elementTag, elementName, nameOrganization) {
     var s = parseInt(document.getElementById('organizationCounter').value);
     newElement.setAttribute('id', elementName + "_organization" + s);
     var html1 =
+
         "<a id=\"myLink4\" href=\"#\" onclick=\"javascript:deleteElement('" + elementName + "_organization" + s + "');return false;\"><img src=\"img/remove.png\"> Удалить организацию</a>" +
 
         "<div class=\"education-block\">" +
@@ -20,6 +21,7 @@ function addOrganization(parentId, elementTag, elementName, nameOrganization) {
         "<br>" +
         "<a id=\"myLink1\" href=\"#\" onclick=\"javascript:addPosition('" + elementName + "_organization" + s + "', 'fieldset', '" + elementName + "_organization" + s + "');return false;\"><img src=\"img/add.png\"> Добавить позицию</a>" +
         "<p>";
+
     newElement.innerHTML = html1;
     div.appendChild(newElement);
     document.getElementById('organizationCounter').value = s + 1;
@@ -31,6 +33,7 @@ function addPosition(parentId, elementTag, elementName) {
     var s = parseInt(document.getElementById('positionCounter').value);
     newElement.setAttribute('id', elementName + "_position" + s);
     var html1 =
+
         "<a id=\"myLink4\" href=\"#\" onclick=\"javascript:deleteElement('" + elementName + "_position" + s + "');return false;\"><img src=\"img/remove.png\"> Удалить позицию</a>" +
 
         " <div class=\"resume-group group-wide\">" +
@@ -48,8 +51,8 @@ function addPosition(parentId, elementTag, elementName) {
         "  <div class=\"resume-group group-wide\">" +
         " <span>Описание:</span>" +
         " <input type=\"text\" class=\"resume-input\" name=\"" + elementName + "_position" + s + "_4description\">" +
-        "  </div>";
 
+    "  </div>";
     newElement.innerHTML = html1;
     div.appendChild(newElement);
     document.getElementById('positionCounter').value = s + 1;

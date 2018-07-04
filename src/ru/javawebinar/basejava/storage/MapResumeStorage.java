@@ -10,6 +10,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
 
     private Map<String, Resume> mapStorage = new HashMap<>();
 
+
     @Override
     protected Resume getIndex(String uuid) {
         return mapStorage.get(uuid);

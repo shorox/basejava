@@ -8,7 +8,7 @@ public enum ContactsType {
     SKYPE("Skype") {
         @Override
         public String toHtml0(String value) {
-            return toLink(value,value);
+            return value;
         }
     },
     MAIL("Почта") {
