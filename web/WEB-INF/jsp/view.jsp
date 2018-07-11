@@ -13,118 +13,117 @@
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-<main>
-    <section class="resume-content"  style="margin-bottom: 120px;">
+<main class="content-wrapper">
+    <section>
         <div class="container">
             <div class="resume-form">
                 <form action="resume" method="POST">
                     <input type="hidden" name="uuid" value="${resume.uuid}">
-                    <div class="resume-section section-name">
+                    <div class="resume-section">
                         <div class="resume-group">
                             <p class="resume-field resume-fullName">${resume.fullName}</p>
                         </div>
                     </div>
-                    <div class="resume-section section-contacts">
+                    <div class="resume-section">
                         <c:if test="${not empty resume.getSections()}">
                             <h3 class="resume-heading">Контакты</h3>
                         </c:if>
                         <div class="resume-group">
-                            <p class="resume-field phone">
+                            <p class="resume-field">
                                 <c:forEach var="contactEntry" items="${resume.contacts}">
                                     <jsp:useBean id="contactEntry"
                                                  type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactsType, java.lang.String>"/>
                                     <span><%=contactEntry.getKey().getTitle()%></span>
-                                   <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br>
+                                    <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br>
                                 </c:forEach>
                             </p>
                         </div>
                     </div>
                     <div style="margin-top: 65px;">
-                    <c:forEach var="sectionEntry" items="${resume.sections}">
-                        <jsp:useBean id="sectionEntry"
-                                     type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.Category>"/>
-                    <div style="margin-top: -25px;">
-                        <h3 class="resume-heading"><%=sectionEntry.getKey().getTitle()%>
-                        </h3>
-                    </div>
-                        <c:set var="key" scope="session" value="<%=sectionEntry.getKey()%>"/>
-                        <c:set var="value" scope="session" value="<%=sectionEntry.getValue()%>"/>
-                        <c:choose>
-
-                            <c:when test="${key=='PERSONAL'||key=='OBJECTIVE'}">
-
-                                <div class="resume-section section-postion">
-                                    <div class="resume-group group-center">
-                                        <p class="">${value.getContent()}</p>
+                        <c:forEach var="sectionEntry" items="${resume.sections}">
+                            <jsp:useBean id="sectionEntry"
+                                         type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.Category>"/>
+                            <div style="margin-top: -25px;">
+                                <h3 class="resume-heading"><%=sectionEntry.getKey().getTitle()%>
+                                </h3>
+                            </div>
+                            <c:set var="key" scope="session" value="<%=sectionEntry.getKey()%>"/>
+                            <c:set var="value" scope="session" value="<%=sectionEntry.getValue()%>"/>
+                            <c:choose>
+                                <c:when test="${key=='PERSONAL'||key=='OBJECTIVE'}">
+                                    <div class="resume-section">
+                                        <div class="resume-group group-center">
+                                            <p class="">${value.getContent()}</p>
+                                        </div>
                                     </div>
-                                </div>
-
-                            </c:when>
-
-                            <c:when test="${key=='ACHIEVEMENT'||key=='QUALIFICATIONS'}">
-                                <div class="resume-section section-personals">
-                                    <div class="resume-group">
-                                        <ul class="resume-props">
-                                            <c:forEach var="listItems" items="${value.getItems()}">
-                                                <li>
-                                                    <p class="">${listItems}</p>
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
+                                </c:when>
+                                <c:when test="${key=='ACHIEVEMENT'||key=='QUALIFICATIONS'}">
+                                    <div class="resume-section">
+                                        <div class="resume-group">
+                                            <ul class="resume-props">
+                                                <c:forEach var="listItems" items="${value.getItems()}">
+                                                    <li>
+                                                        <p>${listItems}</p>
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                            </c:when>
-                            <c:when test="${key=='EXPERIENCE'||key=='EDUCATION'}">
-                                <div class="resume-section section-experience">
-                                    <div class="experience-block">
-                                        <c:forEach var="listExp" items="${value.getOrganizations()}">
-                                            <div style="background-color:#87CEEB;">
-                                                <c:if test="${not empty listExp.getHomePage().getUrl()}">
-                                                    <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                        <span style="padding: 0px 14px 0px 0px;">Компания:</span>
-                                                        <a href="${listExp.getHomePage().getUrl()}"
-                                                           class="resume-field">${listExp.getHomePage().getName()}</a>
-                                                    </div>
-                                                </c:if>
-                                                <c:if test="${empty listExp.getHomePage().getUrl()}">
-                                                    <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                        <span style="padding: 0px 14px 0px 0px;">Компания:</span>
-                                                        <p class="resume-field">${listExp.getHomePage().getName()}</p>
-                                                    </div>
-                                                </c:if>
-                                            </div>
-                                            <c:forEach var="listPos" items="${listExp.getPositions()}">
-                                                <div style="background-color: #F8F8FF; ">
-                                                    <div class="resume-group" style="padding: 5px 15px 5px 15px;">
-                                                        <span style="padding: 0px 20px 0px 0px;"> Период:</span>
-                                                        <p class="resume-time" style="margin-top: 2px;"> ${listPos.getStartDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>
-                                                        <p style="margin-top: 2px;"> &mdash; </p>
-                                                        <c:if test="${listPos.getEndDate()!=LocalDate.of(3000, 1, 1)}">
-                                                            <p class="resume-time" style="margin-top: 2px;"> ${listPos.getEndDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>
-                                                        </c:if>
-                                                        <c:if test="${listPos.getEndDate()==LocalDate.of(3000, 1, 1)}">
-                                                            <p class="resume-time" style="margin-top: 2px;">Сегодня</p>
-                                                        </c:if>
-                                                    </div>
-                                                    <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                        <span style="margin-top: -10px;padding: 0px 7px 0px 0px;">Должность:</span>
-                                                        <p class="resume-field" style="margin-top: -10px;padding: 0px 25px 0px 0px;"> ${listPos.getTitle()}</p>
-                                                    </div>
-                                                    <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                        <span style="padding: 0px 15px 0px 0px;">Описание:</span>
-                                                        <p class="resume-field" style="padding: 0px 25px 0px 0px;">${listPos.getDescription()}</p>
-                                                    </div>
+                                </c:when>
+                                <c:when test="${key=='EXPERIENCE'||key=='EDUCATION'}">
+                                    <div class="resume-section">
+                                        <div class="experience-block">
+                                            <c:forEach var="listExp" items="${value.getOrganizations()}">
+                                                <div style="background-color:#87CEEB;">
+                                                    <c:if test="${not empty listExp.getHomePage().getUrl()}">
+                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
+                                                            <span style="padding: 0 14px 0 0;">Компания:</span>
+                                                            <a href="${listExp.getHomePage().getUrl()}"
+                                                               class="resume-field"
+                                                               style="padding: 0 5px 0 0;">${listExp.getHomePage().getName()}</a>
+                                                        </div>
+                                                    </c:if>
+                                                    <c:if test="${empty listExp.getHomePage().getUrl()}">
+                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
+                                                            <span style="padding: 0 14px 0 0;">Компания:</span>
+                                                            <p class="resume-field"
+                                                               style="padding: 0 5px 0 0;">${listExp.getHomePage().getName()}</p>
+                                                        </div>
+                                                    </c:if>
                                                 </div>
+                                                <c:forEach var="listPos" items="${listExp.getPositions()}">
+                                                    <div style="background-color: #F8F8FF; ">
+                                                        <div class="resume-group" style="padding: 5px 15px 5px 15px;">
+                                                            <span style="padding: 0 20px 0 0;"> Период:</span>
+                                                            <p class="resume-time"> ${listPos.getStartDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>
+                                                            <p style="margin-top: 2px;">&mdash;</p>
+                                                            <c:if test="${listPos.getEndDate()!=LocalDate.of(3000, 1, 1)}">
+                                                                <p class="resume-time"> ${listPos.getEndDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>
+                                                            </c:if>
+                                                            <c:if test="${listPos.getEndDate()==LocalDate.of(3000, 1, 1)}">
+                                                                <p class="resume-time">Сегодня</p>
+                                                            </c:if>
+                                                        </div>
+                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
+                                                            <span style="margin-top: -10px;padding: 0 7px 0 0;">Должность:</span>
+                                                            <p class="resume-field"
+                                                               style="margin-top: -10px;padding: 0 25px 0 0;"> ${listPos.getTitle()}</p>
+                                                        </div>
+                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
+                                                            <span style="padding: 0 15px 0 0;">Описание:</span>
+                                                            <p class="resume-field"
+                                                               style="padding: 0 25px 0 0;">${listPos.getDescription()}</p>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                                <br>
                                             </c:forEach>
-                                            <br>
-
-                                        </c:forEach>
+                                        </div>
                                     </div>
-                                </div>
-                            </c:when>
-                        </c:choose>
-                        <br/>
-                    </c:forEach>
+                                </c:when>
+                            </c:choose>
+                            <br/>
+                        </c:forEach>
                     </div>
                     <a href="resume?uuid=${resume.uuid}&action=edit" class="btn btn-add">Редактировать</a>
                 </form>

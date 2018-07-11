@@ -50,9 +50,8 @@ function addPosition(parentId, elementTag, elementName) {
 
         "  <div class=\"resume-group group-wide\">" +
         " <span>Описание:</span>" +
-        " <input type=\"text\" class=\"resume-input\" name=\"" + elementName + "_position" + s + "_4description\">" +
-
-    "  </div>";
+        " <textarea type=\"text\" class=\"resume-input\" name=\"" + elementName + "_position" + s + "_4description\"></textarea>" +
+        "  </div>";
     newElement.innerHTML = html1;
     div.appendChild(newElement);
     document.getElementById('positionCounter').value = s + 1;

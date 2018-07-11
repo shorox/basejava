@@ -9,12 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Список всех резюме</title>
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <main>
-    <section class="resume-content" style="margin-bottom: 120px;">
+    <section class="section-margin-top">
         <div class="container">
             <div class="top-line">
                 <h2>Список резюме</h2>
@@ -38,9 +39,11 @@
                         <c:choose>
                             <c:when test="${resume.fullName=='Григорий Кислин'}">
                                 <tr>
-
-                                    <th><a href="resume?uuid=${resume.uuid}&action=viewnoedit"class="a-table">${resume.fullName}</a></th>
-                                    <th><a class="a-table"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%></a>
+                                    <th><a href="resume?uuid=${resume.uuid}&action=viewnoedit"
+                                           class="a-table">${resume.fullName}</a></th>
+                                    <th>
+                                        <a class="a-table"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                        </a>
                                     </th>
                                     <th>
                                         <a class="a-table">
@@ -55,21 +58,24 @@
                                 </tr>
                             </c:when>
                             <c:otherwise>
-                        <tr>
-                            <th><a href="resume?uuid=${resume.uuid}&action=view" class="a-table">${resume.fullName}</a></th>
-                            <th><a class="a-table"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%></a>
-                            </th>
-                            <th>
-                                <a href="resume?uuid=${resume.uuid}&action=edit" class="a-table">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                            </th>
-                            <th>
-                                <a href="resume?uuid=${resume.uuid}&action=delete" class="a-table">
-                                    <i class="fa fa-close"></i>
-                                </a>
-                            </th>
-                        </tr>
+                                <tr>
+                                    <th><a href="resume?uuid=${resume.uuid}&action=view"
+                                           class="a-table">${resume.fullName}</a></th>
+                                    <th>
+                                        <a class="a-table"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="resume?uuid=${resume.uuid}&action=edit" class="a-table">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="resume?uuid=${resume.uuid}&action=delete" class="a-table">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                    </th>
+                                </tr>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>

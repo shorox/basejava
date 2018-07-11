@@ -9,182 +9,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" type="text/javascript"></script>
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
     <title>Редактирование ${resume.fullName}</title>
-    <script src="js/main.js" type="text/javascript"></script>
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
     <main class="content-wrapper">
-        <section class="resume-content">
+        <section>
             <div class="container">
                 <div class="resume-form">
                     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
                         <input type="hidden" name="uuid" value="${resume.uuid}">
-                            <div class="resume-group-contacts group-wide">
-                                <span class="span-contacts"><b>Полное имя:</b></span>
-                                <input type="text" class="resume-input" name="fullName"
-                                       value="${resume.fullName}" required>
-                            </div>
-                        <div style="margin-top: 40px;">
-                        <div class="resume-section section-contacts">
-                            <h3 class="resume-heading">Контакты</h3>
+                        <div class="resume-group-contacts group-wide">
+                            <span class="span-contacts"><b>Полное имя:</b></span>
+                            <input type="text" class="resume-input" name="fullName"
+                                   value="${resume.fullName}" required>
                         </div>
+                        <div class="section-margin">
+                            <div class="resume-section">
+                                <h3 class="resume-heading">Контакты</h3>
+                            </div>
                         </div>
                         <c:forEach var="type" items="<%=ContactsType.values()%>">
-                            <div class="resume-group-contacts group-wide">
-                                <span class="span-contacts"><b>${type.title}</b></span>
-                                <input type="text" class="resume-input" name="${type.name()}"
-                                       value="${resume.getContacts(type)}">
-                            </div>
+                        <div class="resume-group-contacts group-wide">
+                            <span class="span-contacts"><b>${type.title}</b></span>
+                            <input type="text" class="resume-input" name="${type.name()}"
+                                   value="${resume.getContacts(type)}">
+                        </div>
                         </c:forEach>
-
                         <c:forEach var="typeSection" items="<%=SectionType.values()%>">
-                            <c:if test="${typeSection.name()=='OBJECTIVE'||typeSection.name()=='PERSONAL'}">
-                        <div style="margin-top: 40px;">
-                                <div class="resume-section section-postion">
-                                    <h3 class="resume-heading">${typeSection.title}</h3>
+                        <c:if test="${typeSection.name()=='OBJECTIVE'||typeSection.name()=='PERSONAL'}">
+                        <div class="section-margin">
+                            <div class="resume-section">
+                                <h3 class="resume-heading">${typeSection.title}</h3>
+                                <div class="resume-group group-center">
+                                    <textarea type="text" class="resume-input" name="${typeSection.name()}"
+                                              value="${resume.getSections(typeSection)}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        </c:if>
+                        <c:if test="${typeSection.name()=='ACHIEVEMENT'||typeSection.name()=='QUALIFICATIONS'}">
+                        <div class="section-margin">
+                            <div class="resume-section">
+                                <h3 class="resume-heading">${typeSection.title}</h3>
+                                <div id="${typeSection.name()}" class="resume-heading-extend"
+                                     style="margin-top:3px;">
+                                    <a href="javascript:add_feed2('<div style=margin-top:3px;><textarea type=text class=resume-input name=${typeSection.name()}></textarea></div>','${typeSection.name()}')">
+                                        <img src="img/add.png"> Добавить позицию</a>
+                                </div>
+                                <div style="margin-top:3px;"></div>
+                                <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
                                     <div class="resume-group group-center">
-                                        <input type="text" class="resume-input" name="${typeSection.name()}"
-                                               value="${resume.getSections(typeSection)}">
+                                        <textarea type="text" class="resume-input"
+                                                  name="${typeSection.name()}" value="${section}"></textarea>
                                     </div>
-                                </div>
+                                </c:forEach>
+                            </div>
                         </div>
-                            </c:if>
-                            <c:if test="${typeSection.name()=='ACHIEVEMENT'||typeSection.name()=='QUALIFICATIONS'}">
-                        <div style="margin-top: 40px;">
-                                <div class="resume-section section-position">
-                                    <h3 class="resume-heading">${typeSection.title}</h3>
-                                    <div id="${typeSection.name()}" class="resume-heading-extend"
-                                         style="margin-top:3px;">
-
-                                        <a href="javascript:add_feed2('<div style=margin-top:3px;><input type=text class=resume-input name=${typeSection.name()}></div>','${typeSection.name()}')">
-                                            <img src="img/add.png"> Добавить позицию</a>
-                                    </div>
-                                    <div style="margin-top:3px;"></div>
-                                    <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
-                                        <div class="resume-group group-center">
+                        </c:if>
+                        <c:if test="${typeSection.name()=='EXPERIENCE'||typeSection.name()=='EDUCATION'}">
+                        <div class="section-margin">
+                            <c:choose>
+                                <c:when test="${typeSection.title=='Опыт работы'}">
+                                    <c:set var="nameCompany" value="компании" scope="page"/>
+                                    <c:set var="nameCompany1" value="компанию" scope="page"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:set var="nameCompany" value="учереждения" scope="page"/>
+                                    <c:set var="nameCompany1" value="учереждение" scope="page"/>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="resume-section">
+                                <h3 class="resume-heading">${typeSection.title}</h3>
+                                <div id="${typeSection.name()}">
+                                    <a id="myLink" href="#" style="padding: 0 0 0 320px;"
+                                       onclick="javascript:addOrganization('${typeSection.name()}', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;"><img
+                                            src="img/add.png"> Добавить ${nameCompany1}</a>
+                                    <p></p>
+                                </div>
+                                <c:set var="count" value="0" scope="page"/>
+                                <c:forEach var="organization"
+                                           items="${resume.getSections(typeSection).getOrganizations()}">
+                                    <fieldset id="${typeSection.name()}_organization${count}">
+                                    <a id="myLink2" href="#"
+                                       onclick="javascript:deleteElement('${typeSection.name()}_organization${count}');return false;"><img
+                                            src="img/remove.png"> Удалить организацию</a>
+                                    <div>
+                                        <div class="resume-group group-wide">
+                                            <span>Название  ${nameCompany}  :</span>
                                             <input type="text" class="resume-input"
-                                                   name="${typeSection.name()}" value="${section}">
+                                                   name="${typeSection.name()}_organization${count}_1name"
+                                                   value="${organization.getHomePage().getName()}" required>
                                         </div>
-                                    </c:forEach>
-                                </div>
-                        </div>
-                            </c:if>
-                            <c:if test="${typeSection.name()=='EXPERIENCE'||typeSection.name()=='EDUCATION'}">
-                        <div style="margin-top: 40px;">
-                                <c:choose>
-                                    <c:when test="${typeSection.title=='Опыт работы'}">
-                                        <c:set var="nameCompany" value="компании" scope="page"/>
-                                        <c:set var="nameCompany1" value="компанию" scope="page"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:set var="nameCompany" value="учереждения" scope="page"/>
-                                        <c:set var="nameCompany1" value="учереждение" scope="page"/>
-                                    </c:otherwise>
-                                </c:choose>
-                                <div class="resume-section section-education">
-                                    <h3 class="resume-heading">${typeSection.title}</h3>
-
-                                    <div id="${typeSection.name()}"  >
-
-                                        <a id="myLink" href="#" style="padding: 0px 0px 0px 320px;"
-                                           onclick="javascript:addOrganization('${typeSection.name()}', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;"><img
-                                                src="img/add.png"> Добавить ${nameCompany1}</a>
-
-                                        <p></p>
                                     </div>
-
-                                    <c:set var="count" value="0" scope="page"/>
-                                    <c:forEach var="organization"
-                                               items="${resume.getSections(typeSection).getOrganizations()}">
-                                        <fieldset id="${typeSection.name()}_organization${count}">
-                                        <a id="myLink2" href="#"
-                                           onclick="javascript:deleteElement('${typeSection.name()}_organization${count}');return false;"><img
-                                                src="img/remove.png"> Удалить организацию</a>
-                                        <div class=\"education-block\">
-                                            <div class="resume-group group-wide">
-                                                <span>Название  ${nameCompany}  :</span>
-                                                <input type="text" class="resume-input"
-                                                       name="${typeSection.name()}_organization${count}_1name"
-                                                       value="${organization.getHomePage().getName()}" required>
-                                            </div>
+                                    <div class="resume-group group-wide">
+                                        <span>Сайт ${nameCompany} :</span>
+                                        <input type="text" class="resume-input"
+                                               name="${typeSection.name()}_organization${count}_2url"
+                                               value="${organization.getHomePage().getUrl()}">
+                                    </div>
+                                    <br>
+                                    <a id="myLink1" href="#"
+                                       onclick="javascript:addPosition('${typeSection.name()}_organization${count}', 'fieldset', '${typeSection.name()}_organization0');return false;"><img
+                                            src="img/add.png"> Добавить позицию</a>
+                                    <p>
+                                    <c:set var="countPosition" value="0" scope="page"/>
+                                    <c:forEach var="position" items="${organization.getPositions()}">
+                                        <fieldset
+                                                id="${typeSection.name()}_organization${count}_position${countPosition}">
+                                            <a id="myLink3" href="#"
+                                               onclick="javascript:deleteElement('${typeSection.name()}_organization${count}_position${countPosition}');return false;"><img
+                                                    src="img/remove.png"> Удалить позицию</a>
+                                        <p>
+                                        <div class="resume-group group-wide">
+                                            <span> Дата начала: </span>
+                                            <input type="date"
+                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_2startDate"
+                                                   value="${position.getStartDate()}" required>
+                                            <span> Дата окончания: </span>
+                                            <input type="date"
+                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_3endDate"
+                                                   value="${position.getEndDate()}">
                                         </div>
                                         <div class="resume-group group-wide">
-                                            <span>Сайт ${nameCompany} :</span>
+                                            <span>Должность:</span>
                                             <input type="text" class="resume-input"
-                                                   name="${typeSection.name()}_organization${count}_2url"
-                                                   value="${organization.getHomePage().getUrl()}">
+                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_1title"
+                                                   value="${position.getTitle()}" required>
                                         </div>
-                                        <br>
-                                        <a id="myLink1" href="#"
-                                           onclick="javascript:addPosition('${typeSection.name()}_organization${count}', 'fieldset', '${typeSection.name()}_organization0');return false;"><img
-                                                src="img/add.png"> Добавить позицию</a>
-                                        <p>
-                                        <c:set var="countPosition" value="0" scope="page"/>
-                                        <c:forEach var="position" items="${organization.getPositions()}">
-                                            <fieldset
-                                                    id="${typeSection.name()}_organization${count}_position${countPosition}">
-                                                <a id="myLink3" href="#"
-                                                   onclick="javascript:deleteElement('${typeSection.name()}_organization${count}_position${countPosition}');return false;"><img
-                                                        src="img/remove.png"> Удалить позицию</a>
-                                            <p>
-                                            <div class="resume-group group-wide">
-                                                <span> Дата начала: </span>
-                                                <input type="date"
-                                                       name="${typeSection.name()}_organization${count}_position${countPosition}_2startDate"
-                                                       value="${position.getStartDate()}" required>
-                                                <span> Дата окончания: </span>
-                                                <input type="date"
-                                                       name="${typeSection.name()}_organization${count}_position${countPosition}_3endDate"
-                                                       value="${position.getEndDate()}">
-                                            </div>
-                                            <div class="resume-group group-wide">
-                                                <span>Должность:</span>
-                                                <input type="text" class="resume-input"
-                                                       name="${typeSection.name()}_organization${count}_position${countPosition}_1title"
-                                                       value="${position.getTitle()}" required>
-                                            </div>
-                                            <div class="resume-group group-wide">
-                                                <span>Описание:</span>
-                                                <input type="text" class="resume-input"
-                                                       name="${typeSection.name()}_organization${count}_position${countPosition}_4description"
-                                                       value="${position.getDescription()}">
-                                            </div>
-                                            </fieldset>
-                                            <c:set var="countPosition" value="${countPosition+1}" scope="page"/>
-                                        </c:forEach>
+                                        <div class="resume-group group-wide">
+                                            <span>Описание:</span>
+                                            <textarea type="text" class="resume-input"
+                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_4description"
+                                                      value="${position.getDescription()}"></textarea>
+                                        </div>
                                         </fieldset>
-                                        <c:set var="count" value="${count+1}" scope="page"/>
+                                        <c:set var="countPosition" value="${countPosition+1}" scope="page"/>
                                     </c:forEach>
-                                </div>
-                                <c:if test="${not empty count}">
-                                    <input type="hidden" id="organizationCounter" name="organizationCounter"
-                                           value="${count}">
-                                </c:if>
-                                <c:if test="${empty count}">
-                                    <input type="hidden" id="organizationCounter" name="organizationCounter" value="0">
-                                </c:if>
-                                <c:if test="${not empty countPosition}">
-                                    <input type="hidden" id="positionCounter" name="positionCounter"
-                                           value="${countPosition}">
-                                </c:if>
-                                <c:if test="${empty countPosition}">
-                                    <input type="hidden" id="positionCounter" name="positionCounter" value="0">
-                                </c:if>
-                        </div>
+                                    </fieldset>
+                                    <c:set var="count" value="${count+1}" scope="page"/>
+                                </c:forEach>
+                            </div>
+                            <c:if test="${not empty count}">
+                                <input type="hidden" id="organizationCounter" name="organizationCounter"
+                                       value="${count}">
                             </c:if>
-
+                            <c:if test="${empty count}">
+                                <input type="hidden" id="organizationCounter" name="organizationCounter" value="0">
+                            </c:if>
+                            <c:if test="${not empty countPosition}">
+                                <input type="hidden" id="positionCounter" name="positionCounter"
+                                       value="${countPosition}">
+                            </c:if>
+                            <c:if test="${empty countPosition}">
+                                <input type="hidden" id="positionCounter" name="positionCounter" value="0">
+                            </c:if>
+                        </div>
+                        </c:if>
                         </c:forEach>
                         <br>
                         <button type="submit" class="btn btn-add" name="save" value="1">Сохранить</button>
-                        <button type="button" onclick="window.history.back()" class="btn btn-cancel" style="margin-left: 40px;" name="CancelEdit" value="1">
+                        <button type="button" onclick="window.history.back()" class="btn btn-cancel"
+                             name="CancelEdit" value="1">
                             Отменить
                         </button>
-                        </div>
-                    </form>
                 </div>
+                </form>
+            </div>
             </div>
         </section>
     </main>
