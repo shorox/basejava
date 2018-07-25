@@ -145,6 +145,7 @@ public class ResumeServlet extends HttpServlet {
                 resume = new Resume();
                 break;
             case "viewnoedit":
+            case "noedit":
                 resume = (Resume) storage.get(uuid);
                 break;
             default:
@@ -152,7 +153,7 @@ public class ResumeServlet extends HttpServlet {
         }
         request.setAttribute("resume", resume);
         request.getRequestDispatcher(
-                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "edit".equals(action) ? "/WEB-INF/jsp/edit.jsp" :
+                ("noedit".equals(action)?"/WEB-INF/jsp/noedit.jsp":"view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "edit".equals(action) ? "/WEB-INF/jsp/edit.jsp" :
                         "viewnoedit".equals(action) ? "/WEB-INF/jsp/viewnoedit.jsp":"/WEB-INF/jsp/new.jsp")
         ).forward(request, response);
     }

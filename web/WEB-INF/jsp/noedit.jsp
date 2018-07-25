@@ -25,7 +25,7 @@
                         <div class="resume-group-contacts group-wide">
                             <span class="span-contacts"><b>Полное имя:</b></span>
                             <input type="text" class="resume-input" name="fullName"
-                                   value="${resume.fullName}" required>
+                                   value="${resume.fullName}" required disabled>
                         </div>
                         <div class="section-margin">
                             <div class="resume-section">
@@ -36,7 +36,7 @@
                         <div class="resume-group-contacts group-wide">
                             <span class="span-contacts"><b>${type.title}</b></span>
                             <input type="text" class="resume-input" name="${type.name()}"
-                                   value="${resume.getContacts(type)}">
+                                   value="${resume.getContacts(type)}" disabled>
                         </div>
                         </c:forEach>
                         <c:forEach var="typeSection" items="<%=SectionType.values()%>">
@@ -45,8 +45,8 @@
                             <div class="resume-section">
                                 <h3 class="resume-heading">${typeSection.title}</h3>
                                 <div class="resume-group group-center">
-                                    <textarea type="text" class="resume-input"
-                                              name="${typeSection.name()}">${resume.getSections(typeSection)}</textarea>
+                                    <textarea  type="text" class="resume-input"
+                                              name="${typeSection.name()}" disabled>${resume.getSections(typeSection)}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                 <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
                                     <div class="resume-group group-center">
                                         <textarea type="text" class="resume-input"
-                                                  name="${typeSection.name()}">${section}</textarea>
+                                                  name="${typeSection.name()}" disabled>${section}</textarea>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -102,14 +102,14 @@
                                             <span>Название  ${nameCompany}  :</span>
                                             <input type="text" class="resume-input"
                                                    name="${typeSection.name()}_organization${count}_1name"
-                                                   value="${organization.getHomePage().getName()}" required>
+                                                   value="${organization.getHomePage().getName()}" required disabled>
                                         </div>
                                     </div>
                                     <div class="resume-group group-wide">
                                         <span>Сайт ${nameCompany} :</span>
                                         <input type="text" class="resume-input"
                                                name="${typeSection.name()}_organization${count}_2url"
-                                               value="${organization.getHomePage().getUrl()}">
+                                               value="${organization.getHomePage().getUrl()}" disabled>
                                     </div>
                                     <br>
                                     <a id="myLink1" href="#"
@@ -128,22 +128,22 @@
                                             <span> Дата начала: </span>
                                             <input type="date"
                                                    name="${typeSection.name()}_organization${count}_position${countPosition}_2startDate"
-                                                   value="${position.getStartDate()}" required>
+                                                   value="${position.getStartDate()}" required disabled>
                                             <span> Дата окончания: </span>
                                             <input type="date"
                                                    name="${typeSection.name()}_organization${count}_position${countPosition}_3endDate"
-                                                   value="${position.getEndDate()}">
+                                                   value="${position.getEndDate()}" disabled>
                                         </div>
                                         <div class="resume-group group-wide">
                                             <span>Должность:</span>
                                             <input type="text" class="resume-input"
                                                    name="${typeSection.name()}_organization${count}_position${countPosition}_1title"
-                                                   value="${position.getTitle()}" required>
+                                                   value="${position.getTitle()}" required disabled>
                                         </div>
                                         <div class="resume-group group-wide">
                                             <span>Описание:</span>
                                             <textarea type="text" class="resume-input"
-                                                      name="${typeSection.name()}_organization${count}_position${countPosition}_4description">${position.getDescription()}</textarea>
+                                                      name="${typeSection.name()}_organization${count}_position${countPosition}_4description" disabled>${position.getDescription()}</textarea>
                                         </div>
                                         </fieldset>
                                         <c:set var="countPosition" value="${countPosition+1}" scope="page"/>
@@ -170,7 +170,7 @@
                         </c:if>
                         </c:forEach>
                         <br>
-                        <button type="submit" class="btn btn-add" name="save" value="1">Сохранить</button>
+                        <button type="button" class="btn btn-add" onclick="window.history.back()" name="save" value="1">Сохранить</button>
                         <button type="button" onclick="window.history.back()" class="btn btn-cancel"
                                 name="CancelEdit" value="1">
                             Отменить

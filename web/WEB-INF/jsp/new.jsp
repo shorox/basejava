@@ -6,11 +6,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/main.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript" charset="UTF-8"></script>
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
     <title>Создание Резюме</title>
 </head>
@@ -45,7 +45,7 @@
                             <div class="resume-section">
                                 <h3 class="resume-heading">${typeSection.title}</h3>
                                 <div class="resume-group group-center">
-                                        <textarea type="text" class="resume-input" name="${typeSection.name()}"></textarea>
+                                    <textarea type="text" class="resume-input" name="${typeSection.name()}"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -57,12 +57,13 @@
                                 <div class="resume-section">
                                     <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
                                         <div class="resume-group group-center">
-                                            <textarea type="text" class="resume-input" name="${typeSection.name()}"></textarea>
+                                            <textarea type="text" class="resume-input"
+                                                      name="${typeSection.name()}"></textarea>
                                         </div>
                                     </c:forEach>
                                 </div>
                                 <div id="${typeSection.name()}" class="resume-heading-extend" style="margin-top:3px;">
-                                    <a href="javascript:add_feed2('<div style=margin-top:3px;><textarea type=text size=57 style=height:40px; name=${typeSection.name()}></textarea></div>','${typeSection.name()}')">
+                                    <a href="javascript:addSinglePosition('${typeSection.name()}','<div style=margin-top:3px;><textarea type=text size=57 style=height:40px; name=${typeSection.name()}></textarea></div>')">
                                         <img src="img/add.png"> Добавить позицию</a>
                                 </div>
                             </div>
@@ -96,7 +97,7 @@
                         <br>
                         <button type="submit" class="btn btn-add" name="save" value="1">Сохранить</button>
                         <button type="button" onclick="window.history.back()" class="btn btn-cancel"
-                               name="CancelEdit" value="1">
+                                name="CancelEdit" value="1">
                             Отменить
                         </button>
                 </div>

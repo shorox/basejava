@@ -46,7 +46,7 @@
                                         </a>
                                     </th>
                                     <th>
-                                        <a class="a-table">
+                                        <a href="resume?uuid=${resume.uuid}&action=noedit" class="a-table">
                                             <i class="fa fa-pencil"></i>
                                         </a>
                                     </th>

@@ -125,10 +125,7 @@
                             <br/>
                         </c:forEach>
                     </div>
-                    <button type="button" onclick="window.history.back()" class="btn btn-add" name="CancelEdit"
-                            value="1">
-                        Обратно в меню
-                    </button>
+                    <a href="resume?uuid=${resume.uuid}&action=noedit" class="btn btn-add">Редактировать</a>
                 </form>
             </div>
         </div>
