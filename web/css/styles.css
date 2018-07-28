@@ -352,7 +352,7 @@ body {
 }
 
 a {
-    color: #0000FF;
+    color: #006da0;
     font-size: 15px;
     font-family: "Open Sans", sans-serif;
     text-decoration: none;
@@ -532,7 +532,7 @@ ul {
 }
 
 .btn-cancel:hover {
-    color: red;
+    color: #ff919a;
     text-decoration: none;
 }
 
@@ -675,8 +675,9 @@ ul {
     position: fixed;
     left: 0;
     bottom: 0;
-    height: 120px;
+    font-size: 25px;
     width: 100%;
+    color: #87CEEB;
 }
 
 .footer-img {

@@ -74,7 +74,7 @@
                                     <div class="resume-section">
                                         <div class="experience-block">
                                             <c:forEach var="listExp" items="${value.getOrganizations()}">
-                                                <div style="background-color:#87CEEB;">
+                                                <div style="background-color:#e3f0f4;">
                                                     <c:if test="${not empty listExp.getHomePage().getUrl()}">
                                                         <div class="resume-group" style="padding: 5px 5px 5px 15px;">
                                                             <span style="padding: 0 14px 0 0;">Компания:</span>
@@ -92,7 +92,7 @@
                                                     </c:if>
                                                 </div>
                                                 <c:forEach var="listPos" items="${listExp.getPositions()}">
-                                                    <div style="background-color: #F8F8FF; ">
+                                                    <div style="background-color: #f2f8f9; ">
                                                         <div class="resume-group" style="padding: 5px 15px 5px 15px;">
                                                             <span style="padding: 0 20px 0 0;"> Период:</span>
                                                             <p class="resume-time"> ${listPos.getStartDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>
