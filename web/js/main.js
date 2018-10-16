@@ -90,21 +90,3 @@ function addSinglePosition(currentPositionNameId, newPositionHtml) {
     newPosition.innerHTML = newPositionHtml;
     currentPosition.appendChild(newPosition);
 }
-
-/**
- * Use for auto-resize textarea fields
- * @constant {object} textarea
- */
-function autosize() {
-    const textarea = document.querySelector('textarea');
-    setTimeout(function () {
-        textarea.style.cssText = 'height:auto; padding:0';
-        textarea.style.cssText = 'height:' + textarea.scrollHeight + 'px';
-    }, 0);
-}
-
-/**
- * Listener for textarea
- * @type {HTMLTextAreaElement | null}
- */
-textarea.addEventListener('keydown', autosize);

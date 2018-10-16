@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
@@ -83,10 +84,10 @@
             <h5><i class="fa fa-phone mx-3 text-primary" aria-hidden="true"></i><b>Телефон:</b><span class="mx-3">
             </c:when>
             <c:when test="${contactEntry.key=='MOBILE'}">
-            <h5><i class="fa fa-phone mx-3 text-primary" aria-hidden="true"></i><b>Мобильный:</b><span class="mx-3">
+                <h5><font size="6"><i class="fa fa-mobile mx-3 text-primary" aria-hidden="true"></i></font><b>Мобильный:</b><span class="mx-3">
             </c:when>
             <c:when test="${contactEntry.key=='HOME_PHONE'}">
-            <h5><i class="fa fa-phone mx-3 text-primary" aria-hidden="true"></i><b>Домашний тел.:</b><span class="mx-3">
+            <h5><i class="fa fa-phone-square mx-3 text-primary" aria-hidden="true"></i><b>Домашний тел.:</b><span class="mx-3">
             </c:when>
             <c:when test="${contactEntry.key=='SKYPE'}">
             <h5><i class="fa fa-skype mx-3 text-info" aria-hidden="true"></i><b>Skype:</b><span class="mx-3">
@@ -160,7 +161,7 @@
                                 </tr>
                                 <tr>
                                     <td><h5><b>Должность:</b></h5></td>
-                                    <td><h5>${listPos.getTitle()}</h5></td>
+                                    <td style="width: 100%"><h5>${listPos.getTitle()}</h5></td>
                                 </tr>
                                 <tr>
                                     <td><h5><b>Описание:</b></h5></td>
@@ -187,5 +188,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

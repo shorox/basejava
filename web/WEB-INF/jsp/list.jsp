@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <title>Список всех резюме</title>
 </head>
@@ -37,18 +38,14 @@
                     <div class="col-sm-4 my-2">
                         <div class="card box-shadow-lines">
                             <div class="card-body text-center">
-                                <a href="resume?uuid=${resume.uuid}&action=viewnoedit" class="text-dark"><h4
-                                        class="card-title">${resume.fullName}</h4></a>
-                                <p class="card-text"><i class="fa fa-envelope mx-2" aria-hidden="true"
-                                                        style="color: #1CA3E6;"></i><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                <a href="resume?uuid=${resume.uuid}&action=viewnoedit" class="text-dark"><h4 class="card-title">${resume.fullName}</h4></a>
+                                <p class="card-text" style="color: #1CA3E6;"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
                                 </p>
                                 <a href="resume?uuid=${resume.uuid}&action=viewnoedit" title="открыть">
-                                    <button type="button" class="btn box-shadow-grey round"><i
-                                            class="fa fa-address-book-o mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-address-book-o mx-2"></i></button>
                                 </a>
                                 <a href="resume?uuid=${resume.uuid}&action=noedit" title="редактировать">
-                                    <button type="button" class="btn box-shadow-grey round"><i
-                                            class="fa fa-pencil mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-pencil mx-2"></i></button>
                                 </a>
                                 <a href="#" title="удалить">
                                     <button type="button" class="btn box-shadow-grey round"><i
@@ -64,22 +61,18 @@
                     <div class="col-sm-4 my-2">
                         <div class="card box-shadow-lines">
                             <div class="card-body text-center">
-                                <a href="resume?uuid=${resume.uuid}&action=view" class="text-dark"><h4
-                                        class="card-title">${resume.fullName}</h4></a>
-                                <p class="card-text"><i class="fa fa-envelope mx-2" aria-hidden="true"
-                                                        style="color: #1CA3E6;"></i><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                <a href="resume?uuid=${resume.uuid}&action=view" class="text-dark"><h4 class="card-title">${resume.fullName}</h4></a>
+                                <p class="card-text" style="color: #1CA3E6;"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
                                 </p>
                                 <a href="resume?uuid=${resume.uuid}&action=view" title="открыть">
-                                    <button type="button" class="btn box-shadow-grey round"><i
-                                            class="fa fa-address-book-o mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-address-book-o mx-2"></i></button>
                                 </a>
                                 <a href="resume?uuid=${resume.uuid}&action=edit" title="редактировать">
                                     <button type="button" class="btn box-shadow-grey round"><i
                                             class="fa fa-pencil mx-2"></i></button>
                                 </a>
                                 <a href="resume?uuid=${resume.uuid}&action=delete" title="удалить">
-                                    <button type="button" class="btn box-shadow-grey round"><i
-                                            class="fa fa-close mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-close mx-2"></i></button>
                                 </a>
                             </div>
                         </div>

@@ -5,132 +5,189 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
 </head>
 <body>
-<jsp:include page="fragments/header.jsp"/>
-<main class="content-wrapper">
-    <section>
-        <div class="container">
-            <div class="resume-form">
-                <form action="resume" method="POST">
-                    <input type="hidden" name="uuid" value="${resume.uuid}">
-                    <div class="resume-section">
-                        <div class="resume-group">
-                            <p class="resume-field resume-fullName">${resume.fullName}</p>
-                        </div>
-                    </div>
-                    <div class="resume-section">
-                        <c:if test="${not empty resume.getSections()}">
-                            <h3 class="resume-heading">Контакты</h3>
-                        </c:if>
-                        <div class="resume-group">
-                            <p class="resume-field">
-                                <c:forEach var="contactEntry" items="${resume.contacts}">
-                                    <jsp:useBean id="contactEntry"
-                                                 type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactsType, java.lang.String>"/>
-                                    <span><%=contactEntry.getKey().getTitle()%></span>
-                                    <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br>
-                                </c:forEach>
-                            </p>
-                        </div>
-                    </div>
-                    <div style="margin-top: 65px;">
-                        <c:forEach var="sectionEntry" items="${resume.sections}">
-                            <jsp:useBean id="sectionEntry"
-                                         type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.Category>"/>
-                            <div style="margin-top: -25px;">
-                                <h3 class="resume-heading"><%=sectionEntry.getKey().getTitle()%>
-                                </h3>
-                            </div>
-                            <c:set var="key" scope="session" value="<%=sectionEntry.getKey()%>"/>
-                            <c:set var="value" scope="session" value="<%=sectionEntry.getValue()%>"/>
-                            <c:choose>
-                                <c:when test="${key=='PERSONAL'||key=='OBJECTIVE'}">
-                                    <div class="resume-section">
-                                        <div class="resume-group group-center">
-                                            <p class="">${value.getContent()}</p>
-                                        </div>
-                                    </div>
-                                </c:when>
-                                <c:when test="${key=='ACHIEVEMENT'||key=='QUALIFICATIONS'}">
-                                    <div class="resume-section">
-                                        <div class="resume-group">
-                                            <ul class="resume-props">
-                                                <c:forEach var="listItems" items="${value.getItems()}">
-                                                    <li>
-                                                        <p>${listItems}</p>
-                                                    </li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </c:when>
-                                <c:when test="${key=='EXPERIENCE'||key=='EDUCATION'}">
-                                    <div class="resume-section">
-                                        <div class="experience-block">
-                                            <c:forEach var="listExp" items="${value.getOrganizations()}">
-                                                <div style="background-color:#e3f0f4">
-                                                    <c:if test="${not empty listExp.getHomePage().getUrl()}">
-                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                            <span style="padding: 0 14px 0 0;">Компания:</span>
-                                                            <a href="${listExp.getHomePage().getUrl()}"
-                                                               class="resume-field"
-                                                               style="padding: 0 5px 0 0;">${listExp.getHomePage().getName()}</a>
-                                                        </div>
-                                                    </c:if>
-                                                    <c:if test="${empty listExp.getHomePage().getUrl()}">
-                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                            <span style="padding: 0 14px 0 0;">Компания:</span>
-                                                            <p class="resume-field"
-                                                               style="padding: 0 5px 0 0;">${listExp.getHomePage().getName()}</p>
-                                                        </div>
-                                                    </c:if>
-                                                </div>
-                                                <c:forEach var="listPos" items="${listExp.getPositions()}">
-                                                    <div style="background-color: #f2f8f9; ">
-                                                        <div class="resume-group" style="padding: 5px 15px 5px 15px;">
-                                                            <span style="padding: 0 20px 0 0;"> Период:</span>
-                                                            <p class="resume-time"> ${listPos.getStartDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>
-                                                            <p style="margin-top: 2px;">&mdash;</p>
-                                                            <c:if test="${listPos.getEndDate()!=LocalDate.of(3000, 1, 1)}">
-                                                                <p class="resume-time"> ${listPos.getEndDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}</p>
-                                                            </c:if>
-                                                            <c:if test="${listPos.getEndDate()==LocalDate.of(3000, 1, 1)}">
-                                                                <p class="resume-time">Сегодня</p>
-                                                            </c:if>
-                                                        </div>
-                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                            <span style="margin-top: -10px;padding: 0 5px 0 0;">Должность:</span>
-                                                            <p class="resume-field"
-                                                               style="margin-top: -10px;padding: 0 25px 0 0;"> ${listPos.getTitle()}</p>
-                                                        </div>
-                                                        <div class="resume-group" style="padding: 5px 5px 5px 15px;">
-                                                            <span style="padding: 0 15px 0 0;">Описание:</span>
-                                                            <p class="resume-field"
-                                                               style="padding: 0 25px 0 0;">${listPos.getDescription()}</p>
-                                                        </div>
-                                                    </div>
-                                                </c:forEach>
-                                                <br>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-                                </c:when>
-                            </c:choose>
-                            <br/>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top rounded box-shadow-grey" style="background: white">
+    <a href="https://topjava.ru/" class="navbar-brand mx-3"><img src="img/TJ.svg" alt="logo"></a>
+    <button class="navbar-toggler my-auto" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon bg-dark"></span>
+    </button>
+    <div class="collapse navbar-collapse my-auto" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#name" class="nav-link text-secondary">Полное имя</a></h5>
+            </li>
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#contacts" class="nav-link text-secondary">Контакты</a></h5>
+            </li>
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#OBJECTIVE" class="nav-link text-secondary">Позиция</a></h5>
+            </li>
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#PERSONAL" class="nav-link text-secondary">Личные качества</a></h5>
+            </li>
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#ACHIEVEMENT" class="nav-link text-secondary">Достижения</a></h5>
+            </li>
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#QUALIFICATIONS" class="nav-link text-secondary">Квалификация</a></h5>
+            </li>
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#EXPERIENCE" class="nav-link text-secondary">Опыт работы</a></h5>
+            </li>
+            <li class="nav-item">
+                <h5 class="my-auto"><a href="#EDUCATION" class="nav-link text-secondary">Образование</a></h5>
+            </li>
+        </ul>
+    </div>
+
+    <a href="resume">
+        <button type="button" class="btn ml-auto mx-2 box-shadow-grey round"><h6 class="my-1 mx-2">На главную</h6>
+        </button>
+    </a>
+</nav>
+
+<p id="name" class="nav-href-indent"></p>
+<div class="container mt-5 box-shadow-blue">
+    <div class="mx-2">
+        <h1></h1>
+
+        <form action="resume" method="POST">
+            <input type="hidden" name="uuid" value="${resume.uuid}">
+
+            <hr class="table-primary" style="height:3px;background-color:#1CA3E6;">
+            <h1 class="text-info" align="center"><p style="font-weight: bold;color:#1CA3E6;">${resume.fullName}</p></h1>
+            <hr class="table-primary" style="height:3px;background-color:#1CA3E6;">
+
+            <c:if test="${not empty resume.getSections()}">
+                <p id="contacts" class="nav-href-indent"></p>
+                <h2 class="no-background  my-3 text-info"><span style="color:#1CA3E6;">Контакты</span></h2>
+            </c:if>
+
+            <c:forEach var="contactEntry" items="${resume.contacts}">
+            <jsp:useBean id="contactEntry"
+                         type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactsType, java.lang.String>"/>
+            <c:choose>
+            <c:when test="${contactEntry.key=='PHONE'}">
+            <h5><i class="fa fa-phone mx-3 text-primary" aria-hidden="true"></i><b>Телефон:</b><span class="mx-3">
+            </c:when>
+            <c:when test="${contactEntry.key=='MOBILE'}">
+                <h5><font size="6"><i class="fa fa-mobile mx-3 text-primary" aria-hidden="true"></i></font><b>Мобильный:</b><span class="mx-3">
+            </c:when>
+            <c:when test="${contactEntry.key=='HOME_PHONE'}">
+            <h5><i class="fa fa-phone-square mx-3 text-primary" aria-hidden="true"></i><b>Домашний тел.:</b><span class="mx-3">
+            </c:when>
+            <c:when test="${contactEntry.key=='SKYPE'}">
+            <h5><i class="fa fa-skype mx-3 text-info" aria-hidden="true"></i><b>Skype:</b><span class="mx-3">
+            </c:when>
+            <c:when test="${contactEntry.key=='MAIL'}">
+            <h5><i class="fa fa-envelope mx-3 text-warning" aria-hidden="true"></i><b>Почта:</b><span class="mx-3">
+            </c:when>
+                <c:when test="${contactEntry.key=='LINKEDIN'}">
+            <h5><i class="fa fa-linkedin-square mx-3 text-primary" aria-hidden="true"></i><b>LinkedIn:</b><span
+                    class="mx-3">
+            </c:when>
+                <c:when test="${contactEntry.key=='GITHUB'}">
+           <h5><i class="fa fa-github-alt mx-3" aria-hidden="true"></i><b>GitHub:</b><span class="mx-3">
+            </c:when>
+                <c:when test="${contactEntry.key=='STACKOVERFLOW'}">
+         <h5><i class="fa fa-stack-overflow mx-3 text-danger" aria-hidden="true"></i><b>Stackoverflow:</b><span
+                 class="mx-3">
+            </c:when>
+              <c:when test="${contactEntry.key=='HOME_PAGE'}">
+        <h5><i class="fa fa-link mx-3 text-primary" aria-hidden="true"></i><b>Домашняя страница:</b><span class="mx-3">
+            </c:when>
+            </c:choose>
+                    <%=contactEntry.getKey().toHtml(contactEntry.getValue())%></span></h5>
+            </c:forEach>
+<c:forEach var="sectionEntry" items="${resume.sections}">
+    <jsp:useBean id="sectionEntry"
+                 type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.Category>"/>
+    <p id="<%=sectionEntry.getKey()%>" class="nav-href-indent"></p>
+    <h2 class="no-background my-3 text-info"><span style="color:#1CA3E6;"><%=sectionEntry.getKey().getTitle()%></span>
+    </h2>
+    <c:set var="key" scope="session" value="<%=sectionEntry.getKey()%>"/>
+    <c:set var="value" scope="session" value="<%=sectionEntry.getValue()%>"/>
+    <c:choose>
+        <c:when test="${key=='PERSONAL'||key=='OBJECTIVE'}">
+            <h5 class="text-center">${value.getContent()}</h5>
+        </c:when>
+        <c:when test="${key=='ACHIEVEMENT'||key=='QUALIFICATIONS'}">
+            <ul>
+                <c:forEach var="listItems" items="${value.getItems()}">
+                    <li><h5>${listItems}</h5></li>
+                </c:forEach>
+            </ul>
+        </c:when>
+        <c:when test="${key=='EXPERIENCE'||key=='EDUCATION'}">
+                    <c:forEach var="listExp" items="${value.getOrganizations()}">
+                        <c:forEach var="listPos" items="${listExp.getPositions()}">
+                            <table class="table borderless">
+                                <tbody class="text-xs-left">
+                                <tr style="background-color: #e8f4ff;">
+
+                                     <c:if test="${not empty listExp.getHomePage().getUrl()}">
+                                         <td class="left-round"><h5><b>Компания:</b></h5></td>
+                                         <td class="right-round"><h5><a href="${listExp.getHomePage().getUrl()}">
+                                                 ${listExp.getHomePage().getName()}</a></h5></td>
+                                     </c:if>
+                            <c:if test="${empty listExp.getHomePage().getUrl()}">
+                                <td class="left-round"><h5><b>Компания:</b></h5></td>
+                                <td class="right-round"><h5>${listExp.getHomePage().getName()}</h5></td>
+                            </c:if>
+                                </tr>
+                                <tr>
+                                    <td><h5><b>Период:</b></h5></td>
+                                    <td><h5>${listPos.getStartDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))} &mdash;
+                                        <c:if test="${listPos.getEndDate()!=LocalDate.of(3000, 1, 1)}">
+                                            ${listPos.getEndDate().format(DateTimeFormatter.ofPattern("LL/yyyy"))}
+                                        </c:if>
+                                        <c:if test="${listPos.getEndDate()==LocalDate.of(3000, 1, 1)}">
+                                            Сегодня
+                                        </c:if>
+                                    </h5></td>
+                                </tr>
+                                <tr>
+                                    <td><h5><b>Должность:</b></h5></td>
+                                    <td style="width: 100%"><h5>${listPos.getTitle()}</h5></td>
+                                </tr>
+                                <tr>
+                                    <td><h5><b>Описание:</b></h5></td>
+                                    <td><h5>${listPos.getDescription()}</h5></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </c:forEach>
-                    </div>
-                    <a href="resume?uuid=${resume.uuid}&action=noedit" class="btn btn-add">Редактировать</a>
-                </form>
-            </div>
+                    </c:forEach>
+        </c:when>
+    </c:choose>
+</c:forEach>
+        <div class="text-center">
+            <a href="resume?uuid=${resume.uuid}&action=noedit"><button type="button" class="btn my-4 box-shadow-grey round"><h5 class="my-1 mx-2">Редактировать</h5></button></a>
         </div>
-    </section>
-</main>
-<jsp:include page="fragments/footer.jsp"/>
+        </form>
+    </div>
+</div>
+
+<div class="my-5"></div>
+<!-- line divider scripts for sections -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
+<%--<jsp:include page="fragments/header.jsp"/>--%>
+<%--<a href="resume?uuid=${resume.uuid}&action=noedit" class="btn btn-add">Редактировать</a>--%>
+<%--<jsp:include page="fragments/footer.jsp"/>--%>
