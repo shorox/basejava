@@ -160,7 +160,6 @@
                                                 <h7 class="mx-2">Удалить организацию</h7>
                                             </a>
 
-
                                             <div class="row">
                                                 <div class="col">
                                                     <label>Название ${nameCompany}:</label>
@@ -216,7 +215,6 @@
                                                                            value="${position.getEndDate()}">
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Должность:</label>
