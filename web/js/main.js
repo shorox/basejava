@@ -16,7 +16,7 @@ function addOrganization(currentPositionNameId, elementTag, positionName, nameOr
     let organizationCounter = parseInt(organizationCounterElement.value);
     newPosition.setAttribute('id', positionName + "_organization" + organizationCounter);
     newPosition.innerHTML =
-        "<div class=\"form-group mt-2 box-shadow-grey\">" +
+        "<div class=\"form-group mt-2 box-shadow-blue\">" +
         "<div class=\"card mt-2\">" +
         "<div class=\"card-body\">" +
         "<div class=\"form-group\">" +
@@ -34,6 +34,9 @@ function addOrganization(currentPositionNameId, elementTag, positionName, nameOr
         "</div>" +
         "<div class=\"form-group\">" +
         "<a id=\"myLink1\" href=\"#\" onclick=\"javascript:addPosition('" + positionName + "_organization" + organizationCounter + "', 'fieldset', '" + positionName + "_organization" + organizationCounter + "');return false;\"><i class=\"fa fa-plus\" aria-hidden=\"true\" style=\"color: #3D6BE9;\"></i><h7 class=\"mx-2\">Добавить позицию</h7></a>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
         "</div>";
     currentPosition.appendChild(newPosition);
     organizationCounterElement.value = organizationCounter + 1;
@@ -56,7 +59,7 @@ function addPosition(currentPositionNameId, elementTag, positionName) {
     let positionCounter = parseInt(positionCounterElement.value);
     newPosition.setAttribute('id', positionName + "_position" + positionCounter);
     newPosition.innerHTML =
-        "<div class=\"card\">" +
+        "<div class=\"card mt-2\">" +
         "<div class=\"card-header\">" +
         "<div class=\"form-group\">" +
         "<a id=\"myLink4\" href=\"#\" onclick=\"javascript:deleteElement('" + positionName + "_position" + positionCounter + "');return false;\"><i class=\"fa fa-times\" aria-hidden=\"true\" style=\"color: #D780F1;\"></i><h7 class=\"mx-2\">Удалить позицию</h7></a>" +
@@ -80,10 +83,6 @@ function addPosition(currentPositionNameId, elementTag, positionName) {
         "<div class=\"input-group\">" +
         "<textarea type=\"text\" class=\"form-control my-1\" name=\"" + positionName + "_position" + positionCounter + "_4description\"></textarea>" +
         "</div>" +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-
         "</div>" +
         "</div>" +
         "</div>";

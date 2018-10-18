@@ -2,12 +2,14 @@
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.io.*,java.util.Locale" %>
-<%@ page import="java.util.UUID" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/main.js" type="text/javascript" charset="UTF-8"></script>
@@ -15,97 +17,107 @@
     <title>Создание Резюме</title>
 </head>
 <body>
+
 <jsp:include page="fragments/header.jsp"/>
-<section>
-    <main class="content-wrapper">
-        <section class="resume-content">
-            <div class="container">
-                <div class="resume-form">
-                    <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
-                        <input type="hidden" name="uuid" value="${1}">
-                        <div class="resume-group-contacts group-wide">
-                            <span class="span-contacts"><b>Полное имя:</b></span>
-                            <input type="text" class="resume-input" name="fullName"
-                                   required>
-                        </div>
-                        <div class="section-margin">
-                            <div class="resume-section">
-                                <h3 class="resume-heading">Контакты</h3>
-                            </div>
-                        </div>
-                        <c:forEach var="type" items="<%=ContactsType.values()%>">
-                        <div class="resume-group-contacts group-wide">
-                            <span class="span-contacts"><b>${type.title}</b></span>
-                            <input type="text" class="resume-input" name="${type.name()}">
-                        </div>
-                        </c:forEach>
-                        <c:forEach var="typeSection" items="<%=SectionType.values()%>">
-                        <c:if test="${typeSection.name()=='OBJECTIVE'||typeSection.name()=='PERSONAL'}">
-                        <div class="section-margin">
-                            <div class="resume-section">
-                                <h3 class="resume-heading">${typeSection.title}</h3>
-                                <div class="resume-group group-center">
-                                    <textarea type="text" class="resume-input" name="${typeSection.name()}"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        </c:if>
-                        <c:if test="${typeSection.name()=='ACHIEVEMENT'||typeSection.name()=='QUALIFICATIONS'}">
-                        <div class="section-margin">
-                            <div class="resume-section">
-                                <h3 class="resume-heading">${typeSection.title}</h3>
-                                <div class="resume-section">
-                                    <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
-                                        <div class="resume-group group-center">
-                                            <textarea type="text" class="resume-input"
-                                                      name="${typeSection.name()}"></textarea>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                                <div id="${typeSection.name()}" class="resume-heading-extend" style="margin-top:3px;">
-                                    <a href="javascript:addSinglePosition('${typeSection.name()}','<div style=margin-top:3px;><textarea type=text size=57 style=height:40px; name=${typeSection.name()}></textarea></div>')">
-                                        <img src="img/add.png"> Добавить позицию</a>
-                                </div>
-                            </div>
-                        </div>
-                        </c:if>
-                        <c:if test="${typeSection.name()=='EXPERIENCE'||typeSection.name()=='EDUCATION'}">
-                        <div class="section-margin">
-                            <c:choose>
-                                <c:when test="${typeSection.title=='Опыт работы'}">
-                                    <c:set var="nameCompany" value="компании" scope="page"/>
-                                    <c:set var="nameCompany1" value="компанию" scope="page"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:set var="nameCompany" value="учереждения" scope="page"/>
-                                    <c:set var="nameCompany1" value="учереждение" scope="page"/>
-                                </c:otherwise>
-                            </c:choose>
-                            <div class="resume-section">
-                                <h3 class="resume-heading">${typeSection.title}</h3>
-                                <div id="${typeSection.name()}">
-                                    <a id="myLink" href="#" style="padding: 0 0 0 320px;"
-                                       onclick="javascript:addOrganization('${typeSection.name()}', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;"><img
-                                            src="img/add.png"> Добавить ${nameCompany1}</a>
-                                </div>
-                            </div>
-                        </div>
-                        </c:if>
-                        <input type="hidden" id="organizationCounter" name="organizationCounter" value="0">
-                        <input type="hidden" id="positionCounter" name="positionCounter" value="0">
-                        </c:forEach>
-                        <br>
-                        <button type="submit" class="btn btn-add" name="save" value="1">Сохранить</button>
-                        <button type="button" onclick="window.history.back()" class="btn btn-cancel"
-                                name="CancelEdit" value="1">
-                            Отменить
-                        </button>
+
+<div class="container mt-5 box-shadow-blue">
+    <div class="mx-2">
+        <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="uuid" value="${1}">
+
+            <p class="nav-href-indent-edit" id="name"></p>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="mx-2">Полное имя:</label>
+                        <input type="text" class="form-control" name="fullName" required>
+                    </div>
                 </div>
-                </form>
             </div>
+
+            <h3 class="text-center text-secondary nav-href-indent-edit" id="contacts"><b>Контакты</b></h3>
+            <div class="form-group">
+                <c:forEach var="type" items="<%=ContactsType.values()%>">
+                    <div class="row">
+                        <div class="col">
+                            <label class="mx-2 my-1">${type.title}</label>
+                            <input type="text" class="form-control" name="${type.name()}">
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
-        </section>
-    </main>
-    <jsp:include page="fragments/footer.jsp"/>
+
+            <c:forEach var="typeSection" items="<%=SectionType.values()%>">
+                <c:if test="${typeSection.name()=='OBJECTIVE'||typeSection.name()=='PERSONAL'}">
+                    <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
+                        <b>${typeSection.title}</b>
+                    </h3>
+                    <div class="input-group">
+                    <textarea type="text" class="form-control my-3"
+                              name="${typeSection.name()}"></textarea>
+                    </div>
+                </c:if>
+                <c:if test="${typeSection.name()=='ACHIEVEMENT'||typeSection.name()=='QUALIFICATIONS'}">
+                    <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
+                        <b>${typeSection.title}</b>
+                    </h3>
+
+                    <button type="button"
+                            class="btn my-2 mt-4 btn-outline-primary btn-lg btn-block" style="border-radius: 10px;">
+                        <a href="javascript:addSinglePosition('${typeSection.name()}+1','<div class=form-group><div class=input-group><textarea type=text class=form-control my-1 name=${typeSection.name()}></textarea></div></div>')">
+                            Добавить позицию</a>
+                    </button>
+
+                    <div id="${typeSection.name()}+1"></div>
+                </c:if>
+
+                <c:if test="${typeSection.name()=='EXPERIENCE'||typeSection.name()=='EDUCATION'}">
+                    <c:choose>
+                        <c:when test="${typeSection.title=='Опыт работы'}">
+                            <c:set var="nameCompany" value="компании" scope="page"/>
+                            <c:set var="nameCompany1" value="компанию" scope="page"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="nameCompany" value="учереждения" scope="page"/>
+                            <c:set var="nameCompany1" value="учереждение" scope="page"/>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
+                        <b>${typeSection.title}</b>
+                    </h3>
+
+                    <button type="button"
+                            class="btn btn-block mt-4 btn-outline-primary btn-lg"
+                            style="border-radius: 10px;">
+                        <a id="myLink" href="#"
+                           onclick="javascript:addOrganization('${typeSection.name()}+1', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;">
+                            Добавить ${nameCompany1}</a>
+                    </button>
+
+                    <div id="${typeSection.name()}+1"></div>
+
+                </c:if>
+                <input type="hidden" id="organizationCounter" name="organizationCounter" value="0">
+                <input type="hidden" id="positionCounter" name="positionCounter" value="0">
+            </c:forEach>
+
+            <div class="text-center">
+                <button type="submit" class="btn my-4 mx-2 box-shadow-grey round" name="save" value="1"><h5
+                        class="mx-2 my-1">
+                    Сохранить</h5></button>
+                <a href="resume">
+                    <button type="button" class="btn my-4 mx-2 box-shadow-grey round"
+                            name="CancelEdit" value="1"><h5 class="mx-2 my-1">Отменить</h5></button>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="my-5"></div>
+
+<jsp:include page="fragments/footer.jsp"/>
+
 </body>
 </html>

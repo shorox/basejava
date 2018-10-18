@@ -17,47 +17,8 @@
     <title>Редактирование ${resume.fullName}</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top rounded box-shadow-grey" style="background: white">
-    <a href="https://topjava.ru/" class="navbar-brand mx-3"><img src="img/TJ.svg" alt="logo"></a>
-    <button class="navbar-toggler my-auto" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon bg-dark"></span>
-    </button>
-    <div class="collapse navbar-collapse my-auto" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#name" class="nav-link text-secondary">Полное имя</a></h5>
-            </li>
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#contacts" class="nav-link text-secondary">Контакты</a></h5>
-            </li>
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#OBJECTIVE" class="nav-link text-secondary">Позиция</a></h5>
-            </li>
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#PERSONAL" class="nav-link text-secondary">Личные качества</a></h5>
-            </li>
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#ACHIEVEMENT" class="nav-link text-secondary">Достижения</a></h5>
-            </li>
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#QUALIFICATIONS" class="nav-link text-secondary">Квалификация</a></h5>
-            </li>
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#EXPERIENCE" class="nav-link text-secondary">Опыт работы</a></h5>
-            </li>
-            <li class="nav-item">
-                <h5 class="my-auto"><a href="#EDUCATION" class="nav-link text-secondary">Образование</a></h5>
-            </li>
-        </ul>
-    </div>
 
-    <a href="resume">
-        <button type="button" class="btn ml-auto mx-2 box-shadow-grey round"><h6 class="my-1 mx-2">На главную</h6>
-        </button>
-    </a>
-</nav>
+<jsp:include page="fragments/header.jsp"/>
 
 <div class="container mt-5 box-shadow-blue">
     <div class="mx-2">
@@ -94,10 +55,9 @@
                     </h3>
                     <div class="input-group">
                     <textarea type="text" class="form-control my-3"
-                              name="${typeSection.name()}">${resume.getSections(typeSection)}></textarea>
+                              name="${typeSection.name()}">${resume.getSections(typeSection)}</textarea>
                     </div>
                 </c:if>
-
                 <c:if test="${typeSection.name()=='ACHIEVEMENT'||typeSection.name()=='QUALIFICATIONS'}">
                     <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
                         <b>${typeSection.title}</b>
@@ -109,6 +69,8 @@
                             Добавить позицию</a>
                     </button>
 
+                    <div id="${typeSection.name()}+1"></div>
+
                     <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
                         <div class="form-group">
                             <div class="input-group">
@@ -117,11 +79,9 @@
                             </div>
                         </div>
                     </c:forEach>
-                    <div id="${typeSection.name()}+1"></div>
                 </c:if>
 
                 <c:if test="${typeSection.name()=='EXPERIENCE'||typeSection.name()=='EDUCATION'}">
-
                     <c:choose>
                         <c:when test="${typeSection.title=='Опыт работы'}">
                             <c:set var="nameCompany" value="компании" scope="page"/>
@@ -132,6 +92,7 @@
                             <c:set var="nameCompany1" value="учереждение" scope="page"/>
                         </c:otherwise>
                     </c:choose>
+
                     <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
                         <b>${typeSection.title}</b>
                     </h3>
@@ -144,13 +105,17 @@
                             Добавить ${nameCompany1}</a>
                     </button>
 
+                    <div id="${typeSection.name()}+1"></div>
+
                     <c:set var="count" value="0" scope="page"/>
                     <c:forEach var="organization"
                                items="${resume.getSections(typeSection).getOrganizations()}">
-                        <div class="form-group box-shadow-grey mt-2">
-                            <div class="card mt-2">
-                                <div class="card-body">
-                                    <fieldset id="${typeSection.name()}_organization${count}">
+
+                        <fieldset id="${typeSection.name()}_organization${count}">
+
+                            <div class="form-group box-shadow-blue mt-2">
+                                <div class="card mt-2">
+                                    <div class="card-body">
 
                                         <div class="form-group">
                                             <a id="myLink2" href="#"
@@ -184,65 +149,68 @@
                                                 <h7 class="mx-2">Добавить позицию</h7>
                                             </a>
                                         </div>
-
-                                        <c:set var="countPosition" value="0" scope="page"/>
-                                        <c:forEach var="position" items="${organization.getPositions()}">
-                                            <fieldset
-                                                    id="${typeSection.name()}_organization${count}_position${countPosition}">
-
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="form-group">
-                                                            <a id="myLink3" href="#"
-                                                               onclick="javascript:deleteElement('${typeSection.name()}_organization${count}_position${countPosition}');return false;">
-                                                                <i class="fa fa-times" aria-hidden="true"
-                                                                   style="color: #D780F1;"></i>
-                                                                <h7 class="mx-2">Удалить позицию</h7>
-                                                            </a>
-
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <label>Дата начала:</label>
-                                                                    <input type="date" class="form-control"
-                                                                           name="${typeSection.name()}_organization${count}_position${countPosition}_2startDate"
-                                                                           value="${position.getStartDate()}"
-                                                                           required>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <label>Дата окончания:</label>
-                                                                    <input type="date" class="form-control"
-                                                                           name="${typeSection.name()}_organization${count}_position${countPosition}_3endDate"
-                                                                           value="${position.getEndDate()}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Должность:</label>
-                                                            <input type="text" class="form-control"
-                                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_1title"
-                                                                   value="${position.getTitle()}" required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Описание:</label>
-                                                            <div class="input-group">
-                                                        <textarea type="text"
-                                                                  class="form-control my-1">name="${typeSection.name()}_organization${count}_position${countPosition}_4description">${position.getDescription()}
-                                                        </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </fieldset>
-                                            <c:set var="countPosition" value="${countPosition+1}" scope="page"/>
-                                        </c:forEach>
-                                    </fieldset>
-                                    <c:set var="count" value="${count+1}" scope="page"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <c:set var="countPosition" value="0" scope="page"/>
+                            <c:forEach var="position" items="${organization.getPositions()}">
+
+                                <fieldset
+                                        id="${typeSection.name()}_organization${count}_position${countPosition}">
+
+                                    <div class="card mt-2">
+                                        <div class="card-header">
+                                            <div class="form-group">
+                                                <a id="myLink3" href="#"
+                                                   onclick="javascript:deleteElement('${typeSection.name()}_organization${count}_position${countPosition}');return false;">
+                                                    <i class="fa fa-times" aria-hidden="true"
+                                                       style="color: #D780F1;"></i>
+                                                    <h7 class="mx-2">Удалить позицию</h7>
+                                                </a>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label>Дата начала:</label>
+                                                        <input type="date" class="form-control"
+                                                               name="${typeSection.name()}_organization${count}_position${countPosition}_2startDate"
+                                                               value="${position.getStartDate()}"
+                                                               required>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label>Дата окончания:</label>
+                                                        <input type="date" class="form-control"
+                                                               name="${typeSection.name()}_organization${count}_position${countPosition}_3endDate"
+                                                               value="${position.getEndDate()}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Должность:</label>
+                                                <input type="text" class="form-control"
+                                                       name="${typeSection.name()}_organization${count}_position${countPosition}_1title"
+                                                       value="${position.getTitle()}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Описание:</label>
+                                                <div class="input-group">
+                                                        <textarea type="text"
+                                                                  class="form-control my-1"
+                                                                  name="${typeSection.name()}_organization${count}_position${countPosition}_4description">${position.getDescription()}
+                                                        </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <c:set var="countPosition" value="${countPosition+1}" scope="page"/>
+                            </c:forEach>
+
+                        </fieldset>
+
+                        <c:set var="count" value="${count+1}" scope="page"/>
                     </c:forEach>
-                    <div id="${typeSection.name()}+1"></div>
 
                     <c:if test="${not empty count}">
                         <input type="hidden" id="organizationCounter" name="organizationCounter"
@@ -262,25 +230,22 @@
                 </c:if>
             </c:forEach>
 
-    <div class="text-center">
-        <button type="submit" class="btn my-4 mx-2 box-shadow-grey round" name="save" value="1"><h5 class="mx-2 my-1">
-            Сохранить</h5></button>
-       <a href="resume"> <button type="button" class="btn my-4 mx-2 box-shadow-grey round"
-                name="CancelEdit" value="1"><h5 class="mx-2 my-1">Отменить</h5></button>
-       </a>
-    </div>
+            <div class="text-center">
+                <button type="submit" class="btn my-4 mx-2 box-shadow-grey round" name="save" value="1"><h5
+                        class="mx-2 my-1">
+                    Сохранить</h5></button>
+                <a href="resume">
+                    <button type="button" class="btn my-4 mx-2 box-shadow-grey round"
+                            name="CancelEdit" value="1"><h5 class="mx-2 my-1">Отменить</h5></button>
+                </a>
+            </div>
         </form>
     </div>
 </div>
-</div>
 
 <div class="my-5"></div>
-<!-- line divider scripts for sections -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+<jsp:include page="fragments/footer.jsp"/>
+
 </body>
 </html>

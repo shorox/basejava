@@ -6,7 +6,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="img/favicon2.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/main.js" type="text/javascript" charset="UTF-8"></script>
@@ -14,173 +17,238 @@
     <title>Редактирование ${resume.fullName}</title>
 </head>
 <body>
+
 <jsp:include page="fragments/header.jsp"/>
-<section>
-    <main class="content-wrapper">
-        <section>
-            <div class="container">
-                <div class="resume-form">
-                    <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
-                        <input type="hidden" name="uuid" value="${resume.uuid}">
-                        <div class="resume-group-contacts group-wide">
-                            <span class="span-contacts"><b>Полное имя:</b></span>
-                            <input type="text" class="resume-input" name="fullName"
-                                   value="${resume.fullName}" required disabled>
-                        </div>
-                        <div class="section-margin">
-                            <div class="resume-section">
-                                <h3 class="resume-heading">Контакты</h3>
-                            </div>
-                        </div>
-                        <c:forEach var="type" items="<%=ContactsType.values()%>">
-                        <div class="resume-group-contacts group-wide">
-                            <span class="span-contacts"><b>${type.title}</b></span>
-                            <input type="text" class="resume-input" name="${type.name()}"
+
+<div class="container mt-5 box-shadow-blue">
+    <div class="mx-2">
+        <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="uuid" value="${resume.uuid}">
+
+            <p class="nav-href-indent-edit" id="name"></p>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="mx-2">Полное имя:</label>
+                        <input type="text" class="form-control" name="fullName" value="${resume.fullName}" disabled
+                               required>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-center text-secondary nav-href-indent-edit" id="contacts"><b>Контакты</b></h3>
+            <div class="form-group">
+                <c:forEach var="type" items="<%=ContactsType.values()%>">
+                    <div class="row">
+                        <div class="col">
+                            <label class="mx-2 my-1">${type.title}</label>
+                            <input type="text" class="form-control" name="${type.name()}"
                                    value="${resume.getContacts(type)}" disabled>
                         </div>
-                        </c:forEach>
-                        <c:forEach var="typeSection" items="<%=SectionType.values()%>">
-                        <c:if test="${typeSection.name()=='OBJECTIVE'||typeSection.name()=='PERSONAL'}">
-                        <div class="section-margin">
-                            <div class="resume-section">
-                                <h3 class="resume-heading">${typeSection.title}</h3>
-                                <div class="resume-group group-center">
-                                    <textarea  type="text" class="resume-input"
-                                              name="${typeSection.name()}" disabled>${resume.getSections(typeSection)}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        </c:if>
-                        <c:if test="${typeSection.name()=='ACHIEVEMENT'||typeSection.name()=='QUALIFICATIONS'}">
-                        <div class="section-margin">
-                            <div class="resume-section">
-                                <h3 class="resume-heading">${typeSection.title}</h3>
-                                <div id="${typeSection.name()}" class="resume-heading-extend"
-                                     style="margin-top:3px;">
-                                    <a href="javascript:addSinglePosition('${typeSection.name()}','<div style=margin-top:3px;><textarea type=text class=resume-input name=${typeSection.name()}></textarea></div>')">
-                                        <img src="img/add.png"> Добавить позицию</a>
-                                </div>
-                                <div style="margin-top:3px;"></div>
-                                <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
-                                    <div class="resume-group group-center">
-                                        <textarea type="text" class="resume-input"
-                                                  name="${typeSection.name()}" disabled>${section}</textarea>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                        </c:if>
-                        <c:if test="${typeSection.name()=='EXPERIENCE'||typeSection.name()=='EDUCATION'}">
-                        <div class="section-margin">
-                            <c:choose>
-                                <c:when test="${typeSection.title=='Опыт работы'}">
-                                    <c:set var="nameCompany" value="компании" scope="page"/>
-                                    <c:set var="nameCompany1" value="компанию" scope="page"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:set var="nameCompany" value="учереждения" scope="page"/>
-                                    <c:set var="nameCompany1" value="учереждение" scope="page"/>
-                                </c:otherwise>
-                            </c:choose>
-                            <div class="resume-section">
-                                <h3 class="resume-heading">${typeSection.title}</h3>
-                                <div id="${typeSection.name()}">
-                                    <a id="myLink" href="#" style="padding: 0 0 0 320px;"
-                                       onclick="javascript:addOrganization('${typeSection.name()}', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;"><img
-                                            src="img/add.png"> Добавить ${nameCompany1}</a>
-                                    <p></p>
-                                </div>
-                                <c:set var="count" value="0" scope="page"/>
-                                <c:forEach var="organization"
-                                           items="${resume.getSections(typeSection).getOrganizations()}">
-                                    <fieldset id="${typeSection.name()}_organization${count}">
-                                    <a id="myLink2" href="#"
-                                       onclick="javascript:deleteElement('${typeSection.name()}_organization${count}');return false;"><img
-                                            src="img/remove.png"> Удалить организацию</a>
-                                    <div>
-                                        <div class="resume-group group-wide">
-                                            <span>Название  ${nameCompany}  :</span>
-                                            <input type="text" class="resume-input"
-                                                   name="${typeSection.name()}_organization${count}_1name"
-                                                   value="${organization.getHomePage().getName()}" required disabled>
-                                        </div>
-                                    </div>
-                                    <div class="resume-group group-wide">
-                                        <span>Сайт ${nameCompany} :</span>
-                                        <input type="text" class="resume-input"
-                                               name="${typeSection.name()}_organization${count}_2url"
-                                               value="${organization.getHomePage().getUrl()}" disabled>
-                                    </div>
-                                    <br>
-                                    <a id="myLink1" href="#"
-                                       onclick="javascript:addPosition('${typeSection.name()}_organization${count}', 'fieldset', '${typeSection.name()}_organization0');return false;"><img
-                                            src="img/add.png"> Добавить позицию</a>
-                                    <p>
-                                    <c:set var="countPosition" value="0" scope="page"/>
-                                    <c:forEach var="position" items="${organization.getPositions()}">
-                                        <fieldset
-                                                id="${typeSection.name()}_organization${count}_position${countPosition}">
-                                            <a id="myLink3" href="#"
-                                               onclick="javascript:deleteElement('${typeSection.name()}_organization${count}_position${countPosition}');return false;"><img
-                                                    src="img/remove.png"> Удалить позицию</a>
-                                        <p>
-                                        <div class="resume-group group-wide">
-                                            <span> Дата начала: </span>
-                                            <input type="date"
-                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_2startDate"
-                                                   value="${position.getStartDate()}" required disabled>
-                                            <span> Дата окончания: </span>
-                                            <input type="date"
-                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_3endDate"
-                                                   value="${position.getEndDate()}" disabled>
-                                        </div>
-                                        <div class="resume-group group-wide">
-                                            <span>Должность:</span>
-                                            <input type="text" class="resume-input"
-                                                   name="${typeSection.name()}_organization${count}_position${countPosition}_1title"
-                                                   value="${position.getTitle()}" required disabled>
-                                        </div>
-                                        <div class="resume-group group-wide">
-                                            <span>Описание:</span>
-                                            <textarea type="text" class="resume-input"
-                                                      name="${typeSection.name()}_organization${count}_position${countPosition}_4description" disabled>${position.getDescription()}</textarea>
-                                        </div>
-                                        </fieldset>
-                                        <c:set var="countPosition" value="${countPosition+1}" scope="page"/>
-                                    </c:forEach>
-                                    </fieldset>
-                                    <c:set var="count" value="${count+1}" scope="page"/>
-                                </c:forEach>
-                            </div>
-                            <c:if test="${not empty count}">
-                                <input type="hidden" id="organizationCounter" name="organizationCounter"
-                                       value="${count}">
-                            </c:if>
-                            <c:if test="${empty count}">
-                                <input type="hidden" id="organizationCounter" name="organizationCounter" value="0">
-                            </c:if>
-                            <c:if test="${not empty countPosition}">
-                                <input type="hidden" id="positionCounter" name="positionCounter"
-                                       value="${countPosition}">
-                            </c:if>
-                            <c:if test="${empty countPosition}">
-                                <input type="hidden" id="positionCounter" name="positionCounter" value="0">
-                            </c:if>
-                        </div>
-                        </c:if>
-                        </c:forEach>
-                        <br>
-                        <button type="button" class="btn btn-add" onclick="window.history.back()" name="save" value="1">Сохранить</button>
-                        <button type="button" onclick="window.history.back()" class="btn btn-cancel"
-                                name="CancelEdit" value="1">
-                            Отменить
-                        </button>
-                </div>
-                </form>
+                    </div>
+                </c:forEach>
             </div>
+
+            <c:forEach var="typeSection" items="<%=SectionType.values()%>">
+                <c:if test="${typeSection.name()=='OBJECTIVE'||typeSection.name()=='PERSONAL'}">
+                    <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
+                        <b>${typeSection.title}</b>
+                    </h3>
+                    <div class="input-group">
+                    <textarea type="text" class="form-control my-3"
+                              name="${typeSection.name()}" disabled>${resume.getSections(typeSection)}</textarea>
+                    </div>
+                </c:if>
+                <c:if test="${typeSection.name()=='ACHIEVEMENT'||typeSection.name()=='QUALIFICATIONS'}">
+                    <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
+                        <b>${typeSection.title}</b>
+                    </h3>
+
+                    <button type="button"
+                            class="btn my-2 mt-4 btn-outline-primary btn-lg btn-block" style="border-radius: 10px;">
+                        <a href="javascript:addSinglePosition('${typeSection.name()}+1','<div class=form-group><div class=input-group><textarea type=text class=form-control my-1 name=${typeSection.name()}></textarea></div></div>')">
+                            Добавить позицию</a>
+                    </button>
+
+                    <div id="${typeSection.name()}+1"></div>
+
+                    <c:forEach var="section" items="${resume.getSections(typeSection).getItems()}">
+                        <div class="form-group">
+                            <div class="input-group">
+                        <textarea type="text" class="form-control my-1"
+                                  name="${typeSection.name()}" disabled>${section}</textarea>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </c:if>
+
+                <c:if test="${typeSection.name()=='EXPERIENCE'||typeSection.name()=='EDUCATION'}">
+                    <c:choose>
+                        <c:when test="${typeSection.title=='Опыт работы'}">
+                            <c:set var="nameCompany" value="компании" scope="page"/>
+                            <c:set var="nameCompany1" value="компанию" scope="page"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="nameCompany" value="учереждения" scope="page"/>
+                            <c:set var="nameCompany1" value="учереждение" scope="page"/>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <h3 class="text-center text-secondary nav-href-indent-edit" id="${typeSection.name()}">
+                        <b>${typeSection.title}</b>
+                    </h3>
+
+                    <button type="button"
+                            class="btn btn-block mt-4 btn-outline-primary btn-lg"
+                            style="border-radius: 10px;">
+                        <a id="myLink" href="#"
+                           onclick="javascript:addOrganization('${typeSection.name()}+1', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;">
+                            Добавить ${nameCompany1}</a>
+                    </button>
+
+                    <div id="${typeSection.name()}+1"></div>
+
+                    <c:set var="count" value="0" scope="page"/>
+                    <c:forEach var="organization"
+                               items="${resume.getSections(typeSection).getOrganizations()}">
+
+                        <fieldset id="${typeSection.name()}_organization${count}">
+
+                            <div class="form-group box-shadow-blue mt-2">
+                                <div class="card mt-2">
+                                    <div class="card-body">
+
+                                        <div class="form-group">
+                                            <a id="myLink2" href="#"
+                                               onclick="javascript:deleteElement('${typeSection.name()}_organization${count}');return false;">
+                                                <i class="fa fa-times" aria-hidden="true"
+                                                   style="color: #D780F1;"></i>
+                                                <h7 class="mx-2">Удалить организацию</h7>
+                                            </a>
+
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label>Название ${nameCompany}:</label>
+                                                    <input type="text" class="form-control"
+                                                           name="${typeSection.name()}_organization${count}_1name"
+                                                           value="${organization.getHomePage().getName()}" disabled
+                                                           required>
+                                                </div>
+                                                <div class="col">
+                                                    <label>Сайт ${nameCompany}:</label>
+                                                    <input type="text" class="form-control"
+                                                           name="${typeSection.name()}_organization${count}_2url"
+                                                           value="${organization.getHomePage().getUrl()}" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <a id="myLink1" href="#"
+                                               onclick="javascript:addPosition('${typeSection.name()}_organization${count}', 'fieldset', '${typeSection.name()}_organization0');return false;"><i
+                                                    class="fa fa-plus" aria-hidden="true"
+                                                    style="color: #3D6BE9;"></i>
+                                                <h7 class="mx-2">Добавить позицию</h7>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <c:set var="countPosition" value="0" scope="page"/>
+                            <c:forEach var="position" items="${organization.getPositions()}">
+
+                                <fieldset
+                                        id="${typeSection.name()}_organization${count}_position${countPosition}">
+
+                                    <div class="card mt-2">
+                                        <div class="card-header">
+                                            <div class="form-group">
+                                                <a id="myLink3" href="#"
+                                                   onclick="javascript:deleteElement('${typeSection.name()}_organization${count}_position${countPosition}');return false;">
+                                                    <i class="fa fa-times" aria-hidden="true"
+                                                       style="color: #D780F1;"></i>
+                                                    <h7 class="mx-2">Удалить позицию</h7>
+                                                </a>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label>Дата начала:</label>
+                                                        <input type="date" class="form-control"
+                                                               name="${typeSection.name()}_organization${count}_position${countPosition}_2startDate"
+                                                               value="${position.getStartDate()}"
+                                                               disabled required>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label>Дата окончания:</label>
+                                                        <input type="date" class="form-control"
+                                                               name="${typeSection.name()}_organization${count}_position${countPosition}_3endDate"
+                                                               value="${position.getEndDate()}" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Должность:</label>
+                                                <input type="text" class="form-control"
+                                                       name="${typeSection.name()}_organization${count}_position${countPosition}_1title"
+                                                       value="${position.getTitle()}" disabled required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Описание:</label>
+                                                <div class="input-group">
+                                                        <textarea type="text"
+                                                                  class="form-control my-1"
+                                                                  name="${typeSection.name()}_organization${count}_position${countPosition}_4description"
+                                                                  disabled>${position.getDescription()}
+                                                        </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <c:set var="countPosition" value="${countPosition+1}" scope="page"/>
+                            </c:forEach>
+
+                        </fieldset>
+
+                        <c:set var="count" value="${count+1}" scope="page"/>
+                    </c:forEach>
+
+                    <c:if test="${not empty count}">
+                        <input type="hidden" id="organizationCounter" name="organizationCounter"
+                               value="${count}">
+                    </c:if>
+                    <c:if test="${empty count}">
+                        <input type="hidden" id="organizationCounter" name="organizationCounter" value="0">
+                    </c:if>
+                    <c:if test="${not empty countPosition}">
+                        <input type="hidden" id="positionCounter" name="positionCounter"
+                               value="${countPosition}">
+                    </c:if>
+                    <c:if test="${empty countPosition}">
+                        <input type="hidden" id="positionCounter" name="positionCounter" value="0">
+                    </c:if>
+
+                </c:if>
+            </c:forEach>
+
+            <div class="text-center">
+                <a href="resume">
+                    <button type="button" class="btn my-4 mx-2 box-shadow-grey round" name="CancelEdit" value="1"><h5
+                            class="mx-2 my-1">Сохранить</h5></button>
+
+                    <button type="button" class="btn my-4 mx-2 box-shadow-grey round" name="CancelEdit" value="1"><h5
+                            class="mx-2 my-1">Отменить</h5></button>
+                </a>
             </div>
-        </section>
-    </main>
-    <jsp:include page="fragments/footer.jsp"/>
+        </form>
+    </div>
+</div>
+
+<div class="my-5"></div>
+
+<jsp:include page="fragments/footer.jsp"/>
+
 </body>
 </html>
