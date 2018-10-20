@@ -3,7 +3,8 @@ create table if not exists resume
   uuid      char(36) not null
     constraint resume_pkey
     primary key,
-  full_name varchar  not null
+  full_name varchar  not null,
+  image varchar
 );
 
 create table if not exists category
@@ -15,8 +16,8 @@ create table if not exists category
     constraint contact_resume_uuid_fk
     references resume
     on delete cascade,
-  itype        varchar  not null,
-  ivalue       varchar  not null
+  itype       varchar  not null,
+  ivalue      varchar  not null
 );
 
 create unique index if not exists category_uuid_type_index

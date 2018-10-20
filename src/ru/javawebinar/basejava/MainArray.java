@@ -36,7 +36,7 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    ARRAY_STORAGE.save(new Resume(param));
+                    ARRAY_STORAGE.save(new Resume(param,"image"));
                     printAll();
                     break;
                 case "delete":

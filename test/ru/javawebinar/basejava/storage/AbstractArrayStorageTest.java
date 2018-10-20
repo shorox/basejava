@@ -17,12 +17,12 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         storage.clear();
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume("name" + i));
+                storage.save(new Resume("name" + i,"img/user.jpg"));
             }
         } catch (StorageException e) {
             Assert.fail();
         }
-        storage.save(new Resume("name"));
+        storage.save(new Resume("name","img/user.jpg"));
     }
 
     public static class JsonStorageTest extends AbstractStorageTest {

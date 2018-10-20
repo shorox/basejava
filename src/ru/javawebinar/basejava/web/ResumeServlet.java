@@ -31,13 +31,24 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
+        String image = request.getParameter("image");
         Resume resume;
 
+        if (image != null) {
+            if (!image.startsWith("http://")) {
+                System.out.println("Некорректный формат изображения");
+                image = "img/user.jpg";
+            }
+        }else {
+            image = "img/user.jpg";
+        }
+
         if (uuid.equals("1")) {
-            resume = new Resume(UUID.randomUUID().toString(),fullName);
+            resume = new Resume(UUID.randomUUID().toString(), fullName, image);
         } else {
             resume = (Resume) storage.get(uuid);
             resume.setFullName(fullName);
+            resume.setImage(image);
         }
 
         for (ContactsType type : ContactsType.values()) {
@@ -153,8 +164,8 @@ public class ResumeServlet extends HttpServlet {
         }
         request.setAttribute("resume", resume);
         request.getRequestDispatcher(
-                ("noedit".equals(action)?"/WEB-INF/jsp/noedit.jsp":"view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "edit".equals(action) ? "/WEB-INF/jsp/edit.jsp" :
-                        "viewnoedit".equals(action) ? "/WEB-INF/jsp/viewnoedit.jsp":"/WEB-INF/jsp/new.jsp")
+                ("noedit".equals(action) ? "/WEB-INF/jsp/noedit.jsp" : "view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "edit".equals(action) ? "/WEB-INF/jsp/edit.jsp" :
+                        "viewnoedit".equals(action) ? "/WEB-INF/jsp/viewnoedit.jsp" : "/WEB-INF/jsp/new.jsp")
         ).forward(request, response);
     }
 }

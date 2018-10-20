@@ -35,6 +35,16 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Сохранение фото:</label>
+                        <input type="text" class="form-control" name="image1" placeholder="ссылка на фото формата GIF, JPEG, PNG">
+                        <input type="file" class="form-control" name="image" placeholder="ссылка на фото формата GIF, JPEG, PNG">
+                    </div>
+                </div>
+            </div>
+
             <h3 class="text-center text-secondary nav-href-indent-edit" id="contacts"><b>Контакты</b></h3>
             <div class="form-group">
                 <c:forEach var="type" items="<%=ContactsType.values()%>">

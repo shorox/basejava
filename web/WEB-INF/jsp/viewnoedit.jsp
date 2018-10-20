@@ -26,13 +26,12 @@
         <form action="resume" method="POST">
             <input type="hidden" name="uuid" value="${resume.uuid}">
 
-            <hr class="table-primary" style="height:3px;background-color:#1CA3E6;">
+            <div class="row">
+                <div class="col-8">
             <h1 class="text-info" align="center"><p style="font-weight: bold;color:#1CA3E6;">${resume.fullName}</p></h1>
-            <hr class="table-primary" style="height:3px;background-color:#1CA3E6;">
 
             <c:if test="${not empty resume.getSections()}">
                 <p id="contacts" class="nav-href-indent"></p>
-                <h2 class="no-background  my-3 text-info"><span style="color:#1CA3E6;">Контакты</span></h2>
             </c:if>
 
             <c:forEach var="contactEntry" items="${resume.contacts}">
@@ -73,6 +72,11 @@
             </c:choose>
                     <%=contactEntry.getKey().toHtml(contactEntry.getValue())%></span></h5>
             </c:forEach>
+                </div>
+                <div class="col-4">
+                    <img class="card-img-top rounded mx-auto ml-auto" src="${resume.image}" style="width:95%;height:auto;">
+                </div>
+            </div>
 <c:forEach var="sectionEntry" items="${resume.sections}">
     <jsp:useBean id="sectionEntry"
                  type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.Category>"/>
