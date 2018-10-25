@@ -22,8 +22,8 @@
 
 <div class="container mt-5 box-shadow-blue">
     <div class="mx-2">
-        <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
-            <input type="hidden" name="uuid" value="${1}">
+        <form method="post" action="resume" enctype="multipart/form-data">
+            <input type="hidden" name="uuid" value="new">
 
             <p class="nav-href-indent-edit" id="name"></p>
             <div class="row">
@@ -35,15 +35,7 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Сохранение фото:</label>
-                        <input type="text" class="form-control" name="image1" placeholder="ссылка на фото формата GIF, JPEG, PNG">
-                        <input type="file" class="form-control" name="image" placeholder="ссылка на фото формата GIF, JPEG, PNG">
-                    </div>
-                </div>
-            </div>
+
 
             <h3 class="text-center text-secondary nav-href-indent-edit" id="contacts"><b>Контакты</b></h3>
             <div class="form-group">
@@ -111,6 +103,15 @@
                 <input type="hidden" id="organizationCounter" name="organizationCounter" value="0">
                 <input type="hidden" id="positionCounter" name="positionCounter" value="0">
             </c:forEach>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Сохранение фото:</label>
+                        <input type="file" class="form-control" name="file" placeholder="size = 500kb, format: GIF, JPEG, JPG, PNG">
+                    </div>
+                </div>
+            </div>
 
             <div class="text-center">
                 <button type="submit" class="btn my-4 mx-2 box-shadow-grey round" name="save" value="1"><h5

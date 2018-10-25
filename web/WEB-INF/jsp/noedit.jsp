@@ -22,7 +22,7 @@
 
 <div class="container mt-5 box-shadow-blue">
     <div class="mx-2">
-        <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
+        <form method="post" action="resume" enctype="multipart/form-data">
             <input type="hidden" name="uuid" value="${resume.uuid}">
 
             <p class="nav-href-indent-edit" id="name"></p>
@@ -36,14 +36,7 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Сохранение фото:</label>
-                        <input type="text" class="form-control" name="image" value="${resume.image}" placeholder="ссылка на фото формата GIF, JPEG, PNG" disabled>
-                    </div>
-                </div>
-            </div>
+
 
             <h3 class="text-center text-secondary nav-href-indent-edit" id="contacts"><b>Контакты</b></h3>
             <div class="form-group">
@@ -241,6 +234,15 @@
 
                 </c:if>
             </c:forEach>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Сохранение фото:</label>
+                        <input type="file" class="form-control" name="file" placeholder="size = 500kb, format: GIF, JPEG, JPG, PNG">
+                    </div>
+                </div>
+            </div>
 
             <div class="text-center">
                 <a href="resume">
