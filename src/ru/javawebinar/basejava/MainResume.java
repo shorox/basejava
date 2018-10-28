@@ -13,7 +13,7 @@ public class MainResume {
 
     public static void main(String[] args) {
 
-        Resume resume = new Resume("uuid1", "Ирина Грыцюк");
+        Resume resume = new Resume("uuid1", "Ирина Грыцюк","img/user.jpg",null);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LL/yyyy");
         Organization expOrg1 = new Organization(
                 new Link("Работа 1", "http://javaops.ru/reg/basejava/1"),

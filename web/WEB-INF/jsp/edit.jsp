@@ -66,7 +66,7 @@
                     </h3>
 
                     <button type="button"
-                            class="btn my-2 mt-4 btn-outline-primary btn-lg btn-block" style="border-radius: 10px;">
+                            class="btn mt-3 my-3 btn-outline-primary btn-lg btn-block" style="border-radius: 10px;">
                         <a href="javascript:addSinglePosition('${typeSection.name()}+1','<div class=form-group><div class=input-group><textarea type=text class=form-control my-1 name=${typeSection.name()}></textarea></div></div>')">
                             Добавить позицию</a>
                     </button>
@@ -100,7 +100,7 @@
                     </h3>
 
                     <button type="button"
-                            class="btn btn-block mt-4 btn-outline-primary btn-lg"
+                            class="btn btn-block mt-3 my-3 btn-outline-primary btn-lg"
                             style="border-radius: 10px;">
                         <a id="myLink" href="#"
                            onclick="javascript:addOrganization('${typeSection.name()}+1', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;">
@@ -145,7 +145,7 @@
 
                                         <div class="form-group">
                                             <a id="myLink1" href="#"
-                                               onclick="javascript:addPosition('${typeSection.name()}_organization${count}', 'fieldset', '${typeSection.name()}_organization0');return false;"><i
+                                               onclick="javascript:addPosition('${typeSection.name()}_organization${count}', 'fieldset', '${typeSection.name()}_organization${count}');return false;"><i
                                                     class="fa fa-plus" aria-hidden="true"
                                                     style="color: #3D6BE9;"></i>
                                                 <h7 class="mx-2">Добавить позицию</h7>
@@ -161,7 +161,7 @@
                                 <fieldset
                                         id="${typeSection.name()}_organization${count}_position${countPosition}">
 
-                                    <div class="card mt-2">
+                                    <div class="card my-2">
                                         <div class="card-header">
                                             <div class="form-group">
                                                 <a id="myLink3" href="#"
@@ -232,13 +232,10 @@
                 </c:if>
             </c:forEach>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Сохранение фото:</label>
-                        <input type="file" class="form-control" name="file" placeholder="size = 500kb, format: GIF, JPEG, JPG, PNG">
-                    </div>
-                </div>
+            <div class="mt-4 mx-auto text-center">
+                <h6 class="text-secondary">Максимальный размер изображения: 500kb</h6>
+                <h6 class="text-secondary">формат файла: GIF, JPEG, JPG, PNG</h6>
+                <h5><input type="file" class="mt-3" name="file"></h5>
             </div>
 
             <div class="text-center">

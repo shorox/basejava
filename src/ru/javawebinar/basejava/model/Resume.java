@@ -14,7 +14,8 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     private String uuid;
     private String fullName;
-    private String image;
+    private String imagePath;
+    private String realSavePath;
 
     private final Map<ContactsType, String> contacts = new EnumMap<>(ContactsType.class);
     private final Map<SectionType, Category> sections = new EnumMap<>(SectionType.class);
@@ -22,17 +23,18 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume() {
     }
 
-    public Resume(String fullName, String image) {
-        this(UUID.randomUUID().toString(), fullName, image);
+    public Resume(String fullName, String imagePath,String realSavePath) {
+        this(UUID.randomUUID().toString(), fullName, imagePath,realSavePath);
     }
 
-    public Resume(String uuid, String fullName, String image) {
+    public Resume(String uuid, String fullName, String imagePath,String realSavePath) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
-        Objects.requireNonNull(image, "image path must not be null");
+        Objects.requireNonNull(imagePath, "imagePath path must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
-        this.image = image;
+        this.imagePath = imagePath;
+        this.realSavePath = realSavePath;
     }
 
     public String getUuid() {
@@ -47,12 +49,20 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.fullName = fullName;
     }
 
-    public String getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getRealSavePath() {
+        return realSavePath;
+    }
+
+    public void setRealSavePath(String realSavePath) {
+        this.realSavePath = realSavePath;
     }
 
     public Category getSections(SectionType type) {

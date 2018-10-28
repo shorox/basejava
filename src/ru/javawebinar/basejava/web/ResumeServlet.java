@@ -38,6 +38,8 @@ public class ResumeServlet extends HttpServlet {
 
         Resume resume;
         String uuid = UUID.randomUUID().toString();
+        String realSavePath = null;
+
         Map<String, String> map = new HashMap<>();
         List<String> listQualifications = new ArrayList<>();
         List<String> listAchievements = new ArrayList<>();
@@ -54,54 +56,67 @@ public class ResumeServlet extends HttpServlet {
         try {
             List fileItems = upload.parseRequest(request);
             Iterator iterator = fileItems.iterator();
+
             while (iterator.hasNext()) {
                 FileItem fi = (FileItem) iterator.next();
+
                 if (fi.isFormField()) {
                     String fieldName = fi.getFieldName();
                     String fieldValue = new String(fi.getString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
                     switch (fieldName) {
                         case "QUALIFICATIONS":
-                            listQualifications.add(fieldValue);
+                            if (fieldValue != null&& fieldValue.trim().length() != 0) {
+                                listQualifications.add(fieldValue);
+                            }
                             break;
                         case "ACHIEVEMENT":
-                            listAchievements.add(fieldValue);
+                            if (fieldValue != null&& fieldValue.trim().length() != 0) {
+                                listAchievements.add(fieldValue);
+                            }
                             break;
                         default:
+                            if (fieldName.equals("organizationCounter") || fieldName.equals("positionCounter")) {
+                                int counterMap = Integer.valueOf(fieldValue);
+
+                                fieldValue = setMaxCounter(map, fieldValue, counterMap, "organizationCounter");
+
+                                fieldValue = setMaxCounter(map, fieldValue, counterMap, "positionCounter");
+                            }
                             map.put(fieldName, fieldValue);
                             break;
                     }
                 }
+
                 if (!fi.isFormField() && fi.getSize() < maxFileSize) {
                     String fileName = fi.getName();
                     String uuidFileName = null;
-                    String saveUuidName = map.get("uuid").equals("new") ? uuid : map.get("uuid");
+                    final String uuidForNameImage = map.get("uuid");
+                    String uuidName = uuidForNameImage.equals("new") ? uuid : uuidForNameImage;
 
                     if (fileName.toUpperCase().endsWith(".GIF") ||
                             fileName.toUpperCase().endsWith(".PNG") ||
                             fileName.toUpperCase().endsWith(".JPG")) {
-                        uuidFileName = saveUuidName + fileName.substring(fileName.length() - 4);
+                        uuidFileName = uuidName + fileName.substring(fileName.length() - 4);
                     } else if (fileName.toUpperCase().endsWith(".JPEG")) {
-                        uuidFileName = saveUuidName + fileName.substring(fileName.length() - 5);
+                        uuidFileName = uuidName + fileName.substring(fileName.length() - 5);
                     }
 
                     if (uuidFileName != null) {
                         imageSavePath = SAVE_DIR + uuidFileName;
 
-                        if (!map.get("uuid").equals("new")) {
-                            String resumeImage = ((Resume) storage.get(map.get("uuid"))).getImage();
+                        if (!uuidForNameImage.equals("new")) {
+                            String resumeImage = ((Resume) storage.get(uuidForNameImage)).getImagePath();
                             if (!resumeImage.equals("img/user.jpg")) {
-
                                 String removeFile = resumeImage.substring(10);
-                                String removePath = filePath + removeFile;
-                                File fileRemove = new File(removePath);
+                                File fileRemove = new File(filePath + removeFile);
                                 if (fileRemove.exists()) {
                                     FileUtils.forceDelete(fileRemove);
                                 }
                             }
                         }
-                        File file = new File(filePath + uuidFileName);
+                        realSavePath = filePath + uuidFileName;
+                        File file = new File(realSavePath);
                         fi.write(file);
-
                     }
                 }
             }
@@ -110,16 +125,20 @@ public class ResumeServlet extends HttpServlet {
         }
 
         String fullName = map.get("fullName");
-        if (map.get("uuid").equals("new")) {
+        String mapUuid = map.get("uuid");
+        if (mapUuid.equals("new")) {
             if (imageSavePath == null) {
                 imageSavePath = "img/user.jpg";
             }
-            resume = new Resume(uuid, fullName, imageSavePath);
+            resume = new Resume(uuid, fullName, imageSavePath, realSavePath);
         } else {
-            resume = (Resume) storage.get(map.get("uuid"));
+            resume = (Resume) storage.get(mapUuid);
             resume.setFullName(fullName);
             if (imageSavePath != null) {
-                resume.setImage(imageSavePath);
+                resume.setImagePath(imageSavePath);
+            }
+            if (realSavePath != null) {
+                resume.setRealSavePath(realSavePath);
             }
         }
 
@@ -194,7 +213,6 @@ public class ResumeServlet extends HttpServlet {
                 default:
                     break;
             }
-
         }
 
         if (map.get("uuid").equals("new")) {
@@ -202,8 +220,17 @@ public class ResumeServlet extends HttpServlet {
         } else {
             storage.update(resume);
         }
-
         response.sendRedirect("resume");
+    }
+
+    private String setMaxCounter(Map<String, String> map, String fieldValue, int counterMap, String organizationCounter2) {
+        if (map.get(organizationCounter2) != null) {
+            int counterOrg = Integer.valueOf(map.get(organizationCounter2));
+            if (counterOrg > counterMap) {
+                fieldValue = String.valueOf(counterOrg);
+            }
+        }
+        return fieldValue;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {

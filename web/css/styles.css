@@ -12,7 +12,7 @@ button:hover{
     color: white;
 }
 
-input[type=text],[type=date]{
+input[type=text],[type=date],[type=file] {
     border: 1px solid #1ECBE6;
     border-radius: 10px;
 }

@@ -59,7 +59,7 @@ function addPosition(currentPositionNameId, elementTag, positionName) {
     let positionCounter = parseInt(positionCounterElement.value);
     newPosition.setAttribute('id', positionName + "_position" + positionCounter);
     newPosition.innerHTML =
-        "<div class=\"card mt-2\">" +
+        "<div class=\"card my-2\">" +
         "<div class=\"card-header\">" +
         "<div class=\"form-group\">" +
         "<a id=\"myLink4\" href=\"#\" onclick=\"javascript:deleteElement('" + positionName + "_position" + positionCounter + "');return false;\"><i class=\"fa fa-times\" aria-hidden=\"true\" style=\"color: #D780F1;\"></i><h7 class=\"mx-2\">Удалить позицию</h7></a>" +

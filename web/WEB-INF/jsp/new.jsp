@@ -65,7 +65,7 @@
                     </h3>
 
                     <button type="button"
-                            class="btn my-2 mt-4 btn-outline-primary btn-lg btn-block" style="border-radius: 10px;">
+                            class="btn my-3 mt-3 btn-outline-primary btn-lg btn-block" style="border-radius: 10px;">
                         <a href="javascript:addSinglePosition('${typeSection.name()}+1','<div class=form-group><div class=input-group><textarea type=text class=form-control my-1 name=${typeSection.name()}></textarea></div></div>')">
                             Добавить позицию</a>
                     </button>
@@ -90,7 +90,7 @@
                     </h3>
 
                     <button type="button"
-                            class="btn btn-block mt-4 btn-outline-primary btn-lg"
+                            class="btn btn-block mt-3 my-3 btn-outline-primary btn-lg"
                             style="border-radius: 10px;">
                         <a id="myLink" href="#"
                            onclick="javascript:addOrganization('${typeSection.name()}+1', 'fieldset', '${typeSection.name()}','${nameCompany}');return false;">
@@ -104,14 +104,11 @@
                 <input type="hidden" id="positionCounter" name="positionCounter" value="0">
             </c:forEach>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Сохранение фото:</label>
-                        <input type="file" class="form-control" name="file" placeholder="size = 500kb, format: GIF, JPEG, JPG, PNG">
-                    </div>
-                </div>
-            </div>
+                   <div class="mt-4 mx-auto text-center">
+                       <h6 class="text-secondary">Максимальный размер изображения: 500kb</h6>
+                       <h6 class="text-secondary">формат файла: GIF, JPEG, JPG, PNG</h6>
+                           <h5><input type="file" class="mt-3" name="file"></h5>
+                   </div>
 
             <div class="text-center">
                 <button type="submit" class="btn my-4 mx-2 box-shadow-grey round" name="save" value="1"><h5

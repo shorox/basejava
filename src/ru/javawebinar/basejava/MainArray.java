@@ -36,7 +36,7 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    ARRAY_STORAGE.save(new Resume(param,"image"));
+                    ARRAY_STORAGE.save(new Resume(param,"image","img/user.jpg",null));
                     printAll();
                     break;
                 case "delete":
@@ -44,7 +44,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "update":
-                    ARRAY_STORAGE.update(new Resume(param, params[2]));
+                    ARRAY_STORAGE.update(new Resume(param, params[2],"img/user.jpg",null));
                     printAll();
                     break;
                 case "get":

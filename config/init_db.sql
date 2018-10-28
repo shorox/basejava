@@ -4,7 +4,8 @@ create table if not exists resume
     constraint resume_pkey
     primary key,
   full_name varchar  not null,
-  image varchar
+  image_path     varchar,
+  real_save_path varchar
 );
 
 create table if not exists category

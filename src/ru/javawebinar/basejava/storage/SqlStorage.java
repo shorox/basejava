@@ -1,10 +1,13 @@
 package ru.javawebinar.basejava.storage;
 
+import org.apache.commons.io.FileUtils;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 import ru.javawebinar.basejava.util.JsonParser;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
@@ -22,6 +25,20 @@ public class SqlStorage implements Storage {
 
     @Override
     public void clear() {
+        List<Resume> allSorted = getAllSorted();
+        for (Resume resume : allSorted) {
+            String realPath = resume.getRealSavePath();
+            if (realPath != null) {
+                File file = new File(realPath);
+                if (file.exists()) {
+                    try {
+                        FileUtils.forceDelete(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         sqlHelper.execute("DELETE FROM resume");
     }
 
@@ -35,7 +52,7 @@ public class SqlStorage implements Storage {
                 if (!rs.next()) {
                     throw new NotExistStorageException(uuid);
                 }
-                resume = new Resume(uuid, rs.getString("full_name"),rs.getString("image"));
+                resume = new Resume(uuid, rs.getString("full_name"), rs.getString("image_path"), rs.getString("real_save_path"));
             }
 
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact WHERE resume_uuid =?")) {
@@ -60,10 +77,11 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume resume) {
         sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? , image = ? WHERE uuid = ?")) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? , image_path = ? , real_save_path = ? WHERE uuid = ?")) {
                 ps.setString(1, resume.getFullName());
-                ps.setString(2, resume.getImage());
-                ps.setString(3, resume.getUuid());
+                ps.setString(2, resume.getImagePath());
+                ps.setString(3, resume.getRealSavePath());
+                ps.setString(4, resume.getUuid());
                 if (ps.executeUpdate() != 1) {
                     throw new NotExistStorageException(resume.getUuid());
                 }
@@ -79,10 +97,11 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume resume) {
         sqlHelper.transactionalExecute(conn -> {
-                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name, image) VALUES (?,?,?)")) {
+                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name, image_path, real_save_path) VALUES (?,?,?,?)")) {
                         ps.setString(1, resume.getUuid());
                         ps.setString(2, resume.getFullName());
-                        ps.setString(3, resume.getImage());
+                        ps.setString(3, resume.getImagePath());
+                        ps.setString(4, resume.getRealSavePath());
                         ps.execute();
                     }
                     insertContacts(conn, resume);
@@ -94,6 +113,21 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
+
+        Resume resume = get(uuid);
+        if (resume != null) {
+            if (resume.getRealSavePath() != null) {
+                File file = new File(resume.getRealSavePath());
+                if (file.exists()) {
+                    try {
+                        FileUtils.forceDelete(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
         sqlHelper.execute("DELETE FROM resume WHERE uuid=?", ps -> {
             ps.setString(1, uuid);
             if (ps.executeUpdate() == 0) {
@@ -112,7 +146,7 @@ public class SqlStorage implements Storage {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     String uuid = rs.getString("uuid");
-                    resumes.put(uuid, new Resume(uuid, rs.getString("full_name"),rs.getString("image")));
+                    resumes.put(uuid, new Resume(uuid, rs.getString("full_name"), rs.getString("image_path"), rs.getString("real_save_path")));
                 }
             }
 

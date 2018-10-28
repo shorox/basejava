@@ -75,7 +75,7 @@
             </c:forEach>
                 </div>
                 <div class="col-4">
-                    <img class="card-img-top rounded mx-auto ml-auto" src="${resume.image}" style="width:95%;height:auto;">
+                    <img class="card-img-top rounded mx-auto ml-auto" src="${resume.imagePath}" style="width:95%;height:auto;">
                 </div>
             </div>
 <c:forEach var="sectionEntry" items="${resume.sections}">

@@ -18,10 +18,10 @@ public class TestData {
     public static final Resume R4;
 
     static {
-        R1 = new Resume(UUID_1, "Григорий Кислин", "http://gkislin.ru/img/Grigory_Kislin.jpg");
-        R2 = new Resume(UUID_2, "Name2","img/user.jpg");
-        R3 = new Resume(UUID_3, "Name3","img/user.jpg");
-        R4 = new Resume(UUID_4, "Name4","img/user.jpg");
+        R1 = new Resume(UUID_1, "Григорий Кислин", "http://gkislin.ru/img/Grigory_Kislin.jpg",null);
+        R2 = new Resume(UUID_2, "Name2","img/user.jpg",null);
+        R3 = new Resume(UUID_3, "Name3","img/user.jpg",null);
+        R4 = new Resume(UUID_4, "Name4","img/user.jpg",null);
 
         R1.addContact(ContactsType.MAIL, "gkislin@yandex.ru");
         R1.addContact(ContactsType.PHONE, "+7(921) 855-0482");
