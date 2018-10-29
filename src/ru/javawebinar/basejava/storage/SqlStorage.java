@@ -127,20 +127,6 @@ public class SqlStorage implements Storage {
                 }
             }
         }
-//        sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", ps -> {
-//            ps.setString(1, uuid);
-//            if (ps.executeUpdate() == 0) {
-//                throw new NotExistStorageException(uuid);
-//            }
-//            return null;
-//        });
-//        sqlHelper.execute("DELETE FROM category WHERE resume_uuid=?", ps -> {
-//            ps.setString(1, uuid);
-//            if (ps.executeUpdate() == 0) {
-//                throw new NotExistStorageException(uuid);
-//            }
-//            return null;
-//        });
         sqlHelper.execute("DELETE FROM resume WHERE uuid=?", ps -> {
             ps.setString(1, uuid);
             if (ps.executeUpdate() == 0) {
