@@ -109,3 +109,8 @@ h2.no-background span:after {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
+
+.column-in-center{
+    float: none;
+    margin: 0 auto;
+}

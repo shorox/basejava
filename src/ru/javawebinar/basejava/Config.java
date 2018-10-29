@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-
+//
 //   private static final String PROPS = "/resumes.properties";
  private static final File PROPS = new File(getHomeDir(), "config\\resumes.properties");
 
@@ -47,6 +47,7 @@ public class Config {
 
     //        ---------------------------------------------------------------------------------------
 //heroku war:deploy basejava_Web.war --app basejava-course        cd C:\projects\basejava\out\artifacts\basejava_Web      heroku login
+    //   heroku war:deploy basejava_war_archive.war --app grigoriyresumebasejava
 //        ---------------------------------------------------------------------------------------
 
         try (InputStream is = new FileInputStream(PROPS)) {

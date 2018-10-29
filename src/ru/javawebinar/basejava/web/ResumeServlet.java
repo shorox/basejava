@@ -23,7 +23,7 @@ import static ru.javawebinar.basejava.util.DateUtil.NOW;
 
 public class ResumeServlet extends HttpServlet {
 
-    private static final String SAVE_DIR = "img" + File.separator + "users" + File.separator;
+    private static final String SAVE_DIR = "img" + File.separator;
     private Storage storage;
 
     @Override
@@ -65,12 +65,12 @@ public class ResumeServlet extends HttpServlet {
                     String fieldValue = new String(fi.getString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
                     switch (fieldName) {
                         case "QUALIFICATIONS":
-                            if (fieldValue != null&& fieldValue.trim().length() != 0) {
+                            if (fieldValue != null && fieldValue.trim().length() != 0) {
                                 listQualifications.add(fieldValue);
                             }
                             break;
                         case "ACHIEVEMENT":
-                            if (fieldValue != null&& fieldValue.trim().length() != 0) {
+                            if (fieldValue != null && fieldValue.trim().length() != 0) {
                                 listAchievements.add(fieldValue);
                             }
                             break;
@@ -81,6 +81,9 @@ public class ResumeServlet extends HttpServlet {
                                 fieldValue = setMaxCounter(map, fieldValue, counterMap, "organizationCounter");
 
                                 fieldValue = setMaxCounter(map, fieldValue, counterMap, "positionCounter");
+                            }
+                            if (fieldName.equals("MAIL") && fieldValue.trim().length() == 0) {
+                                fieldValue = "empty@mail";
                             }
                             map.put(fieldName, fieldValue);
                             break;
@@ -107,7 +110,7 @@ public class ResumeServlet extends HttpServlet {
                         if (!uuidForNameImage.equals("new")) {
                             String resumeImage = ((Resume) storage.get(uuidForNameImage)).getImagePath();
                             if (!resumeImage.equals("img/user.jpg")) {
-                                String removeFile = resumeImage.substring(10);
+                                String removeFile = resumeImage.substring(4);
                                 File fileRemove = new File(filePath + removeFile);
                                 if (fileRemove.exists()) {
                                     FileUtils.forceDelete(fileRemove);

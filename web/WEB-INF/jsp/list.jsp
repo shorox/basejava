@@ -16,9 +16,9 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top rounded box-shadow-grey" style="background: white">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top rounded box-shadow-grey" style="background: white">
     <a href="https://topjava.ru/" class="navbar-brand mx-3"><img src="img/TJ.svg" alt="logo"></a>
-    <h3 class="mx-auto my-auto text-secondary">Web-приложение "База данных резюме" курса BaseJava</h3>
+    <h4 class="mx-auto my-auto text-secondary">Web-приложение "База данных резюме" курса BaseJava</h4>
     <a href="resume?action=new">
         <button type="button" class="btn ml-auto mx-2 box-shadow-grey round"><h6 class="my-1 mx-2">Добавить резюме</h6>
         </button>
@@ -33,19 +33,23 @@
         <c:forEach items="${resumes}" var="resume">
             <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
             <c:choose>
-                <c:when test="${resume.fullName=='Григорий Кислин'}">
+                <c:when test="${resume.fullName=='Григорий Кислин' || resume.fullName=='Ирина Грицюк'}">
 
-                    <div class="col-sm-4 my-2">
+                    <div class="col-sm-4 my-2 column-in-center">
                         <div class="card box-shadow-lines">
                             <div class="card-body text-center">
-                                <a href="resume?uuid=${resume.uuid}&action=viewnoedit" class="text-dark"><h4 class="card-title">${resume.fullName}</h4></a>
-                                <p class="card-text" style="color: #1CA3E6;"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                <a href="resume?uuid=${resume.uuid}&action=viewnoedit" class="text-dark"><h4
+                                        class="card-title">${resume.fullName}</h4></a>
+                                <p class="card-text"
+                                   style="color: #1CA3E6;"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
                                 </p>
                                 <a href="resume?uuid=${resume.uuid}&action=viewnoedit" title="открыть">
-                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-address-book-o mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i
+                                            class="fa fa-address-book-o mx-2"></i></button>
                                 </a>
                                 <a href="resume?uuid=${resume.uuid}&action=noedit" title="редактировать">
-                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-pencil mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i
+                                            class="fa fa-pencil mx-2"></i></button>
                                 </a>
                                 <a href="#" title="удалить">
                                     <button type="button" class="btn box-shadow-grey round"><i
@@ -58,21 +62,25 @@
                 </c:when>
                 <c:otherwise>
 
-                    <div class="col-sm-4 my-2">
+                    <div class="col-sm-4 my-2 column-in-center">
                         <div class="card box-shadow-lines">
                             <div class="card-body text-center">
-                                <a href="resume?uuid=${resume.uuid}&action=view" class="text-dark"><h4 class="card-title">${resume.fullName}</h4></a>
-                                <p class="card-text" style="color: #1CA3E6;"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
+                                <a href="resume?uuid=${resume.uuid}&action=view" class="text-dark"><h4
+                                        class="card-title">${resume.fullName}</h4></a>
+                                <p class="card-text"
+                                   style="color: #1CA3E6;"><%=ContactsType.MAIL.toHtml(resume.getContacts(ContactsType.MAIL))%>
                                 </p>
                                 <a href="resume?uuid=${resume.uuid}&action=view" title="открыть">
-                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-address-book-o mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i
+                                            class="fa fa-address-book-o mx-2"></i></button>
                                 </a>
                                 <a href="resume?uuid=${resume.uuid}&action=edit" title="редактировать">
                                     <button type="button" class="btn box-shadow-grey round"><i
                                             class="fa fa-pencil mx-2"></i></button>
                                 </a>
                                 <a href="resume?uuid=${resume.uuid}&action=delete" title="удалить">
-                                    <button type="button" class="btn box-shadow-grey round"><i class="fa fa-close mx-2"></i></button>
+                                    <button type="button" class="btn box-shadow-grey round"><i
+                                            class="fa fa-close mx-2"></i></button>
                                 </a>
                             </div>
                         </div>
